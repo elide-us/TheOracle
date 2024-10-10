@@ -1,29 +1,3 @@
-# import azure.functions as func
-# import logging
-
-# app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
-
-# @app.route(route="HttpExample")
-# def HttpExample(req: func.HttpRequest) -> func.HttpResponse:
-#     logging.info('Python HTTP trigger function processed a request.')
-
-#     name = req.params.get('name')
-#     if not name:
-#         try:
-#             req_body = req.get_json()
-#         except ValueError:
-#             pass
-#         else:
-#             name = req_body.get('name')
-
-#     if name:
-#         return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully.")
-#     else:
-#         return func.HttpResponse(
-#              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
-#              status_code=200
-#         )
-
 import azure.functions as func
 import logging
 from azure.identity import ClientSecretCredential
@@ -32,7 +6,7 @@ from msal import ConfidentialClientApplication
 import os
 
 # Initialize the Azure Function app
-app = func.FunctionApp(http_auth_level=func.AuthLevel.FUNCTION)
+app = func.FunctionApp()
 
 # Define configuration for MSAL and Azure Key Vault
 CLIENT_ID = os.getenv("THEORACLEKV_CLIENT_ID")
@@ -51,7 +25,7 @@ msal_app = ConfidentialClientApplication(
 
 @app.function_name(name="HttpExample")
 @app.route(route="HttpExample", auth_level=func.AuthLevel.FUNCTION)
-def HttpExample(req: func.HttpRequest) -> func.HttpResponse:
+def http_example(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
     # Get the "name" parameter from the request
