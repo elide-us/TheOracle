@@ -44,9 +44,9 @@ SCOPE = ["https://vault.azure.net/.default"]
 
 # Initialize MSAL Confidential Client Application for OAuth2.0 authentication
 msal_app = ConfidentialClientApplication(
-    THEORACLEKV_CLIENT_ID,
+    CLIENT_ID,
     authority=AUTHORITY,
-    client_credential=THEORACLEKV_CLIENT_SECRET
+    client_credential=CLIENT_SECRET
 )
 
 @app.route(route="HttpExample")
@@ -77,7 +77,7 @@ def HttpExample(req: func.HttpRequest) -> func.HttpResponse:
         )
 
     # Initialize SecretClient using the Key Vault URL and the access token
-    credential = ClientSecretCredential(tenant_id=TENANT_ID, client_id=THEORACLEKV_CLIENT_ID, client_secret=THEORACLEKV_CLIENT_SECRET)
+    credential = ClientSecretCredential(tenant_id=TENANT_ID, client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
     secret_client = SecretClient(vault_url=KEY_VAULT_URL, credential=credential)
 
     # Retrieve a test value from Azure Key Vault
