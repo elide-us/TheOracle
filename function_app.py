@@ -1,23 +1,5 @@
 import azure.functions as func
 import logging
-import msal
-import os
-
-CLIENT_ID = os.getenv("THEORACLE_CLIENT_ID")
-TENANT_ID = os.getenv("THEORACLE_TENANT_ID")
-CLIENT_SECRET = os.getenv("THEORACLE_CLIENT_SECRET")
-REDIRECT_URI = os.getenv("THEORACLE_REDIRECT_URI")
-AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
-SCOPES = [
-    "User.Read",
-    "Mail.Read",
-    "Mail.TedaBasic",
-    "Mail.ReadWrite",
-    "Mail.Send"
-]
-
-def create_msal_app():
-    return msal.ConfidentialClientApplication(client_id=CLIENT_ID, client_credential=CLIENT_SECRET, authority=AUTHORITY)
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 @app.route(route="HttpExample")
