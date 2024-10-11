@@ -1,7 +1,7 @@
 import azure.functions as func
 import logging
-# import msal
-# import os
+import msal
+import os
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 
@@ -10,14 +10,14 @@ app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
 def start_login(req: func.HttpRequest) -> func.HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
 
-    # CLIENT_ID = os.getenv("THEORACLE_CLIENT_ID")
-    # TENANT_ID = os.getenv("THEORACLE_TENANT_ID")
-    # CLIENT_SECRET = os.getenv("THEORACLE_CLIENT_SECRET")
-    # AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
+    CLIENT_ID = os.getenv("THEORACLE_CLIENT_ID")
+    TENANT_ID = os.getenv("THEORACLE_TENANT_ID")
+    CLIENT_SECRET = os.getenv("THEORACLE_CLIENT_SECRET")
+    AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
 
     # REDIRECT_URI = "https://theoraclefn.azurewebsites.net/get-a-token"  # Replace with your actual redirect URI.
 
-    # msal_app = msal.ConfidentialClientApplication(client_id=CLIENT_ID, client_credential=CLIENT_SECRET, authority=AUTHORITY)
+    msal_app = msal.ConfidentialClientApplication(client_id=CLIENT_ID, client_credential=CLIENT_SECRET, authority=AUTHORITY)
 
     name = req.params.get('name')
     if not name:
