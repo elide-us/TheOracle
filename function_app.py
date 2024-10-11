@@ -73,14 +73,31 @@
 
 #     return func.HttpResponse(response_message, status_code=200)
 
-
-
+import os
+import msal
 import azure.functions as func
 import logging
+from azure.functions import HttpRequest, HttpResponse
+
+CLIENT_ID = os.getenv("THEORACLE_CLIENT_ID")
+TENANT_ID = os.getenv("THEORACLE_TENANT_ID")
+CLIENT_SECRET = os.getenv("THEORACLE_CLIENT_SECRET")
+REDIRECT_URI = ""
+AUTHORITY = f"https://login.microsoftonline.com/{TENANT_ID}"
+SCOPES = [
+    "User.Read",
+    "Mail.Read",
+    "Mail.TedaBasic",
+    "Mail.ReadWrite",
+    "Mail.Send"
+]
+
+def create_msal_app():
+    return msal.ConfidentialClientApplication(client_id=CLIENT_ID, client_credential=CLIENT_SECRET, authority=AUTHORITY)
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
-@app.route(route="HttpExample")
-def HttpExample(req: func.HttpRequest) -> func.HttpResponse:
+@app.route(route="start-login")
+async def main(req: HttpRequest) -> HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     name = req.params.get('name')
     if not name:
