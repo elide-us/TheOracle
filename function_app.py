@@ -1,6 +1,6 @@
 import azure.functions as func
 import logging
-# import msal
+import msal
 import os
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
@@ -29,7 +29,7 @@ def start_login(req: func.HttpRequest) -> func.HttpResponse:
             name = req_body.get('name')
 
     if name:
-        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully. {CLIENT_ID}, {TENANT_ID}, {CLIENT_SECRET}")
+        return func.HttpResponse(f"Hello, {name}. This HTTP triggered function executed successfully. ${CLIENT_ID}, ${TENANT_ID}, ${CLIENT_SECRET}")
     else:
         return func.HttpResponse(
              "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response.",
