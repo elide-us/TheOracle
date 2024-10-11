@@ -96,8 +96,8 @@ def create_msal_app():
     return msal.ConfidentialClientApplication(client_id=CLIENT_ID, client_credential=CLIENT_SECRET, authority=AUTHORITY)
 
 app = func.FunctionApp(http_auth_level=func.AuthLevel.ANONYMOUS)
-@app.route(route="start-login")
-async def main(req: HttpRequest) -> HttpResponse:
+@app.route(route="StartLogin")
+async def StartLogin(req: HttpRequest) -> HttpResponse:
     logging.info('Python HTTP trigger function processed a request.')
     name = req.params.get('name')
     if not name:
