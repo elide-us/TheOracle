@@ -72,12 +72,12 @@ jobs:
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_437693635C12404A809BB6433B3D40EE }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_B658FA275BA44AEA844A4EB822321469 }}
 
-      - name: 'Deploy to Azure Functions - Staging Slot'
+      - name: 'Deploy to Azure Functions - Stage Slot'
         uses: Azure/functions-action@v1
-        id: deploy-to-staging
+        id: deploy-to-stage
         with:
           app-name: 'theoraclefn'
-          slot-name: 'staging'
+          slot-name: 'stage'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           scm-do-build-during-deployment: true
           enable-oryx-build: true
@@ -87,5 +87,5 @@ jobs:
           az functionapp deployment slot swap \
             --name theoraclefn \
             --resource-group default_us_west_rg \
-            --slot staging \
+            --slot stage \
             --target-slot production
