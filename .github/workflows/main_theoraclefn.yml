@@ -77,7 +77,7 @@ jobs:
         id: deploy-to-staging
         with:
           app-name: 'theoraclefn'
-          slot-name: 'theoraclefn-staging'
+          slot-name: 'staging'
           package: ${{ env.AZURE_FUNCTIONAPP_PACKAGE_PATH }}
           scm-do-build-during-deployment: true
           enable-oryx-build: true
