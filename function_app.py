@@ -2,7 +2,7 @@ import azure.functions as func
 import logging
 import os
 import requests
-import json
+from openai import OpenAI
 
 # Define the OpenAI API endpoint and environment variables
 OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')

@@ -4,3 +4,4 @@
 
 azure-Functions
 requests
+openai
