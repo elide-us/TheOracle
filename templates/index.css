@@ -4,7 +4,7 @@ body {
   
   .border-panel {
     position: relative;
-    margin: 1rem;
+    margin: 2rem;
     padding: 1rem;
     border: 2px solid #dee2e6;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
