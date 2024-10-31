@@ -1,8 +1,11 @@
 body {
     background-color: #392400;
 }
+.container-fluid {
+    padding: 16px;
+    border: 2px solid #ff0000;
+}
 .border-panel {
-    position: relative;
     padding:16px;
     border: 2px solid #7f7f7f;
     border-radius: 8px;
