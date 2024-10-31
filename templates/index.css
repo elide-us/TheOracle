@@ -5,14 +5,9 @@ body {
   .border-panel {
     position: relative;
     margin: 2rem;
-    padding: 1rem;
-    border: 2px solid #dee2e6;
+    padding: 2rem;
+    border: 2px solid #dee2e694;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    background-color: #ffffff;
+    background-color: #dddddddb;
   }
   
-  .outer-panel {
-    border: 15px solid #dee2e6;
-    padding: 15px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-  }
