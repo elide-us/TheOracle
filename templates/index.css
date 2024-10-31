@@ -1,0 +1,13 @@
+body {
+    background-color: #f8f9fa;
+  }
+  
+  .border-panel {
+    position: relative;
+    margin: 1rem;
+    padding: 1rem;
+    border: 2px solid #dee2e6;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+    background-color: #ffffff;
+  }
+  
