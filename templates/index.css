@@ -1,12 +1,14 @@
 body {
     background-color: #392400;
-  }
-  
-  .border-panel {
+}
+.border-panel {
     position: relative;
     padding:16px;
     border: 2px solid #7f7f7f;
     border-radius: 8px;
     background-color: #ffffff;
-  }
-  
+}
+.container {
+    padding: 16px;
+    background-color: #ff0000;
+}
