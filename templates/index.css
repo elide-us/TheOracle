@@ -1,13 +1,12 @@
 body {
-    background-color: #f8f9fa;
+    background-color: #392400;
   }
   
   .border-panel {
     position: relative;
-    margin: 2rem;
-    padding: 2rem;
-    border: 2px solid #dee2e694;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    background-color: #dddddddb;
+    padding:16px;
+    border: 2px solid #7f7f7f;
+    border-radius: 8px;
+    background-color: #ffffff;
   }
   
