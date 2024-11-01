@@ -1,6 +1,9 @@
 body {
     background: #000000;
 }
+table {
+    background: #000000;
+}
 .header-row {
     border-bottom: 2px solid #000000;
     background: #cccccc;
