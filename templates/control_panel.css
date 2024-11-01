@@ -1,3 +1,9 @@
 .header-row {
-    border: 2px solid #7f7f7f;
+    border-bottom: 2px solid #000000;
+}
+.odd-row {
+    background: #7f7f7f;
+}
+.even-row {
+    background: #ffffff;
 }
