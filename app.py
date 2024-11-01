@@ -7,8 +7,8 @@ def index():
     return render_template('index.html')
     
 @app.route('/cpl')
-def control_panel():
-    return render_template('control_panel.html')
+def cpl():
+    return render_template('cpl.html')
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=80)
