@@ -1,5 +1,7 @@
 .header-row {
     border-bottom: 2px solid #000000;
+    background: #cccccc;
+    font-color: #ffffff;
 }
 .odd-row {
     background: #7f7f7f;
