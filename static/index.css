@@ -6,11 +6,11 @@ body {
 }
 .border-panel {
   background-color: green;
-  padding-top: 16px;
+  padding-top: 20px;
 }
 .container {
   background-color: red;
-  border-top: 16px;
-  border-radius: 8px;
+  border-top: 2px solid black;
+  border-radius: 16px;
   padding: 16px;
 }
