@@ -4,9 +4,13 @@ body {
 .container-fluid {
   background-color: white;
 }
+.border-panel {
+  background-color: white;
+  padding-top: 20px;
+}
 .container {
   background-color: red;
   border-top: 2px solid black;
   border-radius: 16px;
-  padding: 20px;
+  padding: 16px;
 }
