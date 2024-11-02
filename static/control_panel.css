@@ -12,3 +12,6 @@ body {
 .even-row {
     background: #ffffff;
 }
+.right-justified {
+    text-align: right;
+}
