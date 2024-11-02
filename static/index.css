@@ -10,7 +10,7 @@ body {
 }
 .container {
   background-color: red;
-  border: 16px;
+  border-top: 16px;
   border-radius: 8px;
   padding: 16px;
 }
