@@ -1,18 +1,15 @@
 body {
   background-color: #000000;
 }
-.container {
-  background-color: red;
-  padding: 16px;
-  border: 16px;
-  border-radius: 8px; 
-}
 .container-fluid {
   background-color: blue;
 }
 .border-panel {
   background-color: green;
+}
+.container {
+  background-color: red;
   padding: 16px;
   border: 16px;
-  border-radius: 8px;
+  border-radius: 8px; 
 }
