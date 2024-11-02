@@ -7,3 +7,12 @@ body {
   border: 16px;
   border-radius: 8px; 
 }
+.container-fluid {
+  background-color: white;
+}
+.border-panel {
+  background-color: black;
+  padding: 16px;
+  border: 16px;
+  border-radius: 8px;
+}
