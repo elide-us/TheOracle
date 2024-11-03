@@ -1,10 +1,12 @@
 from flask import Flask, render_template
+import os
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    client_id = os.getenv('CLIENT_ID')
+    return render_template('index.html', client=client_id)
     
 @app.route('/cpl')
 def control_panel():
