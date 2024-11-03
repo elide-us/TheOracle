@@ -6,7 +6,8 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     client_id = os.getenv('CLIENT_ID')
-    return render_template('index.html', client=client_id)
+    tenant_id = os.getenv('TENANT_ID')
+    return render_template('index.html', client=client_id, tenant=tenant_id)
     
 @app.route('/cpl')
 def control_panel():
