@@ -1,5 +1,6 @@
 from flask import Flask, render_template
 import os
+import msal
 
 CLIENT_ID = os.getenv('CLIENT_ID')
 TENANT_ID = os.getenv('TENANT_ID')
