@@ -3,5 +3,5 @@ requests
 aiofiles
 aiohttp
 openai
-discord
+discord.py
 lumaai
