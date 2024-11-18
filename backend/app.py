@@ -13,6 +13,7 @@ import os
 
 OPENAI_SECRET = os.getenv('OPENAI_SECRET')
 DISCORD_SECRET = os.getenv('DISCORD_SECRET')
+YOUR_CHANNEL_ID = 1306414351598747709
 
 # Flask App Setup
 app = Flask(__name__, static_folder='static', template_folder='templates')
@@ -25,7 +26,7 @@ bot = discord.Client(intents=intents)
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+  return render_template('index.html')
 
 #Endpoint Example (Optional: Handle API tasks)
 #@app.route('/process', methods=['POST'])
@@ -35,25 +36,30 @@ def index():
 #    result = f"Processed: {data['task']}"
 #    return {"result": result}, 200
 
-# Example Bot Event: Responding to Messages
 @bot.event
 async def on_ready():
-    print(f"Bot logged in as {bot.user}")
+    print(f'Logged in as {bot.user}')  # This is useful for logging/debugging.
+    channel = bot.get_channel(YOUR_CHANNEL_ID)  # Replace with the channel ID
+    if channel:
+        await channel.send("Hello! The bot is now online and ready to serve!")
+    else:
+        print("Channel not found or bot does not have access to the channel.")
+
 
 @bot.event
 async def on_message(message):
-    if message.author == bot.user:
-        return
+  if message.author == bot.user:
+    return
 
-    if message.content.startswith("!process"):
-        # Example: Responding to "!process" commands
-        task = message.content[9:].strip()  # Extract text after "!process"
-        if task:
-            # Process the task or call an endpoint
-            response = f"Processing your task: {task}"
-            await message.channel.send(response)
-        else:
-            await message.channel.send("Please provide a task after '!process'.")
+  if message.content.startswith("!process"):
+    # Example: Responding to "!process" commands
+    task = message.content[9:].strip()  # Extract text after "!process"
+    if task:
+      # Process the task or call an endpoint
+      response = f"Processing your task: {task}"
+      await message.channel.send(response)
+    else:
+      await message.channel.send("Please provide a task after '!process'.")
 
 ############################################################
 
