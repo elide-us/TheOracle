@@ -18,13 +18,6 @@ CHANNEL_ID = 1306414351598747709
 
 ################################################################################
 
-# Discord Bot Setup
-intents = discord.Intents.default()
-intents.messages = True  # Enables message events
-intents.message_content = True  # Required for reading message content
-
-bot = discord.Client(intents=intents)
-
 async def on_ready():
     channel = bot.get_channel(CHANNEL_ID)  # Replace with your channel ID
     if channel:
@@ -45,11 +38,16 @@ async def on_message(message):
 
 ################################################################################
 
-# "bot.start needs to ahve an asyncio loop already running..."
-
 if __name__ == '__main__':
+  intents = discord.Intents.default()
+  intents.messages = True  # Enables message events
+  intents.message_content = True  # Required for reading message content
+
+  bot = discord.Client(intents=intents)
+  
   bot.event(on_ready)
   bot.event(on_message)
+  
   bot.run(token=DISCORD_SECRET)
 
 ############################################################
