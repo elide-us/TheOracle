@@ -22,9 +22,9 @@ CHANNEL_ID = 1306414351598747709
 intents = discord.Intents.default()
 intents.messages = True  # Enables message events
 intents.message_content = True  # Required for reading message content
+
 bot = discord.Client(intents=intents)
 
-@bot.event
 async def on_ready():
     channel = bot.get_channel(CHANNEL_ID)  # Replace with your channel ID
     if channel:
@@ -32,7 +32,6 @@ async def on_ready():
     else:
         print("ERROR")
 
-@bot.event
 async def on_message(message):
     if message.author == bot.user:
         return
@@ -49,6 +48,8 @@ async def on_message(message):
 # "bot.start needs to ahve an asyncio loop already running..."
 
 if __name__ == '__main__':
+  bot.event(on_ready)
+  bot.event(on_message)
   bot.run(token=DISCORD_SECRET)
 
 ############################################################
