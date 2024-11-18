@@ -1,18 +1,53 @@
+
+
+@bot.event
+async def on_ready():
+    print(f'Logged in as {bot.user.name} - {bot.user.id}')
+    channel = bot.get_channel(123456789012345678)  # Replace with your channel ID
+    if channel:
+        await channel.send("Hello! The bot is now online and ready to serve!")
+
+@bot.event
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    if message.content.startswith("!hello"):
+        await message.channel.send("Hello! How can I assist you?")
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 import os
 import json
 import logging
 import requests
+import threading
 import asyncio
 import aiofiles
 import aiohttp
 import discord
+from flask import Flask, render_template, request
 from datetime import time, datetime, timezone
 from lumaai import LumaAI
 from openai import OpenAI, AsyncOpenAI
 
 OPENAI_SECRET = os.getenv('OPENAI_SECRET')
 DISCORD_SECRET = os.getenv('DISCORD_SECRET')
-YOUR_CHANNEL_ID = 1306414351598747709
+CHANNEL_ID = 1306414351598747709
+
+################################################################################
 
 # Set up logging to capture to both console and file
 logging.basicConfig(
@@ -24,16 +59,19 @@ logging.basicConfig(
     ]
 )
 
+################################################################################
+
 # Discord Bot Setup
 intents = discord.Intents.default()
 intents.messages = True  # Enables message events
 intents.message_content = True  # Required for reading message content
+
 bot = discord.Client(intents=intents)
 
 @bot.event
 async def on_ready():
     logging.info(f'Logged in as {bot.user.name} - {bot.user.id}')
-    channel = bot.get_channel(123456789012345678)  # Replace with your channel ID
+    channel = bot.get_channel(CHANNEL_ID)  # Replace with your channel ID
     if channel:
         await channel.send("Hello! The bot is now online and ready to serve!")
         logging.info("Successfully sent the message to the channel.")
@@ -56,10 +94,39 @@ async def on_message(message):
             await message.channel.send("Please provide a task after '!process'.")
             logging.info("Asked for more details about '!process'.")
 
-# Run the bot
+################################################################################
+
+# Set up Flask App
+app = Flask(__name__, static_folder='static', template_folder='templates')
+
+@app.route('/')
+def index():
+    return "Hello from Flask! The bot should be running."
+
+################################################################################
+
+def run_flask():
+    app.run(host='0.0.0.0', port=80)
+
+# Coroutine to run the Discord bot asynchronously
+async def run_discord_bot():
+    await bot.start(DISCORD_SECRET)
+
+async def main():
+    # Run Flask in a separate thread
+    flask_thread = threading.Thread(target=run_flask)
+    flask_thread.daemon = True  # Allows Flask thread to exit when the main program ends
+    flask_thread.start()
+
+    # Run Discord bot asynchronously
+    await run_discord_bot()
+
+# Start the asyncio event loop
 if __name__ == '__main__':
-  logging.info("Starting the bot...")
-  bot.run(DISCORD_SECRET)
+    asyncio.run(main())
+
+
+
 
 ############################################################
 
