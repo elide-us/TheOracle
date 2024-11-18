@@ -18,84 +18,38 @@ CHANNEL_ID = 1306414351598747709
 
 ################################################################################
 
-# Set up logging to capture to both console and file
-logging.basicConfig(
-    level=logging.DEBUG,  # Use DEBUG level for comprehensive output
-    format='%(asctime)s %(levelname)s: %(message)s',
-    handlers=[
-        logging.StreamHandler(),  # Logs to console, which Azure Log Stream will capture
-        logging.FileHandler('discord_bot.log')  # Logs to file for reference
-    ]
-)
-
-################################################################################
-
 # Discord Bot Setup
 intents = discord.Intents.default()
 intents.messages = True  # Enables message events
 intents.message_content = True  # Required for reading message content
-
 bot = discord.Client(intents=intents)
 
 @bot.event
 async def on_ready():
-    logging.info(f'Logged in as {bot.user.name} - {bot.user.id}')
     channel = bot.get_channel(CHANNEL_ID)  # Replace with your channel ID
     if channel:
         await channel.send("Hello! The bot is now online and ready to serve!")
-        logging.info("Successfully sent the message to the channel.")
     else:
-        logging.warning("Channel not found or bot does not have access to the channel.")
+        print("ERROR")
 
 @bot.event
 async def on_message(message):
-    logging.debug(f"Message received: {message.content} from {message.author}")
     if message.author == bot.user:
         return
-
-    if message.content.startswith("!process"):
-        task = message.content[9:].strip()
+    if message.content.startswith("!image"):
+        task = message.content[len("!image"):].strip()
         if task:
             response = f"Processing your task: {task}"
             await message.channel.send(response)
-            logging.info(f"Sent response: {response}")
         else:
             await message.channel.send("Please provide a task after '!process'.")
-            logging.info("Asked for more details about '!process'.")
 
 ################################################################################
 
-# Set up Flask App
-app = Flask(__name__, static_folder='static', template_folder='templates')
+# "bot.start needs to ahve an asyncio loop already running..."
 
-@app.route('/')
-def index():
-    return render_template('index.html')
-
-################################################################################
-
-def run_flask():
-    app.run(host='0.0.0.0', port=80)
-
-# Coroutine to run the Discord bot asynchronously
-async def run_discord_bot():
-    await bot.start(DISCORD_SECRET)
-
-async def main():
-    # Run Flask in a separate thread
-    flask_thread = threading.Thread(target=run_flask)
-    flask_thread.daemon = True  # Allows Flask thread to exit when the main program ends
-    flask_thread.start()
-
-    # Run Discord bot asynchronously
-    await run_discord_bot()
-
-# Start the asyncio event loop
 if __name__ == '__main__':
-    asyncio.run(main())
-
-
-
+  bot.run(token=DISCORD_SECRET)
 
 ############################################################
 
