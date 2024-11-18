@@ -18,40 +18,6 @@ CHANNEL_ID = 1306414351598747709
 
 ################################################################################
 
-async def on_ready():
-    channel = bot.get_channel(CHANNEL_ID)  # Replace with your channel ID
-    if channel:
-        await channel.send("Hello! The bot is now online and ready to serve!")
-    else:
-        print("ERROR")
-
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    if message.content.startswith("!image"):
-        task = message.content[len("!image"):].strip()
-        if task:
-            response = f"Processing your task: {task}"
-            await message.channel.send(response)
-        else:
-            await message.channel.send("Please provide a task after '!process'.")
-
-################################################################################
-
-if __name__ == '__main__':
-  intents = discord.Intents.default()
-  intents.messages = True  # Enables message events
-  intents.message_content = True  # Required for reading message content
-
-  bot = discord.Client(intents=intents)
-  
-  bot.event(on_ready)
-  bot.event(on_message)
-  
-  bot.run(token=DISCORD_SECRET)
-
-############################################################
-
 def s_load_json(file_path):
   with open(file_path, "r") as file:
     data = json.load(file)
@@ -106,7 +72,7 @@ def s_download_image(image_url, filename):
   with open(f"{filename}.png", "wb") as file:
     file.write(response.content)
 
-############################################################
+################################################################################
 
 async def co_produce_prompts(template_key, arguments_key):
   template = s_get_template(template_key)
@@ -121,11 +87,51 @@ async def co_consume_prompts(producer_coroutine):
   async for prompt, filename in producer_coroutine:
     s_download_image(s_generate_image(client, prompt), filename)
 
+################################################################################
+
 # Coroutine Coordination Function (Async Entry Point)
 async def co_run_images(template_key, arguments_key):
   producer_coroutine = co_produce_prompts(template_key, arguments_key)
   await co_consume_prompts(producer_coroutine)
 
-############################################################
+################################################################################
 
 # asyncio.run(co_run_images("gothfembust", "sevenschools"))
+
+################################################################################
+
+
+async def on_ready():
+    channel = bot.get_channel(CHANNEL_ID)  # Replace with your channel ID
+    if channel:
+        await channel.send("Hello! The bot is now online and ready to serve!")
+    else:
+        print("ERROR")
+
+async def on_message(message):
+    if message.author == bot.user:
+        return
+    if message.content.startswith("!image"):
+        task = message.content[len("!image"):].strip()
+        if task:
+            response = f"Processing your task: {task}"
+            await message.channel.send(response)
+        else:
+            await message.channel.send("Please provide a task after '!process'.")
+
+################################################################################
+
+def start_bot():
+  intents = discord.Intents.default()
+  intents.messages = True  # Enables message events
+  intents.message_content = True  # Required for reading message content
+
+  bot = discord.Client(intents=intents)
+
+  bot.event(on_ready)
+  bot.event(on_message)
+
+  bot.run(token=DISCORD_SECRET)
+
+if __name__ == '__main__':
+  start_bot()
