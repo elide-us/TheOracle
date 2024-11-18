@@ -1,2 +1,7 @@
 Flask
-msal
+requests
+aiofiles
+aiohttp
+openai
+discord
+lumaai
