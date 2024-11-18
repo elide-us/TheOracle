@@ -1,5 +1,6 @@
 import os
 import json
+import logging
 import requests
 import asyncio
 import aiofiles
@@ -13,6 +14,16 @@ OPENAI_SECRET = os.getenv('OPENAI_SECRET')
 DISCORD_SECRET = os.getenv('DISCORD_SECRET')
 YOUR_CHANNEL_ID = 1306414351598747709
 
+# Set up logging to capture to both console and file
+logging.basicConfig(
+    level=logging.DEBUG,  # Use DEBUG level for comprehensive output
+    format='%(asctime)s %(levelname)s: %(message)s',
+    handlers=[
+        logging.StreamHandler(),  # Logs to console, which Azure Log Stream will capture
+        logging.FileHandler('discord_bot.log')  # Logs to file for reference
+    ]
+)
+
 # Discord Bot Setup
 intents = discord.Intents.default()
 intents.messages = True  # Enables message events
@@ -21,31 +32,33 @@ bot = discord.Client(intents=intents)
 
 @bot.event
 async def on_ready():
-  print("Bot on_ready()")
-  channel = bot.get_channel(YOUR_CHANNEL_ID)  # Replace YOUR_CHANNEL_ID with the channel ID
-  if channel:
-    await channel.send("Hello! The bot is now online and ready to serve!")
-  else:
-    print("Channel not found or bot does not have access to the channel.")
+    logging.info(f'Logged in as {bot.user.name} - {bot.user.id}')
+    channel = bot.get_channel(123456789012345678)  # Replace with your channel ID
+    if channel:
+        await channel.send("Hello! The bot is now online and ready to serve!")
+        logging.info("Successfully sent the message to the channel.")
+    else:
+        logging.warning("Channel not found or bot does not have access to the channel.")
 
 @bot.event
 async def on_message(message):
- # Ignore messages from the bot itself
-  if message.author == bot.user:
-    return
+    logging.debug(f"Message received: {message.content} from {message.author}")
+    if message.author == bot.user:
+        return
 
-  # Respond to "!process" command
-  if message.content.startswith("!process"):
-    task = message.content[9:].strip()  # Extract the task text after "!process"
-    if task:
-      response = f"Processing your task: {task}"
-      await message.channel.send(response)
-    else:
-      await message.channel.send("Please provide a task after '!process'.")
+    if message.content.startswith("!process"):
+        task = message.content[9:].strip()
+        if task:
+            response = f"Processing your task: {task}"
+            await message.channel.send(response)
+            logging.info(f"Sent response: {response}")
+        else:
+            await message.channel.send("Please provide a task after '!process'.")
+            logging.info("Asked for more details about '!process'.")
 
 # Run the bot
 if __name__ == '__main__':
-  print("Starting Discord Bot")
+  logging.info("Starting the bot...")
   bot.run(DISCORD_SECRET)
 
 ############################################################
