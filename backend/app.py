@@ -1,34 +1,3 @@
-
-
-@bot.event
-async def on_ready():
-    print(f'Logged in as {bot.user.name} - {bot.user.id}')
-    channel = bot.get_channel(123456789012345678)  # Replace with your channel ID
-    if channel:
-        await channel.send("Hello! The bot is now online and ready to serve!")
-
-@bot.event
-async def on_message(message):
-    if message.author == bot.user:
-        return
-    if message.content.startswith("!hello"):
-        await message.channel.send("Hello! How can I assist you?")
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import os
 import json
 import logging
@@ -101,7 +70,7 @@ app = Flask(__name__, static_folder='static', template_folder='templates')
 
 @app.route('/')
 def index():
-    return "Hello from Flask! The bot should be running."
+    return render_template('index.html')
 
 ################################################################################
 
