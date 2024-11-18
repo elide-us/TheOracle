@@ -1,6 +1,13 @@
-import discord
 import os
-from openai import OpenAI
+import json
+import requests
+import asyncio
+import aiofiles
+import aiohttp
+import discord
+from datetime import time, datetime, timezone
+from lumaai import LumaAI
+from openai import OpenAI, AsyncOpenAI
 
 OPENAI_SECRET = os.getenv('OPENAI_SECRET')
 DISCORD_SECRET = os.getenv('DISCORD_SECRET')
@@ -14,30 +21,32 @@ bot = discord.Client(intents=intents)
 
 @bot.event
 async def on_ready():
-    channel = bot.get_channel(YOUR_CHANNEL_ID)  # Replace YOUR_CHANNEL_ID with the channel ID
-    if channel:
-        await channel.send("Hello! The bot is now online and ready to serve!")
-    else:
-        print("Channel not found or bot does not have access to the channel.")
+  print("Bot on_ready()")
+  channel = bot.get_channel(YOUR_CHANNEL_ID)  # Replace YOUR_CHANNEL_ID with the channel ID
+  if channel:
+    await channel.send("Hello! The bot is now online and ready to serve!")
+  else:
+    print("Channel not found or bot does not have access to the channel.")
 
 @bot.event
 async def on_message(message):
-    # Ignore messages from the bot itself
-    if message.author == bot.user:
-        return
+ # Ignore messages from the bot itself
+  if message.author == bot.user:
+    return
 
-    # Respond to "!process" command
-    if message.content.startswith("!process"):
-        task = message.content[9:].strip()  # Extract the task text after "!process"
-        if task:
-            response = f"Processing your task: {task}"
-            await message.channel.send(response)
-        else:
-            await message.channel.send("Please provide a task after '!process'.")
+  # Respond to "!process" command
+  if message.content.startswith("!process"):
+    task = message.content[9:].strip()  # Extract the task text after "!process"
+    if task:
+      response = f"Processing your task: {task}"
+      await message.channel.send(response)
+    else:
+      await message.channel.send("Please provide a task after '!process'.")
 
 # Run the bot
 if __name__ == '__main__':
-    bot.run(DISCORD_SECRET)
+  print("Starting Discord Bot")
+  bot.run(DISCORD_SECRET)
 
 ############################################################
 
