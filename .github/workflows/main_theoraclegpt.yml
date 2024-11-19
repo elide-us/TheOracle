@@ -79,7 +79,3 @@ jobs:
         with:
           app-name: 'theoraclegpt'
           slot-name: 'Production'
-
-      - name: 'Extract Build Artifacts'
-        run: tar -xzf output.tar.gz
-          
