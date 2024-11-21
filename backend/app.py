@@ -6,7 +6,7 @@ from flask import Flask, render_template
 from discord.ext import commands
 #from multiprocessing import Process
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='template', static_folder='static')
 
 @app.route('/')
 def index():
