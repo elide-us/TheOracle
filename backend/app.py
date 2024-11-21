@@ -1,7 +1,9 @@
 import os
 import json
-import requests
-from flask import Flask, request, jsonify
+import discord
+import threading
+from flask import Flask
+from discord.ext import commands
 
 DISCORD_TOKEN =  os.getenv('DISCORD_TOKEN')
 WEBHOOK_ID = 1308553886868574409
@@ -10,26 +12,40 @@ WEBHOOK_URL = 'https://discordapp.com/api/webhooks/{WEBHOOK_ID}/{DISCORD_TOKEN}'
 
 app = Flask(__name__)
 
+@app.route('/')
+def index():
+  return "Hello, World!"
+
+intents = discord.Intents.default()
+intents.messages = True
+intents.message_content = True
+bot = commands.Bot(command_prefix='!', intents=intents)
+
+@bot.event
+async def on_ready():
+  print("Bot online")
+
+@bot.command
+async def ping(ctx):
+  await ctx.send("Pong!")
+
 def s_load_json(file_path):
   with open(file_path, "r") as file:
     data = json.load(file)
   return data
 
-def send_discord_message(message):
-  payload = {'content':'{message}'}
-  response = requests.post(WEBHOOK_URL, json=payload)
-  return response.status_code
+def run_flask():
+  app.run(host="0.0.0.0", port=80)
 
-@app.route('/webhook', methods=['POST'])
-def handle_webhook():
-  data = request.json
-  if not data:
-    return jsonify({'error':'Invalid payload'}), 400
-  if "content" in data:
-    received_message = data['content']
-    send_discord_message({received_message})
-  return jsonify({'status':'success'}), 200
+def run_bot():
+  discord_key = os.getenv('DISCORD_SECRET')
+  if not discord_key:
+    raise ValueError("Missing key")
+  bot.run(discord_key)
 
 if __name__ == '__main__':
-  app.run(port=80)
+  flask_thread = threading.Thread(target=run_flask)
+  flask_thread.start()
+
+  run_bot()
 
