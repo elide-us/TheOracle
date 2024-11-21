@@ -12,7 +12,7 @@ async def on_ready():
   print("Bot online.")
 
 @bot.command(name="ai")
-async def ping(ctx):
+async def ai(ctx):
   await ctx.send("Online.")
 
 bot.run(DISCORD_SECRET)
