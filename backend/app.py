@@ -2,32 +2,27 @@ import os
 import json
 import discord
 import threading
-from flask import Flask
+from flask import Flask, render_template
 from discord.ext import commands
-
-DISCORD_TOKEN =  os.getenv('DISCORD_TOKEN')
-WEBHOOK_ID = 1308553886868574409
-
-WEBHOOK_URL = 'https://discordapp.com/api/webhooks/{WEBHOOK_ID}/{DISCORD_TOKEN}'
+#from multiprocessing import Process
 
 app = Flask(__name__)
 
 @app.route('/')
 def index():
-  return "Hello, World!"
+  return render_template('index.html')
 
 intents = discord.Intents.default()
 intents.messages = True
-intents.message_content = True
 bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
 async def on_ready():
-  print("Bot online")
+  print("Bot online.")
 
-@bot.command
+@bot.command(name="ai")
 async def ping(ctx):
-  await ctx.send("Pong!")
+  await ctx.send("Online.")
 
 def s_load_json(file_path):
   with open(file_path, "r") as file:
@@ -45,7 +40,13 @@ def run_bot():
 
 if __name__ == '__main__':
   flask_thread = threading.Thread(target=run_flask)
+  bot_thread = threading.Thread(target=run_bot)
+
+  #flask_process = Process(target=run_flask)
+  #bot_process = Process(target=run_bot)
+
   flask_thread.start()
+  bot_thread.start()
 
-  run_bot()
-
+  flask_thread.join()
+  bot_thread.join()
