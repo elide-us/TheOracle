@@ -7,7 +7,7 @@ LUMAAI_SECRET = os.getenv('LUMAAI_SECRET')
 CLIENT_ID = os.getenv('CLIENT_ID')
 TENANT_ID = os.getenv('TENANT_ID')
 
-app = Flask(__name__, host="0.0.0.0", port=80)
+app = Flask(__name__)
 
 @app.route('/')
 def index():
