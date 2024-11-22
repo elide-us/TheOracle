@@ -11,4 +11,4 @@ app = Flask(__name__, host="0.0.0.0", port=80)
 
 @app.route('/')
 def index():
-  return "{TENANT_ID"
+  return "{TENANT_ID}"
