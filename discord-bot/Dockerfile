@@ -8,7 +8,7 @@ WORKDIR /app
 COPY . /app
 
 # Install Python dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r app/requirements.txt
 
 # Expose a port (optional if using a Flask wrapper for health check)
 # EXPOSE 8000
