@@ -1,5 +1,6 @@
 import os
 import discord
+from discord.ext import commands
 
 DISCORD_SECRET = os.getenv('DISCORD_SECRET')
 
@@ -9,7 +10,7 @@ bot = commands.Bot(command_prefix='!', intents=intents)
 
 @bot.event
 async def on_ready():
-  print("Bot online.")
+  print("on_ready()")
 
 @bot.command(name="ai")
 async def ai(ctx):
