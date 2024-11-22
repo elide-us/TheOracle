@@ -1,7 +1,0 @@
-Flask
-requests
-aiofiles
-aiohttp
-openai
-discord.py
-lumaai
