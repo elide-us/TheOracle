@@ -5,3 +5,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
   return "Hello World!"
+
+@app.route('/discord')
+def discord():
+  return "Hello World!"
