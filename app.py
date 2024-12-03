@@ -1,4 +1,5 @@
 import os
+import sys
 import logging
 import asyncio
 import threading
@@ -8,8 +9,7 @@ from flask import Flask #request, jsonify
 
 class FlaskWrapper:
   def __init__(self):
-    self.logger = logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-    self._setup_logger()
+    self.logger = logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
     self.app = Flask(__name__)
     self._setup_routes()
     self.intents = discord.Intents.default()
@@ -19,13 +19,12 @@ class FlaskWrapper:
  
   async def imagen(self):
     self.logger.info("imagen()")
-    bot = self.bot
-    bot_token = self.discord_token
     bot_channel = int(self.discord_channel)
 
-    @bot.event
+    @self.bot.event
     async def on_ready():
-      channel = bot.get_channel(bot_channel)
+      self.logger.info("on_ready()")
+      channel = self.bot.get_channel(bot_channel)
       if channel:
         await channel.send("imagen Online.")
 
@@ -42,30 +41,26 @@ class FlaskWrapper:
     #  except Exception as e:
     #    await ctx.send(f"An unexpected error occurred: {str(e)}")
 
-    await bot.start(bot_token)
+    await self.bot.start(self.discord_token)
 
   def run_discord_bot(self):
     self.logger.info("run_discord_bot()")
+    # Start the Discord daemon
     asyncio.run(self.imagen(self))
 
   def run_flask_app(self):
     self.logger.info("run_flask_app()")
+    # Call run on the Flask app
     self.app.run()
 
-  def _setup_logger(self):
-    self.logger = logging.getLogger(self.__class__.__name__)
-    self.logger.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler()
-    handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-    self.logger.addHandler(handler)
-
-
   def _setup_discord(self):
+    self.logger.info("_setup_discord()")
     self.intents.messages = True
     self.intents.message_content = True
     self.bot = commands.Bot(command_prefix='!', intents=self.intents)
 
   def _setup_routes(self):
+    self.logger.info("_setup_routes()")
     @self.app.route('/')
     def index():
       return "Hello from FlaskWrapper!"
