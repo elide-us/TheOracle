@@ -53,7 +53,12 @@ class FlaskWrapper:
     self.app.run()
 
   def _setup_logger(self):
-    self.logger = logging.getLogger(self)
+    self.logger = logging.getLogger(self.__class__.__name__)
+    self.logger.setLevel(logging.DEBUG)
+    handler = logging.StreamHandler()
+    handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
+    self.logger.addHandler(handler)
+
 
   def _setup_discord(self):
     self.intents.messages = True
