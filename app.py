@@ -1,6 +1,7 @@
 import os
 import asyncio
 import threading
+import discord
 from discord.ext import commands
 from flask import Flask #request, jsonify
 
@@ -42,7 +43,10 @@ class FlaskWrapper:
     asyncio.run(self.imagen())
 
   def _setup_discord(self):
-    self.bot = commands.Bot(command_prefix='!')
+    intents = discord.Intents.default()
+    intents.messages = True
+    intents.message_content = True
+    self.bot = commands.Bot(command_prefix='!', intents=intents)
 
   def _setup_routes(self):
     @self.app.route('/')
