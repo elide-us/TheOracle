@@ -75,9 +75,9 @@ class FlaskWrapper:
     return self.app.wsgi_app(environ, start_response)
 
   def run(self):
-    # Start background task in a separate thread.
+    print("Run Discord bot")
     threading.Thread(target=self.run_discord_bot, daemon=True).start()
-    # Run Flask in the main thread.
+    print("Run Flask app")
     self.run_flask_app()
 
 app = FlaskWrapper()
