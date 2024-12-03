@@ -1,4 +1,5 @@
 import os
+import logging
 import asyncio
 import threading
 import discord
@@ -7,13 +8,17 @@ from flask import Flask #request, jsonify
 
 class FlaskWrapper:
   def __init__(self):
+    self.logger = logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
+    self._setup_logger()
     self.app = Flask(__name__)
+    self._setup_routes()
+    self.intents = discord.Intents.default()
     self.discord_token = os.getenv('DISCORD_SECRET')
     self.discord_channel = os.getenv('DISCORD_CHANNEL')
     self._setup_discord()
-    self._setup_routes()
-
+ 
   async def imagen(self):
+    self.logger.info("imagen()")
     bot = self.bot
     bot_token = self.discord_token
     bot_channel = int(self.discord_channel)
@@ -39,14 +44,21 @@ class FlaskWrapper:
 
     await bot.start(bot_token)
 
-  def run_background_task(self):
-    asyncio.run(self.imagen())
+  def run_discord_bot(self):
+    self.logger.info("run_discord_bot()")
+    asyncio.run(self.imagen(self))
+
+  def run_flask_app(self):
+    self.logger.info("run_flask_app()")
+    self.app.run()
+
+  def _setup_logger(self):
+    self.logger = logging.getLogger(self)
 
   def _setup_discord(self):
-    intents = discord.Intents.default()
-    intents.messages = True
-    intents.message_content = True
-    self.bot = commands.Bot(command_prefix='!', intents=intents)
+    self.intents.messages = True
+    self.intents.message_content = True
+    self.bot = commands.Bot(command_prefix='!', intents=self.intents)
 
   def _setup_routes(self):
     @self.app.route('/')
@@ -69,9 +81,8 @@ class FlaskWrapper:
 
   def run(self):
     # Start background task in a separate thread.
-    threading.Thread(target=self.run_background_task, daemon=True).start()
+    threading.Thread(target=self.run_discord_bot, daemon=True).start()
     # Run Flask in the main thread.
-    self.app.run()
+    self.run_flask_app()
 
-# Expose the WSGI-compatible object.
 app = FlaskWrapper()
