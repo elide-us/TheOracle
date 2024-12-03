@@ -1,5 +1,4 @@
 import os
-import logging
 import asyncio
 import threading
 import discord
@@ -8,8 +7,6 @@ from flask import Flask #request, jsonify
 
 class FlaskWrapper:
   def __init__(self):
-    self.logger = logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
-    self._setup_logger()
     self.app = Flask(__name__)
     self._setup_routes()
     self.intents = discord.Intents.default()
@@ -18,7 +15,7 @@ class FlaskWrapper:
     self._setup_discord()
  
   async def imagen(self):
-    self.logger.info("imagen()")
+    print("imagen()")
     bot = self.bot
     bot_token = self.discord_token
     bot_channel = int(self.discord_channel)
@@ -45,20 +42,12 @@ class FlaskWrapper:
     await bot.start(bot_token)
 
   def run_discord_bot(self):
-    self.logger.info("run_discord_bot()")
+    print("run_discord_bot()")
     asyncio.run(self.imagen(self))
 
   def run_flask_app(self):
-    self.logger.info("run_flask_app()")
+    print("run_flask_app()")
     self.app.run()
-
-  def _setup_logger(self):
-    self.logger = logging.getLogger(self.__class__.__name__)
-    self.logger.setLevel(logging.DEBUG)
-    handler = logging.StreamHandler()
-    handler.setFormatter(logging.Formatter('%(asctime)s - %(levelname)s - %(message)s'))
-    self.logger.addHandler(handler)
-
 
   def _setup_discord(self):
     self.intents.messages = True
