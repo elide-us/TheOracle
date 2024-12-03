@@ -1,6 +1,4 @@
 import os
-import sys
-import logging
 import asyncio
 import threading
 import discord
@@ -9,7 +7,6 @@ from flask import Flask #request, jsonify
 
 class FlaskWrapper:
   def __init__(self):
-    self.logger = logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
     self.app = Flask(__name__)
     self._setup_routes()
     self.intents = discord.Intents.default()
@@ -18,12 +15,12 @@ class FlaskWrapper:
     self._setup_discord()
  
   async def imagen(self):
-    self.logger.info("imagen()")
+    print("imagen()")
     bot_channel = int(self.discord_channel)
 
     @self.bot.event
     async def on_ready():
-      self.logger.info("on_ready()")
+      print("on_ready()")
       channel = self.bot.get_channel(bot_channel)
       if channel:
         await channel.send("imagen Online.")
@@ -44,23 +41,21 @@ class FlaskWrapper:
     await self.bot.start(self.discord_token)
 
   def run_discord_bot(self):
-    self.logger.info("run_discord_bot()")
-    # Start the Discord daemon
+    print("run_discord_bot()")
     asyncio.run(self.imagen(self))
 
   def run_flask_app(self):
-    self.logger.info("run_flask_app()")
-    # Call run on the Flask app
+    print("run_flask_app()")
     self.app.run()
 
   def _setup_discord(self):
-    self.logger.info("_setup_discord()")
+    print("_setup_discord()")
     self.intents.messages = True
     self.intents.message_content = True
     self.bot = commands.Bot(command_prefix='!', intents=self.intents)
 
   def _setup_routes(self):
-    self.logger.info("_setup_routes()")
+    print("_setup_routes()")
     @self.app.route('/')
     def index():
       return "Hello from FlaskWrapper!"
