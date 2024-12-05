@@ -76,10 +76,6 @@ async def a_init_lumaai():
 LUMAAI = AsyncSingleton(a_init_lumaai)
 
 async def a_init_discord():
-  """
-  Creates and initializes the Discord bot.
-  """
-  print("Initializing Discord bot.")
   intents = discord.Intents.default()
   intents.messages = True
   intents.message_content = True
@@ -87,23 +83,18 @@ async def a_init_discord():
   return bot
 
 async def a_get_discord_token() -> str:
-  """
-  Gets the Discord bot token from the environment or config.json.
-  """
   secret = os.getenv('DISCORD_SECRET')
-  if secret:
-    return secret
+  if not secret:
+    raise RuntimeError("ERROR: DISCORD_SECRET missing.")
   else:
-    config = await CONFIG.get()
-    return config["tokens"]["discord"]
+    return secret
 
 async def a_get_discord_channel() -> int:
-  channel = os.getenv('DISCORD_CHANNEL')
-  if channel:
-    return channel ## This probably needs to be converted from a string...
+  channel = int(os.getenv('DISCORD_CHANNEL'))
+  if not channel:
+    raise RuntimeError("ERROR: DISCORD_CHANNEL missing.")
   else:
-    config = await CONFIG.get()
-    return config["apps"]["imagen"]
+    return channel
 
 DISCORD = AsyncSingleton(a_init_discord)
 DISCORD_TOKEN = AsyncSingleton(a_get_discord_token)
