@@ -101,16 +101,18 @@ async def lifespan(app: FastAPI):
   async def hello(ctx):
     await ctx.send("Hello from Discord Bot!")
 
-  # Startup logic: Start the Discord bot
-  loop = asyncio.get_event_loop()
-  bot_task = loop.create_task(bot.start(token))
-  print("Discord bot started")
+    # Startup: Run the bot
+    loop = asyncio.get_event_loop()
+    bot_task = loop.create_task(bot.start(token))
+    print("Discord bot started")
 
-  yield  # This suspends the context until the app shuts down
-
-  # Shutdown logic: Stop the Discord bot
-  await bot.close()
-  print("Discord bot stopped")
+    try:
+      yield  # Suspend context until FastAPI shuts down
+    finally:
+      # Shutdown: Stop the bot
+      await bot.close()
+      bot_task.cancel()
+      print("Discord bot stopped")
 
 # Create the FastAPI app with lifespan
 app = FastAPI(lifespan=lifespan)
