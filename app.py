@@ -71,48 +71,47 @@
 
 #app = FlaskWrapper()
 
-import os
-import asyncio
-import discord
-from discord.ext import commands
+#import os
+#import asyncio
+#import discord
+#from discord.ext import commands
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
 # Discord bot setup
-async def _setup_discord():
-  intents = discord.Intents.default()
-  intents.messages = True
-  intents.message_content = True
+# async def _setup_discord():
+#   intents = discord.Intents.default()
+#   intents.messages = True
+#   intents.message_content = True
 
-  token = os.getenv('DISCORD_SECRET')
+#   token = os.getenv('DISCORD_SECRET')
 
-  return commands.Bot(command_prefix="!", intents=intents), token
+#   return commands.Bot(command_prefix="!", intents=intents), token
 
 # Async context manager for FastAPI lifespan
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-  bot, token = await _setup_discord()
-
-  @bot.event
-  async def on_ready():
-    print(f"Bot logged in as {bot.user}")
-
-  @bot.command()
-  async def hello(ctx):
-    await ctx.send("Hello from Discord Bot!")
-
-  # Startup: Run the bot
-  loop = asyncio.get_event_loop()
-  bot_task = loop.create_task(bot.start(token))
-  print("Discord bot started")
-
-  try:
-    yield  # Suspend context until FastAPI shuts down
-  finally:
-    # Shutdown: Stop the bot
-    await bot.close()
-    bot_task.cancel()
-    print("Discord bot stopped")
+  # bot, token = await _setup_discord()
+  # @bot.event
+  # async def on_ready():
+  #   print(f"Bot logged in as {bot.user}")
+  # @bot.command()
+  # async def hello(ctx):
+  #   await ctx.send("Hello from Discord Bot!")
+  # # Startup: Run the bot
+  # loop = asyncio.get_event_loop()
+  # bot_task = loop.create_task(bot.start(token))
+  # print("Discord bot started")
+  # try:
+  #   yield  # Suspend context until FastAPI shuts down
+  # finally:
+  #   # Shutdown: Stop the bot
+  #   await bot.close()
+  #   bot_task.cancel()
+  #   print("Discord bot stopped")
+  print("Starting up")
+  yield
+  print("Shutting down")
 
 # Create the FastAPI app with lifespan
 app = FastAPI(lifespan=lifespan)
