@@ -2,3 +2,5 @@ fastapi
 gunicorn
 uvicorn
 discord.py
+openai
+lumaai
