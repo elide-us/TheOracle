@@ -1,2 +1,4 @@
 fastapi
 discord.py
+gunicorn
+uvicorn
