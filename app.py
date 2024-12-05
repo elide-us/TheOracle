@@ -1,14 +1,40 @@
+import os
 import asyncio
-from imagen_base import DISCORD, DISCORD_CHANNEL, DISCORD_TOKEN
+import discord
+from discord.ext import commands
+# from openai import AsyncOpenAI
+# from lumaai import LumaAI
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+
+async def a_init_discord():
+  intents = discord.Intents.default()
+  intents.messages = True
+  intents.message_content = True
+  bot = commands.Bot(command_prefix='!', intents=intents)
+  return bot
+
+async def a_get_discord_token() -> str:
+  secret = os.getenv('DISCORD_SECRET')
+  if not secret:
+    raise RuntimeError("ERROR: DISCORD_SECRET missing.")
+  else:
+    return secret
+
+async def a_get_discord_channel() -> int:
+  channel = int(os.getenv('DISCORD_CHANNEL'))
+  if not channel:
+    raise RuntimeError("ERROR: DISCORD_CHANNEL missing.")
+  else:
+    return channel
 
 # Async context manager for FastAPI lifespan
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-  bot = await DISCORD.get()
-  bot_token = await DISCORD_TOKEN.get()
-  bot_channel = await DISCORD_CHANNEL.get()
+  bot = await a_init_discord()
+  bot_token = await a_get_discord_token()
+  bot_channel = await a_get_discord_channel()
 
   @bot.command(name="hello")
   async def hello(ctx):
@@ -48,4 +74,3 @@ app = FastAPI(lifespan=lifespan)
 @app.get("/")
 async def read_root():
     return {"message": "FastAPI is running with a Discord bot!"}
-
