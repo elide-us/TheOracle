@@ -48,24 +48,30 @@ async def a_init_lumaai():
   token = await a_get_lumaai_token()
   return LumaAI(auth_token=token)
 
-async def a_generate_text(prompt: str, client) -> str:
-  print("Sending text prompt to OpenAI.")
+async def send_to_discord(channel, text: str, max_message_size: int = 250, delay: float = 3.0):
+  chunks = [text[i:i + max_message_size] for i in range(0, len(text), max_message_size)]
+  for chunk in chunks:
+    await channel.send(chunk)
+    await asyncio.sleep(delay)
+
+async def a_generate_text(prompt: str, client, channel) -> None:
+  await channel.send("Sending text prompt to OpenAI.")
   completion = await client.chat.completions.create(
     model="chatgpt-4o-latest",
-    max_completion_tokens=50,
+    max_completion_tokens=1000,
     messages=[
-      {"role":"system","content":"You are a helpful assistant."},
-      {"role":"user","content":prompt}
+      {"role": "system", "content": "You are a helpful assistant."},
+      {"role": "user", "content": prompt}
     ]
   )
-  return completion.choices[0].message.content
+  response_text = completion.choices[0].message.content
+  await send_to_discord(channel, response_text)
 
 async def a_handle_text_generate(args: str, channel: str, client):
   if len(args) < 1:
     await channel.send("Text generate requires a prompt.")
   prompt = " ".join(args)
-  await channel.send("Starting text generation...")
-  return await a_generate_text(prompt, client)
+  return await a_generate_text(prompt, client, channel)
 
 async def a_get_dispatcher():
   return {
@@ -129,7 +135,6 @@ async def lifespan(app: FastAPI):
     command_str = " ".join(args)
     try:
       channel = ctx.channel
-      await channel.send("Try: a_parse_and_dispatch()")
       response = await a_parse_and_dispatch(command_str, channel, bot_dispatcher, openai_client)
       if response:
         await ctx.send(response)
