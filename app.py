@@ -62,9 +62,9 @@ async def a_generate_text(prompt: str, client) -> str:
 
 async def a_handle_text_generate(args: str, channel: str, client):
   if len(args) < 1:
-    channel.send("Text generate requires a prompt.")
+    await channel.send("Text generate requires a prompt.")
   prompt = " ".join(args)
-  channel.send("Starting text generation...")
+  await channel.send("Starting text generation...")
   return await a_generate_text(prompt, client)
 
 async def a_get_dispatcher():
@@ -94,11 +94,11 @@ async def a_get_dispatcher():
 async def a_parse_and_dispatch(command: str, channel: str, dispatcher, openai_client):
   words = command.split()
   if len(words) < 2: # Basic input validation
-    channel.send("Invalid command format. Must include <result> <action>.")
+    await channel.send("Invalid command format. Must include <result> <action>.")
   result, action = words[0], words[1]
   args = words[2:]
   if result not in dispatcher or action not in dispatcher[result]: # Dispatch map validation
-    channel.send(f"Unknown command: {result} {action}")
+    await channel.send(f"Unknown command: {result} {action}")
   response = await dispatcher[result][action](args, channel, openai_client)
   return response
 
@@ -129,7 +129,7 @@ async def lifespan(app: FastAPI):
     command_str = " ".join(args)
     try:
       channel = ctx.channel
-      channel.send("Try: a_parse_and_dispatch()")
+      await channel.send("Try: a_parse_and_dispatch()")
       response = await a_parse_and_dispatch(command_str, channel, bot_dispatcher, openai_client)
       if response:
         await ctx.send(response)
@@ -144,6 +144,9 @@ async def lifespan(app: FastAPI):
   try:
     yield  # Suspend context until FastAPI shuts down
   finally:
+    channel = bot.get_channe(bot_channel)
+    if channel:
+      await channel.send("TheOracleGPT Shutting down.")
     await bot.close()
     bot_task.cancel()
 
