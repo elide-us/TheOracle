@@ -1,1 +1,1 @@
-# TheOracleGPT
+# ImagenGPT

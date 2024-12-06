@@ -1,6 +1,4 @@
 # Local environment specific
-config.json
-imagen_base.py
 .azure/
 .vscode/
 
