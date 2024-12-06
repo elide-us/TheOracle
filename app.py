@@ -49,10 +49,23 @@ async def a_init_lumaai():
   return LumaAI(auth_token=token)
 
 async def send_to_discord(channel, text: str, max_message_size: int = 250, delay: float = 3.0):
-  chunks = [text[i:i + max_message_size] for i in range(0, len(text), max_message_size)]
-  for chunk in chunks:
-    await channel.send(chunk)
-    await asyncio.sleep(delay)
+  start = 0
+  while start < len(text):
+    # Find the end of the chunk
+    end = min(start + max_message_size, len(text))
+    # Check for a newline character within the chunk
+    if '\n' in text[start:end]:
+      end = text.rfind('\n', start, end) + 1  # Include the newline character
+    else:
+      # If no newline, just break at the max size
+      end = min(start + max_message_size, len(text))
+    # Extract the chunk and send it
+    chunk = text[start:end].strip()
+    if chunk:  # Only send non-empty chunks
+      await channel.send(chunk)
+      await asyncio.sleep(delay)
+    # Move to the next chunk
+    start = end
 
 async def a_generate_text(prompt: str, client, channel) -> None:
   await channel.send("Sending text prompt to OpenAI.")
