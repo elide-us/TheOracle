@@ -4,3 +4,4 @@ uvicorn
 discord.py
 openai
 lumaai
+aiofiles
