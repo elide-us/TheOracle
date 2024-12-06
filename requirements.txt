@@ -3,6 +3,3 @@ gunicorn
 uvicorn
 discord.py
 openai
-lumaai
-aiofiles
-aiohttp
