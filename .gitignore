@@ -1,9 +1,4 @@
 # Local environment specific
-config.json
-imagen_base.py
-imagen_lumaai.py
-imagen_openai.py
-
 .azure/
 .vscode/
 
