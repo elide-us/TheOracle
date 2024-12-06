@@ -105,9 +105,9 @@ async def lifespan(app: FastAPI):
   bot_dispatcher  = await a_get_dispatcher()
   openai_client = await a_init_openai()
 
-  @bot.command(name="help")
-  async def help(ctx):
-    await ctx.send("I would love to help you... another time.")
+  @bot.command(name="hello")
+  async def hello(ctx):
+    await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
 
   @bot.event
   async def on_ready():
