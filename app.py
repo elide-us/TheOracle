@@ -41,9 +41,8 @@ async def a_init_openai():
 
 OPENAI = AsyncSingleton(a_init_openai)
 
-async def a_generate_text(prompt: str) -> str:
+async def a_generate_text(prompt: str, client) -> str:
   print("Sending text prompt to OpenAI.")
-  client = await OPENAI.get()
   completion = await client.chat.completions.create(
     model="chatgpt-4o-latest",
     max_completion_tokens=50,
@@ -54,18 +53,18 @@ async def a_generate_text(prompt: str) -> str:
   )
   return completion.choices[0].message.content
 
-async def a_handle_text_generate(args: str, channel: str):
+async def a_handle_text_generate(args: str, channel: str, client):
   if len(args) < 1:
     channel.send("Text generate requires a prompt.")
   prompt = " ".join(args)
   channel.send("Starting text generation...")
-  return await a_generate_text(prompt)
+  return await a_generate_text(prompt, client)
 
 
 async def a_get_dispatcher():
   return {
     "text": {
-      "generate": lambda args, channel: a_handle_text_generate(args, channel)
+      "generate": lambda args, channel, client: a_handle_text_generate(args, channel, client)
     },
     "image": {
       # "generate": lambda args, channel: a_handle_image_generate(args, channel)
@@ -86,7 +85,7 @@ async def a_get_dispatcher():
     }
   }
 
-async def a_parse_and_dispatch(command: str, channel: str, dispatcher):
+async def a_parse_and_dispatch(command: str, channel: str, dispatcher, openai_client):
   words = command.split()
   if len(words) < 2: # Basic input validation
     channel.send("Invalid command format. Must include <result> <action>.")
@@ -94,7 +93,7 @@ async def a_parse_and_dispatch(command: str, channel: str, dispatcher):
   args = words[2:]
   if result not in dispatcher or action not in dispatcher[result]: # Dispatch map validation
     channel.send(f"Unknown command: {result} {action}")
-  response = await dispatcher[result][action](args, channel)
+  response = await dispatcher[result][action](args, channel, openai_client)
   return response
 
 # Async context manager for FastAPI lifespan
@@ -106,7 +105,7 @@ async def lifespan(app: FastAPI):
 
   bot_dispatcher  = await a_get_dispatcher()
 
-  # OPENAI = AsyncSingleton(a_init_openai)
+  openai_client = await a_init_openai()
 
   @bot.command(name="help")
   async def help(ctx):
@@ -124,7 +123,7 @@ async def lifespan(app: FastAPI):
     try:
       channel = ctx.channel
       channel.send("Try: a_parse_and_dispatch()")
-      response = await a_parse_and_dispatch(command_str, channel, bot_dispatcher)
+      response = await a_parse_and_dispatch(command_str, channel, bot_dispatcher, openai_client)
       if response:
         await ctx.send(response)
     except ValueError as e:
