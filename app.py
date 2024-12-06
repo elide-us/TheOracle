@@ -1,15 +1,8 @@
-import os, sys
-import asyncio, aiofiles, aiohttp
-
-import discord
+import os, asyncio, discord
 from discord.ext import commands
 from openai import AsyncOpenAI
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-
-#from lumaai import LumaAI
-#from AsyncSingleton import AsyncSingleton
-#from imagen_openai import a_generate_text
 
 async def a_init_discord():
   intents = discord.Intents.default()
@@ -17,12 +10,14 @@ async def a_init_discord():
   intents.message_content = True
   bot = commands.Bot(command_prefix='!', intents=intents)
   return bot
+
 async def a_get_discord_token() -> str:
   secret = os.getenv('DISCORD_SECRET')
   if not secret:
     raise RuntimeError("ERROR: DISCORD_SECRET missing.")
   else:
     return secret
+
 async def a_get_discord_channel() -> int:
   channel = int(os.getenv('DISCORD_CHANNEL'))
   if not channel:
@@ -36,6 +31,7 @@ async def a_get_openai_token() -> str:
     raise RuntimeError("ERROR: OPENAI_SECRET missing.")
   else:
     return secret
+
 async def a_init_openai():
   token = await a_get_openai_token()
   return AsyncOpenAI(api_key=token)
