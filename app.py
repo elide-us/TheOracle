@@ -1,13 +1,14 @@
-import os
-import asyncio
+import os, sys
+import asyncio, aiofiles, aiohttp
+
 import discord
 from discord.ext import commands
 from openai import AsyncOpenAI
-# from lumaai import LumaAI
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
-from AsyncSingleton import AsyncSingleton
+#from lumaai import LumaAI
+#from AsyncSingleton import AsyncSingleton
 #from imagen_openai import a_generate_text
 
 async def a_init_discord():
@@ -39,8 +40,6 @@ async def a_init_openai():
   token = await a_get_openai_token()
   return AsyncOpenAI(api_key=token)
 
-OPENAI = AsyncSingleton(a_init_openai)
-
 async def a_generate_text(prompt: str, client) -> str:
   print("Sending text prompt to OpenAI.")
   completion = await client.chat.completions.create(
@@ -59,7 +58,6 @@ async def a_handle_text_generate(args: str, channel: str, client):
   prompt = " ".join(args)
   channel.send("Starting text generation...")
   return await a_generate_text(prompt, client)
-
 
 async def a_get_dispatcher():
   return {
@@ -96,15 +94,15 @@ async def a_parse_and_dispatch(command: str, channel: str, dispatcher, openai_cl
   response = await dispatcher[result][action](args, channel, openai_client)
   return response
 
+# Think we'll probably make a class that does all the below stuff and provides accessors to get to the objects...
+
 # Async context manager for FastAPI lifespan
 @asynccontextmanager
 async def lifespan(app: FastAPI):
   bot = await a_init_discord()
   bot_token = await a_get_discord_token()
   bot_channel = await a_get_discord_channel()
-
   bot_dispatcher  = await a_get_dispatcher()
-
   openai_client = await a_init_openai()
 
   @bot.command(name="help")
