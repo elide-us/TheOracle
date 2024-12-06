@@ -1,8 +1,9 @@
 import os, asyncio, discord
 from discord.ext import commands
+from openai import AsyncOpenAI
+from lumaai import LumaAI
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from openai import AsyncOpenAI
 
 async def a_init_discord():
   intents = discord.Intents.default()
@@ -36,13 +37,82 @@ async def a_init_openai():
   token = await a_get_openai_token()
   return AsyncOpenAI(api_key=token)
 
+async def a_get_lumaai_token() -> str:
+  secret = os.getenv('LUMAAI_SECRET')
+  if not secret:
+    raise RuntimeError("ERROR: LUMAAI_SECRET missing.")
+  else:
+    return secret
+
+async def a_init_lumaai():
+  token = await a_get_lumaai_token()
+  return LumaAI(auth_token=token)
+
+async def a_generate_text(prompt: str, client) -> str:
+  print("Sending text prompt to OpenAI.")
+  completion = await client.chat.completions.create(
+    model="chatgpt-4o-latest",
+    max_completion_tokens=50,
+    messages=[
+      {"role":"system","content":"You are a helpful assistant."},
+      {"role":"user","content":prompt}
+    ]
+  )
+  return completion.choices[0].message.content
+
+async def a_handle_text_generate(args: str, channel: str, client):
+  if len(args) < 1:
+    channel.send("Text generate requires a prompt.")
+  prompt = " ".join(args)
+  channel.send("Starting text generation...")
+  return await a_generate_text(prompt, client)
+
+async def a_get_dispatcher():
+  return {
+    "text": {
+      "generate": lambda args, channel, client: a_handle_text_generate(args, channel, client)
+    },
+    "image": {
+      # "generate": lambda args, channel: a_handle_image_generate(args, channel)
+      # ,"list": lambda args: handle_image_list(args)
+      # ,"delete": lambda args: handle_image_delete(args)
+    },
+    "audio": {
+      # "generate": lambda args, channel: a_handle_audio_generate(args, channel)
+      # ,"list": lambda args: handle_audio_list(args)
+      # ,"delete": lambda args: handle_audio_delete(args)
+
+    }
+    ,"video": {
+      # "generate": lambda args, channel: a_handle_video_generate(args, channel)
+      # ,"append": lambda args: handle_video_append(args)
+      # ,"list": lambda args: handle_video_list(args)
+      # ,"delete": lambda args: handle_video_delete(args)
+    }
+  }
+
+async def a_parse_and_dispatch(command: str, channel: str, dispatcher, openai_client):
+  words = command.split()
+  if len(words) < 2: # Basic input validation
+    channel.send("Invalid command format. Must include <result> <action>.")
+  result, action = words[0], words[1]
+  args = words[2:]
+  if result not in dispatcher or action not in dispatcher[result]: # Dispatch map validation
+    channel.send(f"Unknown command: {result} {action}")
+  response = await dispatcher[result][action](args, channel, openai_client)
+  return response
+
+# Think we'll probably make a class that does all the below stuff and provides accessors to get to the objects...
+
 # Async context manager for FastAPI lifespan
 @asynccontextmanager
 async def lifespan(app: FastAPI):
   bot = await a_init_discord()
   bot_token = await a_get_discord_token()
   bot_channel = await a_get_discord_channel()
-  # openai_client = await a_init_openai()
+  bot_dispatcher  = await a_get_dispatcher()
+  openai_client = await a_init_openai()
+  # lumaai_client = await a_init_lumaai()
 
   @bot.command(name="hello")
   async def hello(ctx):
@@ -54,7 +124,19 @@ async def lifespan(app: FastAPI):
     if channel:
       await channel.send("TheOracleGPT Online.")
 
-  # Do stuff with OpenAI client here...
+  @bot.command(name="imagen")
+  async def imagen(ctx, *args):
+    command_str = " ".join(args)
+    try:
+      channel = ctx.channel
+      channel.send("Try: a_parse_and_dispatch()")
+      response = await a_parse_and_dispatch(command_str, channel, bot_dispatcher, openai_client)
+      if response:
+        await ctx.send(response)
+    except ValueError as e:
+      await ctx.send(f"Error: {str(e)}")
+    except Exception as e:
+      await ctx.send(f"An unexpected error occurred: {str(e)}")
 
   loop = asyncio.get_event_loop()
   bot_task = loop.create_task(bot.start(bot_token))
@@ -65,6 +147,7 @@ async def lifespan(app: FastAPI):
     await bot.close()
     bot_task.cancel()
 
+# Create the FastAPI app with lifespan
 app = FastAPI(lifespan=lifespan)
 
 @app.get("/")
