@@ -1,6 +1,7 @@
 import os, asyncio, discord
 from discord.ext import commands
 from openai import AsyncOpenAI
+from lumaai import LumaAI
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 
@@ -35,6 +36,17 @@ async def a_get_openai_token() -> str:
 async def a_init_openai():
   token = await a_get_openai_token()
   return AsyncOpenAI(api_key=token)
+
+async def a_get_lumaai_token() -> str:
+  secret = os.getenv('LUMAAI_SECRET')
+  if not secret:
+    raise RuntimeError("ERROR: LUMAAI_SECRET missing.")
+  else:
+    return secret
+
+async def a_init_lumaai():
+  token = await a_get_lumaai_token()
+  return LumaAI(auth_token=token)
 
 async def a_generate_text(prompt: str, client) -> str:
   print("Sending text prompt to OpenAI.")
@@ -100,6 +112,7 @@ async def lifespan(app: FastAPI):
   bot_channel = await a_get_discord_channel()
   bot_dispatcher  = await a_get_dispatcher()
   openai_client = await a_init_openai()
+  # lumaai_client = await a_init_lumaai()
 
   @bot.command(name="hello")
   async def hello(ctx):
