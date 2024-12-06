@@ -2,7 +2,7 @@
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 # More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
 
-name: Build and deploy Python app to Azure Web App - imagengpt
+name: Build and deploy Python app to Azure Web App - theoraclegpt
 
 on:
   push:
@@ -65,14 +65,14 @@ jobs:
       - name: Login to Azure
         uses: azure/login@v2
         with:
-          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_5B702400961A48658B649414A35E7088 }}
-          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_11507C21950E435598C8D8ECA4E64341 }}
-          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_C7A66B25417C4FCFAA08BC7CF204A793 }}
+          client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_19A5CD2BF942480A969049E5E896F3CB }}
+          tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1789AE929E07449B91C5950F2AB64C55 }}
+          subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CB3B6EBD7831431C8DB5449FA89F8F55 }}
 
       - name: 'Deploy to Azure Web App'
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
-          app-name: 'imagengpt'
+          app-name: 'theoraclegpt'
           slot-name: 'Production'
           
