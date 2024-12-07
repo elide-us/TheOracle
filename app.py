@@ -162,7 +162,7 @@ async def lifespan(app: FastAPI):
   try:
     yield  # Suspend context until FastAPI shuts down
   finally:
-    channel = bot.get_channe(bot_channel)
+    channel = bot.get_channel(bot_channel)
     if channel:
       await channel.send("TheOracleGPT Shutting down.")
     await bot.close()
