@@ -11,5 +11,6 @@
   - Set Always On
   - Set Startup Command
   - Configure CI/CD
+  - Set Environment Variables (API tokens)
 - FastAPI async Framework
 - OpenAI, LumaAI, Discord, more!
