@@ -14,3 +14,8 @@
   - Set Environment Variables (API tokens)
 - FastAPI async Framework
 - OpenAI, LumaAI, Discord, more!
+
+**Costs**:
+- B1 Azure App Service Plan (1 CPU, Always On), < $15/mo
+- OpenAI API: Cost per call varies
+- LumaAI APi: ~$0.30 per 5 seconds of video generation
