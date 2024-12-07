@@ -1,5 +1,7 @@
 # TheOracleGPT
 
+  An AI-powered Discord Gateway API Bot. Simple, straight-forward configuration. Accessible code-base, industry standard best-practice implementation. Robust async architecture.
+
 **Configuration**:
 
 - Azure Web App (Python/Linux) B1+
