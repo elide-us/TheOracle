@@ -22,6 +22,14 @@ jobs:
         with:
           python-version: '3.12'
 
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm ci
+          npm run build
+
+      - name: Copy Frontend Build
+        run: cp -r frontend/build/* backend/static/
 
       - name: Navigate to backend and create virtual environment
         run: |
