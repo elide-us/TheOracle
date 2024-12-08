@@ -176,8 +176,8 @@ async def lifespan(app: FastAPI):
   loop = asyncio.get_event_loop()
   bot_task = loop.create_task(bot.start(bot_token))
 
-  connstr = await a_get_blob_connstr
-  container = await a_get_blob_container
+  connstr = await a_get_blob_connstr()
+  container = await a_get_blob_container()
 
   blob_service_client = BlobServiceClient.from_connection_string(connstr)
   container_client = blob_service_client.get_container_client(container)
