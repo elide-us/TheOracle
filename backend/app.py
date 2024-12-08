@@ -11,14 +11,14 @@ from azure.storage.blob import BlobServiceClient
 async def a_get_blob_connstr():
   connstr = os.getenv("AZURE_BLOB_CONNECTION_STRING")
   if not connstr:
-    raise RuntimeError("error")
+    raise RuntimeError("ERROR: AZURE_BLOB_CONNECTION_STRING missing.")
   else:
     return connstr
 
 async def a_get_blob_container():
   container = os.getenv("AZURE_BLOB_CONTAINER_NAME")
   if not container:
-    raise RuntimeError("error")
+    raise RuntimeError("ERROR: AZURE_BLOB_CONTAINER_NAME missing.")
   else:
     return container
 
@@ -138,6 +138,17 @@ async def a_parse_and_dispatch(command: str, channel: str, dispatcher, openai_cl
   response = await dispatcher[result][action](args, channel, openai_client)
   return response
 
+async def a_get_blob_client():
+  connstr = await a_get_blob_connstr()
+  client = BlobServiceClient.from_connection_string(connstr)
+  return client
+
+async def a_get_container_client():
+  blob_client = await a_get_blob_client()
+  cont = await a_get_blob_container()
+  client = blob_client.get_container_client(cont)
+  return client
+
 # Think we'll probably make a class that does all the below stuff and provides accessors to get to the objects...
 
 # Async context manager for FastAPI lifespan
@@ -148,7 +159,11 @@ async def lifespan(app: FastAPI):
   bot_channel = await a_get_discord_channel()
   bot_dispatcher  = await a_get_dispatcher()
   openai_client = await a_init_openai()
+  container_client = await a_get_container_client()
   # lumaai_client = await a_init_lumaai()
+  
+  app.state.container_client = container_client
+  app.mount("/static", StaticFiles(directory="static"), name="static")
 
   @bot.command(name="hello")
   async def hello(ctx):
@@ -176,14 +191,6 @@ async def lifespan(app: FastAPI):
   loop = asyncio.get_event_loop()
   bot_task = loop.create_task(bot.start(bot_token))
 
-  connstr = await a_get_blob_connstr()
-  container = await a_get_blob_container()
-
-  blob_service_client = BlobServiceClient.from_connection_string(connstr)
-  container_client = blob_service_client.get_container_client(container)
-  
-  app.state.container_client = container_client
-
   try:
     yield  # Suspend context until FastAPI shuts down
   finally:
@@ -195,8 +202,6 @@ async def lifespan(app: FastAPI):
 
 # Create the FastAPI app with lifespan
 app = FastAPI(lifespan=lifespan)
-
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/api/files")
 async def list_Files(request: Request):
