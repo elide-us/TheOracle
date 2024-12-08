@@ -3,7 +3,20 @@ from discord.ext import commands
 from openai import AsyncOpenAI
 from lumaai import LumaAI
 from contextlib import asynccontextmanager
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
+from fastapi.staticfiles import StaticFiles
+from fastapi.responses import FileResponse
+from azure.storage.blob import BlobServiceClient
+
+
+
+
+
+
+
+
+AZURE_BLOB_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")
+AZURE_BLOB_CONTAINER_NAME = os.getenv("AZURE_BLOB_CONTAINER_NAME")
 
 async def a_init_discord():
   intents = discord.Intents.default()
@@ -159,6 +172,11 @@ async def lifespan(app: FastAPI):
   loop = asyncio.get_event_loop()
   bot_task = loop.create_task(bot.start(bot_token))
 
+
+  blob_service_client = BlobServiceClient.from_connection_string(AZURE_BLOB_CONNECTION_STRING)
+  container_client = blob_service_client.get_container_client(AZURE_BLOB_CONTAINER_NAME)
+  app.state.container_client = container_client
+
   try:
     yield  # Suspend context until FastAPI shuts down
   finally:
@@ -170,7 +188,27 @@ async def lifespan(app: FastAPI):
 
 # Create the FastAPI app with lifespan
 app = FastAPI(lifespan=lifespan)
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/")
 async def read_root():
     return {"message": "FastAPI is running with a Discord bot!"}
+
+@app.get("/api/files")
+async def list_Files(request: Request):
+  container_client = request.app.state.container_client
+  blobs = []
+  async for blob in container_client.list_blobs():
+    blobs.append(blob.name)
+  return {"files": blobs}
+
+@app.delete("/api/files/{filename}")
+async def delete_file(filename: str, request: Request):
+    container_client = request.app.state.container_client
+    await container_client.delete_blob(filename)
+    return {"status": "deleted", "file": filename}
+
+@app.get("/{full_path:path}")
+async def serve_react_app(full_path: str):
+    # Always return index.html to support SPA routing
+    return FileResponse("static/index.html")
