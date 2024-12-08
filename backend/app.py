@@ -8,15 +8,19 @@ from fastapi.staticfiles import StaticFiles
 from fastapi.responses import FileResponse
 from azure.storage.blob import BlobServiceClient
 
+async def a_get_blob_connstr():
+  connstr = os.getenv("AZURE_BLOB_CONNECTION_STRING")
+  if not connstr:
+    raise RuntimeError("error")
+  else:
+    return connstr
 
-
-
-
-
-
-
-AZURE_BLOB_CONNECTION_STRING = os.getenv("AZURE_BLOB_CONNECTION_STRING")
-AZURE_BLOB_CONTAINER_NAME = os.getenv("AZURE_BLOB_CONTAINER_NAME")
+async def a_get_blob_container():
+  container = os.getenv("AZURE_BLOB_CONTAINER_NAME")
+  if not container:
+    raise RuntimeError("error")
+  else:
+    return container
 
 async def a_init_discord():
   intents = discord.Intents.default()
@@ -172,9 +176,12 @@ async def lifespan(app: FastAPI):
   loop = asyncio.get_event_loop()
   bot_task = loop.create_task(bot.start(bot_token))
 
+  connstr = await a_get_blob_connstr
+  container = await a_get_blob_container
 
-  blob_service_client = BlobServiceClient.from_connection_string(AZURE_BLOB_CONNECTION_STRING)
-  container_client = blob_service_client.get_container_client(AZURE_BLOB_CONTAINER_NAME)
+  blob_service_client = BlobServiceClient.from_connection_string(connstr)
+  container_client = blob_service_client.get_container_client(container)
+  
   app.state.container_client = container_client
 
   try:
@@ -188,11 +195,8 @@ async def lifespan(app: FastAPI):
 
 # Create the FastAPI app with lifespan
 app = FastAPI(lifespan=lifespan)
-app.mount("/static", StaticFiles(directory="static"), name="static")
 
-@app.get("/")
-async def read_root():
-    return {"message": "FastAPI is running with a Discord bot!"}
+app.mount("/static", StaticFiles(directory="static"), name="static")
 
 @app.get("/api/files")
 async def list_Files(request: Request):
