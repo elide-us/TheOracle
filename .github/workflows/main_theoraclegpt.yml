@@ -31,7 +31,7 @@ jobs:
       - name: Copy Frontend Build
         run: |
           mkdir -p backend/static/
-          [ -d frontend/dist ] && cp -r frontend/dist/* backend/static/
+          [ -d frontend/build ] && cp -r frontend/build/* backend/static/
 
       - name: Setup and Install Backend
         run: |
