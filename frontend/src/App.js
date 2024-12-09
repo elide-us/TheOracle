@@ -14,7 +14,7 @@ function App() {
       backgroundColor: '#000',
       color: '#fff'      
     }}>
-      <img src={logo} alt="Elideus Group" classname="logo"/>
+      <img src={logo} alt="Elideus Group" classname="logo" style={{ width: '60%' }}/>
       <h1>The Elideus Group</h1>
       <p>AI Engineering and Consulting Services</p>
       <div style={{ marginTop: '20px', width: '300px', textAlign: 'center' }}>
