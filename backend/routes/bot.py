@@ -1,7 +1,7 @@
 # from commands.dispatcher import get_dispatcher, parse_and_dispatch
 from commands.text_commands import handle_chat
 
-def setup_bot_commands(bot):
+def setup_bot_routes(bot):
   @bot.command(name="hello")
   async def hello(ctx):
     await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
@@ -24,6 +24,7 @@ def setup_bot_commands(bot):
 
   @bot.command(name="chat")
   async def chat(ctx, *args):
+    ctx.send("Chat command received.")
     command_str = " ".join(args)
     response = await handle_chat(ctx, command_str)
     if response:
