@@ -41,8 +41,10 @@ function App() {
           </a>
         ))}
       </div>
+      <p style={{ marginTop: '20px' }}>Contact us at: <a href="mailto:contact@elideusgroup.com" style={{ color: '#fff' }}>contact@elideusgroup.com</a></p>
     </div>
   );
 }
 
 export default App;
+
