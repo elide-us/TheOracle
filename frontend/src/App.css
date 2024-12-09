@@ -1,6 +1,6 @@
 /* Base styles for the logo */
 .logo {
-  width: 640px;
+  max-width: 640px;
   margin-bottom: 50px;
 }
 
@@ -18,4 +18,8 @@
     width: 300px;
     margin-bottom: 30px;
   }
+}
+
+.App {
+  text-align: center;
 }
