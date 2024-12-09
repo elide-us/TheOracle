@@ -13,7 +13,7 @@ function App() {
       backgroundColor: '#000',
       color: '#fff'      
     }}>
-      <img src={logo} alt="Elideus Group" style={{ width: '200px', marginBottom: '50px' }} />
+      <img src={logo} alt="Elideus Group" style={{ width: '640px', marginBottom: '50px' }} />
       <h1>The Elideus Group</h1>
       <p>AI Engineering and Consulting Services</p>
       <div style={{ marginTop: '20px', width: '300px', textAlign: 'center' }}>
