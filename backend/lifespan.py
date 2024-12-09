@@ -6,25 +6,29 @@ from services.discord_bot import init_discord_bot, start_discord_bot, get_discor
 from services.openai_client import init_openai_client
 #from services.lumaai_client import init_lumaai_client
 from services.blob_storage import get_container_client
-from routes.bot import setup_bot_commands
+from routes.bot import setup_bot_routes
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
   bot = await init_discord_bot()
   bot.sys_channel = await get_discord_channel_id()
+  #bot.sys_channel = await get_discord_channel_id("sys_channel")
+  #bot.out_channel = await get_discord_channel_id("out_channel")
+  #bot.cmd_channel = await get_discord_channel_id("cmd_channel")
+  
   bot.app = app
-
   app.state.discord_bot = bot
 
   openai = await init_openai_client()
   app.state.openai_client = openai
 
   #lumaai = await init_lumaai_client()
+  #app.state.lumaai_client = lumaai
 
   container = await get_container_client()
   app.state.container_client = container
 
-  setup_bot_commands(bot)
+  setup_bot_routes(bot)
 
   loop = asyncio.get_event_loop()
   bot_task = loop.create_task(start_discord_bot(bot))
