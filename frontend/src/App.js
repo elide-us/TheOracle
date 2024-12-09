@@ -1,4 +1,5 @@
 import React from 'react';
+import './App.css';
 import logo from './assets/elideus_group_green.png';
 import links from './links';
 
