@@ -20,7 +20,7 @@ class DiscordBot:
     self.app = app
     self.bot = bot
   
-  def get_discord_channel_id(self):
+  async def get_discord_channel_id(self):
     return get_discord_channel()
 
   def setup_routes(self):
@@ -33,7 +33,7 @@ class DiscordBot:
     intents.messages = True
     intents.message_content = True
     bot = commands.Bot(command_prefix='!', intents=intents)
-    
+
     app.state.discord_bot = bot
     bot.app = app
 
@@ -47,9 +47,6 @@ class DiscordBot:
 
     return instance
   
-  async def start_bot(self):
+async def start_bot(self):
     token = get_discord_token()
     await self.bot.start(token)
-
-  
-
