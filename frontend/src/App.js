@@ -1,9 +1,55 @@
 import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { Drawer, List, ListItem, ListItemText, IconButton, Tooltip } from '@mui/material';
+import { Home as HomeIcon, Folder as FolderIcon, Login as LoginIcon } from '@mui/icons-material';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
+import CssBaseline from '@mui/material/CssBaseline';
 import './App.css';
 import logo from './assets/elideus_group_green.png';
 import links from './links';
+import axios from 'axios';
 
-function App() {
+const darkTheme = createTheme({
+  palette: {
+    mode: 'dark',
+    primary: { main: '#90caf9' },
+    secondary: { main: '#f48fb1' },
+  },
+});
+
+function Sidebar({ open, setOpen }) {
+  return (
+    <Drawer variant="permanent" open={open} sx={{ width: open ? 240 : 60, transition: 'width 0.3s' }}>
+      <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
+        <Tooltip title="Toggle Menu">
+          <IconButton onClick={() => setOpen(!open)}>
+            <span className="material-icons">{open ? 'menu_open' : 'menu'}</span>
+          </IconButton>
+        </Tooltip>
+      </div>
+      <List>
+        <ListItem button component={Link} to="/">
+          {open ? <HomeIcon fontSize="small" /> : <Tooltip title="Home"><HomeIcon fontSize="small" /></Tooltip>}
+          {open && <ListItemText primary="Home" />}
+        </ListItem>
+        <ListItem button component={Link} to="/file-manager">
+          {open ? <FolderIcon fontSize="small" /> : <Tooltip title="File Manager"><FolderIcon fontSize="small" /></Tooltip>}
+          {open && <ListItemText primary="File Manager" />}
+        </ListItem>
+      </List>
+      <div style={{ marginTop: 'auto', padding: '8px' }}>
+        <Tooltip title="Login with Microsoft">
+          <IconButton>
+            <LoginIcon fontSize="small" />
+          </IconButton>
+        </Tooltip>
+        {open && <ListItemText primary="Login" />}
+      </div>
+    </Drawer>
+  );
+}
+
+function Home() {
   return (
     <div style={{
       display: 'flex',
@@ -12,9 +58,9 @@ function App() {
       justifyContent: 'center',
       height: '100vh',
       backgroundColor: '#000',
-      color: '#fff'      
+      color: '#fff'
     }}>
-      <img src={logo} alt="Elideus Group" classname="logo" style={{ width: '60%' }}/>
+      <img src={logo} alt="Elideus Group" className="logo" style={{ width: '60%' }} />
       <p>AI Engineering and Consulting Services</p>
       <div style={{ marginTop: '20px', width: '300px', textAlign: 'center' }}>
         {links.map(link => (
@@ -45,5 +91,47 @@ function App() {
   );
 }
 
-export default App;
+function FileManager() {
+  const [files, setFiles] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
+  React.useEffect(() => {
+    axios.get('/api/files').then(response => {
+      setFiles(response.data);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <p>Loading files...</p>;
+
+  return (
+    <ul>
+      {files.map(file => (
+        <li key={file}>{file}</li>
+      ))}
+    </ul>
+  );
+}
+
+function App() {
+  const [open, setOpen] = React.useState(true);
+
+  return (
+    <ThemeProvider theme={darkTheme}>
+      <CssBaseline />
+      <Router>
+        <div style={{ display: 'flex' }}>
+          <Sidebar open={open} setOpen={setOpen} />
+          <div style={{ flexGrow: 1, padding: '16px' }}>
+            <Routes>
+              <Route path="/" element={<Home />} />
+              <Route path="/file-manager" element={<FileManager />} />
+            </Routes>
+          </div>
+        </div>
+      </Router>
+    </ThemeProvider>
+  );
+}
+
+export default App;
