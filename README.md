@@ -21,7 +21,8 @@
 - LumaAI APi: ~$0.30 per 5 seconds of video generation
 
 **Technical Details**:
-- WSGI entry point app:app uses FastAPI lifespan object for lifecycle management of both the FastAPI server and the Discord bot.
+- WSGI entry point main:app uses FastAPI lifespan object for lifecycle management of both the FastAPI server and the Discord bot.
 - Azure Web App needs startup command specified and the startup.sh needs to be present, this launches both the Docker container and the web app.
-  - 'gunicorn -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 app:app'
+  - 'gunicorn -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 main:app'
   - Set the -w variable to the number of CPU in your system (e.g.: Azure App Service Basic 1 = 1 CPU)
+- React frontend served from /static, packages built and deployed in CI/CD pipeline
