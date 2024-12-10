@@ -26,15 +26,19 @@ class DiscordBot:
     intents.message_content = True
     return intents  
   
+  def get_discord_channel_id(self):
+    return get_discord_channel()
+
   def setup_routes(self):
     from routes.bot import setup_bot_routes
     setup_bot_routes(self.bot)
 
   @classmethod
   async def create(cls, app):
-    intents = DiscordBot.get_intents()
-    bot = commands.Bot(command_prefix='!', intents=intents)
-    bot.sys_channel = await instance.get_discord_channel_id()
+    bot = commands.Bot(command_prefix='!', intents=DiscordBot.get_intents())
+    DiscordBot.setup_routes()
+
+    bot.sys_channel = DiscordBot.get_discord_channel_id()
     # bot.sys_channel = await instance.get_discord_channel_id("sys_channel")
     # bot.out_channel = await instance.get_discord_channel_id("out_channel")
     # bot.cmd_channel = await instance.get_discord_channel_id("cmd_channel")
@@ -42,15 +46,11 @@ class DiscordBot:
     bot.app = app
 
     instance = cls(app, bot)
-    instance.setup_routes()
-
     return instance
   
   async def start_bot(self):
     token = get_discord_token()
     await self.bot.start(token)
 
-  async def get_discord_channel_id(self):
-    return get_discord_channel()
   
 
