@@ -1,7 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import { Drawer, List, ListItem, ListItemText, IconButton, Tooltip } from '@mui/material';
-import { Home as HomeIcon, Folder as FolderIcon, Login as LoginIcon } from '@mui/icons-material';
+import { Home as HomeIcon, Folder as FolderIcon, Login as LoginIcon, Menu as MenuIcon } from '@mui/icons-material';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import './App.css';
@@ -15,37 +15,51 @@ const darkTheme = createTheme({
     primary: { main: '#90caf9' },
     secondary: { main: '#f48fb1' },
   },
+  components: {
+    MuiIconButton: {
+      styleOverrides: {
+        root: {
+          color: 'lightgrey',
+          '&:hover': {
+            color: 'white',
+          },
+        },
+      },
+    },
+  }
 });
 
 function Sidebar({ open, setOpen }) {
   return (
-    <Drawer variant="permanent" open={open} sx={{ width: open ? 240 : 60, transition: 'width 0.3s' }}>
-      <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
-        <Tooltip title="Toggle Menu">
-          <IconButton onClick={() => setOpen(!open)}>
-            <span className="material-icons">{open ? 'menu_open' : 'menu'}</span>
-          </IconButton>
-        </Tooltip>
-      </div>
-      <List>
-        <ListItem button component={Link} to="/">
-          {open ? <HomeIcon fontSize="small" /> : <Tooltip title="Home"><HomeIcon fontSize="small" /></Tooltip>}
-          {open && <ListItemText primary="Home" />}
-        </ListItem>
-        <ListItem button component={Link} to="/file-manager">
-          {open ? <FolderIcon fontSize="small" /> : <Tooltip title="File Manager"><FolderIcon fontSize="small" /></Tooltip>}
-          {open && <ListItemText primary="File Manager" />}
-        </ListItem>
-      </List>
-      <div style={{ marginTop: 'auto', padding: '8px' }}>
-        <Tooltip title="Login with Microsoft">
-          <IconButton>
-            <LoginIcon fontSize="small" />
-          </IconButton>
-        </Tooltip>
-        {open && <ListItemText primary="Login" />}
-      </div>
-    </Drawer>
+    <ThemeProvider theme={darkTheme}>
+      <Drawer variant="persistent" open={!open} sx={{ width: open ? 240 : 60, position: 'fixed', zIndex: 1300, transition: 'width 0.3s' }}>
+        <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
+          <Tooltip title="Toggle Menu">
+            <IconButton onClick={() => setOpen(!open)}>
+              <MenuIcon />
+            </IconButton>
+          </Tooltip>
+        </div>
+        <List>
+          <ListItem button component={Link} to="/">
+            {open ? <HomeIcon fontSize="small" /> : <Tooltip title="Home"><HomeIcon fontSize="small" /></Tooltip>}
+            {open && <ListItemText primary="Home" />}
+          </ListItem>
+          <ListItem button component={Link} to="/file-manager">
+            {open ? <FolderIcon fontSize="small" /> : <Tooltip title="File Manager"><FolderIcon fontSize="small" /></Tooltip>}
+            {open && <ListItemText primary="File Manager" />}
+          </ListItem>
+        </List>
+        <div style={{ marginTop: 'auto', padding: '8px' }}>
+          <Tooltip title="Login with Microsoft">
+            <IconButton>
+              <LoginIcon fontSize="small" />
+            </IconButton>
+          </Tooltip>
+          {open && <ListItemText primary="Login" />}
+        </div>
+      </Drawer>
+    </ThemeProvider>
   );
 }
 
