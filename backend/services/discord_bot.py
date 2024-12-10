@@ -29,14 +29,14 @@ class DiscordBot:
   def get_discord_channel_id(self):
     return get_discord_channel()
 
-  def setup_routes(self):
+  def setup_routes(bot):
     from routes.bot import setup_bot_routes
-    setup_bot_routes(self.bot)
+    setup_bot_routes(bot)
 
   @classmethod
   async def create(cls, app):
     bot = commands.Bot(command_prefix='!', intents=DiscordBot.get_intents())
-    DiscordBot.setup_routes()
+    DiscordBot.setup_routes(bot)
 
     bot.sys_channel = DiscordBot.get_discord_channel_id()
     # bot.sys_channel = await instance.get_discord_channel_id("sys_channel")
