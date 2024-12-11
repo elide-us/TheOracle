@@ -1,25 +1,3 @@
-/* Base styles for the logo */
-.logo {
-  max-width: 640px;
-  margin-bottom: 50px;
-}
-
-/* Medium screens (tablets, 768px and up) */
-@media (max-width: 1024px) {
-  .logo {
-    width: 480px;
-    margin-bottom: 40px;
-  }
-}
-
-/* Small screens (mobile phones, 600px and below) */
-@media (max-width: 600px) {
-  .logo {
-    width: 300px;
-    margin-bottom: 30px;
-  }
-}
-
 .App {
   text-align: center;
 }
