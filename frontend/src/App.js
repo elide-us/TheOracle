@@ -26,6 +26,34 @@ const darkTheme = createTheme({
         },
       },
     },
+    MuiListItem: {
+      styleOverrides: {
+        root: {
+          '&.MuiListItem-root': {
+            color: 'lightgrey !important',
+            textDecoration: 'none',
+            '&:hover': {
+              color: 'white !important',
+              '& .MuiSvgIcon-root': {
+                color: 'white !important',
+              },
+              '& .MuiListItemText-root': {
+                color: 'white !important',
+              },
+            },
+            '& .MuiSvgIcon-root': {
+              color: 'lightgrey !important',
+            },
+            '& .MuiListItemText-root': {
+              color: 'lightgrey !important',
+              '& .MuiTypography-root': {
+                color: 'lightgrey !important',
+              },
+            },
+          },
+        },
+      },
+    },
   }
 });
 
