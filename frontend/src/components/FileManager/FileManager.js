@@ -27,7 +27,7 @@ const FileManager = () => {
     <ul>
       {files.map(file => (
         <li key={file.name}>
-        {file.name} - <a href={file.url} target="_blank" rel="noopener noreferrer">
+        {file.name} <a href={file.url} target="_blank" rel="noopener noreferrer">
           <LinkIcon />
         </a>
       </li>
