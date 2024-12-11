@@ -32,7 +32,8 @@ const darkTheme = createTheme({
 function Sidebar({ open, setOpen }) {
   return (
     <ThemeProvider theme={darkTheme}>
-      <Drawer variant="persistent" open={open} sx={{ width: open ? 240 : 60, position: 'fixed', zIndex: 1300, transition: 'width 0.3s' }}>
+      <Drawer variant="persistent" open={open}
+        sx={{ width: open ? 240 : 60, position: 'fixed', zIndex: 1300, transition: 'width 0.3s', '&.MuiDrawer-paper': { width: open ? 240 : 60 } }}>
         <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
           <Tooltip title="Toggle Menu">
             <IconButton onClick={() => setOpen(!open)}>
