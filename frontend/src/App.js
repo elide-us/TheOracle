@@ -33,7 +33,7 @@ function Sidebar({ open, setOpen }) {
   return (
     <ThemeProvider theme={darkTheme}>
       <Drawer variant="permanent" open={open}
-        sx={{ width: open ? 240 : 60, position: 'fixed', zIndex: 1300, transition: 'width 0.3s', '&.MuiDrawer-paper': { width: open ? 240 : 60 } }}>
+        sx={{ width: open ? 240 : 48, position: 'fixed', zIndex: 1300, transition: 'width 0.3s', '&.MuiDrawer-paper': { width: open ? 240 : 48 } }}>
         <div style={{ display: 'flex', alignItems: 'center', padding: '8px' }}>
           <Tooltip title="Toggle Menu">
             <IconButton onClick={() => setOpen(!open)}>
@@ -51,13 +51,13 @@ function Sidebar({ open, setOpen }) {
             {open && <ListItemText primary="File Manager" />}
           </ListItem>
         </List>
-        <div style={{ marginTop: 'auto', padding: '8px' }}>
+        <div style={{ marginTop: 'auto', padding: '8px', display: 'flex', alignItems: 'center' }}>
           <Tooltip title="Login with Microsoft">
             <IconButton>
               <LoginIcon fontSize="small" />
             </IconButton>
           </Tooltip>
-          {open && <ListItemText primary="Login" />}
+          {open && <ListItemText primary="Login" style={{ marginLeft: '8px' }} />}
         </div>
       </Drawer>
     </ThemeProvider>
