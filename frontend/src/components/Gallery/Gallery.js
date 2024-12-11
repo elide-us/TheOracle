@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 
-const images = [
-  { filename: 'dove_key0.jpg', url: 'https://theoraclesa.blob.core.windows.net/lumaai/dove_key0.jpg' },
-  { filename: 'dove_key1.jpg', url: 'https://theoraclesa.blob.core.windows.net/lumaai/dove_key1.jpg' },
-  // Add more images as needed
-];
-
 const Gallery = () => {
+  const [images, setImages] = useState([]);
+
+  useEffect(() => {
+    fetch('/api/files')
+      .then(response => response.json())
+      .then(data => setImages(data))
+      .catch(error => console.error('Error fetching images:', error));
+  }, []);
+
   const copyToClipboard = (url) => {
     navigator.clipboard.writeText(url).then(() => {
       alert('URL copied to clipboard!');
