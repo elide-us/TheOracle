@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import LinkIcon from '@mui/icons-material/Link';
 
 const FileManager = () => {
   const [files, setFiles] = React.useState([]);
@@ -26,8 +27,10 @@ const FileManager = () => {
     <ul>
       {files.map(file => (
         <li key={file.name}>
-          {file.name} - <a href={file.url} target="_blank" rel="noopener noreferrer">{file.url}</a>
-        </li>
+        {file.name} - <a href={file.url} target="_blank" rel="noopener noreferrer">
+          <LinkIcon />
+        </a>
+      </li>
       ))}
     </ul>
   );
