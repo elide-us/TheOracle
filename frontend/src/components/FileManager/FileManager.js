@@ -7,7 +7,15 @@ const FileManager = () => {
 
   React.useEffect(() => {
     axios.get('/api/files').then(response => {
-      setFiles(response.data);
+      if (response.data && Array.isArray(response.data.files)) {
+        setFiles(response.data.files);
+      } else {
+        console.error('Expected an array but got:', response.data);
+        setFiles([]);
+      }
+      setLoading(false);
+    }).catch(error => {
+      console.error('Error fetching files:', error);
       setLoading(false);
     });
   }, []);
