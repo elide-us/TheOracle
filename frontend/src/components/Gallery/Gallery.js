@@ -2,15 +2,15 @@ import React, { useState, useEffect } from 'react';
 import { IconButton, Tooltip } from '@mui/material';
 import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 
-const Gallery = () => {
-  const [images, setImages] = useState([]);
+const images = [
+  { filename: 'dove_key0.jpg', url: 'https://theoraclesa.blob.core.windows.net/lumaai/dove_key0.jpg' },
+  { filename: 'dove_key1.jpg', url: 'https://theoraclesa.blob.core.windows.net/lumaai/dove_key1.jpg' },
+  // Add more images as needed
+];
 
-  useEffect(() => {
-    fetch('/api/files')
-      .then(response => response.json())
-      .then(data => setImages(data))
-      .catch(error => console.error('Error fetching images:', error));
-  }, []);
+const Gallery = () => {
+  const [images, setImages] = React.useState([]);
+  const [loading, setLoading] = React.useState(true)
 
   const copyToClipboard = (url) => {
     navigator.clipboard.writeText(url).then(() => {
@@ -20,15 +20,32 @@ const Gallery = () => {
     });
   };
 
+  React.useEffect(() => {
+    axios.get('/api/files').then(response => {
+      if (response.data && Array.isArray(response.data.files)) {
+        setFiles(response.data.files);
+      } else {
+        console.error('Expected an array but got:', response.data);
+        setImages([]);
+      }
+      setLoading(false);
+    }).catch(error => {
+      console.error('Error fetching files:', error);
+      setLoading(false);
+    });
+  }, []);
+
+  if (loading) return <p>Loading files...</p>
+
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
       {images.map((image, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 19%', aspectRatio: '19 / 6', overflow: 'hidden' }}>
-            <img src={image.url} alt={image.filename} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={image.url} alt={image.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           </div>
           <div style={{ flex: '1', paddingLeft: '16px', display: 'flex', alignItems: 'center' }}>
-            <span style={{ flex: '1' }}>{image.filename}</span>
+            <span style={{ flex: '1' }}>{image.name}</span>
             <Tooltip title="Copy URL">
               <IconButton onClick={() => copyToClipboard(image.url)}>
                 <FileCopyIcon />
