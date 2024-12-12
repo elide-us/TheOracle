@@ -24,8 +24,7 @@ function App() {
           <Sidebar open={open} setOpen={setOpen} />
           <div 
             style={{ 
-              flexGrow: 1, 
-              padding: '16px', 
+              flexGrow: 1,
               marginLeft: open ? '0px' : '64px',
               transition: 'margin-left 0.3s ease'
             }}
