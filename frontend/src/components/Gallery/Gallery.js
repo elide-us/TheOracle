@@ -38,7 +38,12 @@ const Gallery = () => {
   if (loading) return <p>Loading files...</p>
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+    <div style={{
+      display: 'flex', 
+      flexDirection: 'column', 
+      gap: '16px',
+      marginLeft: '30px',
+      width: 'calc(100% - 30px', }}>
       {paginatedImages.map((image, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 19%', aspectRatio: '19 / 6', overflow: 'hidden' }}>
@@ -57,18 +62,26 @@ const Gallery = () => {
 
       { /* Add pagination bar here */ }
       <Box sx={{ 
+        position: 'fixed',
+        bottom: 0,
+        left: '30px', // Width of collapsed sidebar
+        right: 0,
+        height: '30px',
+        backgroundColor: 'background.paper',
+        borderTop: '1px solid #ddd',
         display: 'flex', 
         justifyContent: 'space-between', 
         alignItems: 'center',
-        borderTop: '1px solid #ddd',
-        padding: '16px 0'
+        px: 2,
+        zIndex: 1200
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
           <IconButton 
             onClick={() => setPage(p => Math.max(0, p - 1))}
             disabled={page === 0}
+            size="small"
           >
-            <NavigateBefore />
+            <NavigateBefore fontSize="small" />
           </IconButton>
           
           <Typography>
@@ -78,18 +91,20 @@ const Gallery = () => {
           <IconButton 
             onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
             disabled={page >= totalPages - 1}
+            size="small"
           >
-            <NavigateNext />
+            <NavigateNext fontSize="small" />
           </IconButton>
         </Box>
 
-        <FormControl size="small">
+        <FormControl size="small" sx={{ '& .MuiSelect-select': { py: 0 } }}>
           <Select
             value={itemsPerPage}
             onChange={(e) => {
               setItemsPerPage(e.target.value);
               setPage(0); // Reset to first page when changing items per page
             }}
+            sx={{ height: '24px' }}
           >
             {[5, 10, 20, 50, 100].map((value) => (
               <MenuItem key={value} value={value}>
