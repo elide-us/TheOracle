@@ -1,11 +1,16 @@
 import React from 'react';
-import { IconButton, Tooltip } from '@mui/material';
-import { FileCopy as FileCopyIcon } from '@mui/icons-material';
+import { IconButton, Tooltip, Select, MenuItem, FormControl, Box, Typography } from '@mui/material';
+import { FileCopy as FileCopyIcon, NavigateNext, NavigateBefore } from '@mui/icons-material';
 import axios from 'axios';
 
 const Gallery = () => {
+  const [page, setPage] = React.useState(0);
+  const [itemsPerPage, setItemsPerPage] = React.useState(10);
   const [images, setImages] = React.useState([]);
   const [loading, setLoading] = React.useState(true)
+
+  const totalPages = Math.ceil(images.length / itemsPerPage);
+  const paginatedImages = images.slice(page * itemsPerPage, (page + 1) * itemsPerPage);
 
   const copyToClipboard = (url) => {
     navigator.clipboard.writeText(url).then(() => {
@@ -34,7 +39,7 @@ const Gallery = () => {
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-      {images.map((image, index) => (
+      {paginatedImages.map((image, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 19%', aspectRatio: '19 / 6', overflow: 'hidden' }}>
             <img src={image.url} alt={image.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
@@ -49,6 +54,53 @@ const Gallery = () => {
           </div>
         </div>
       ))}
+
+      { /* Add pagination bar here */ }
+      <Box sx={{ 
+        display: 'flex', 
+        justifyContent: 'space-between', 
+        alignItems: 'center',
+        borderTop: '1px solid #ddd',
+        padding: '16px 0'
+      }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
+          <IconButton 
+            onClick={() => setPage(p => Math.max(0, p - 1))}
+            disabled={page === 0}
+          >
+            <NavigateBefore />
+          </IconButton>
+          
+          <Typography>
+            Page {page + 1} of {Math.max(1, totalPages)}
+          </Typography>
+
+          <IconButton 
+            onClick={() => setPage(p => Math.min(totalPages - 1, p + 1))}
+            disabled={page >= totalPages - 1}
+          >
+            <NavigateNext />
+          </IconButton>
+        </Box>
+
+        <FormControl size="small">
+          <Select
+            value={itemsPerPage}
+            onChange={(e) => {
+              setItemsPerPage(e.target.value);
+              setPage(0); // Reset to first page when changing items per page
+            }}
+          >
+            {[5, 10, 20, 50, 100].map((value) => (
+              <MenuItem key={value} value={value}>
+                {value} per page
+              </MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+      </Box>
+      
+
     </div>
   );
 };
