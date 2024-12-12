@@ -3,12 +3,6 @@ import { IconButton, Tooltip } from '@mui/material';
 import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import axios from 'axios';
 
-const images = [
-  { filename: 'dove_key0.jpg', url: 'https://theoraclesa.blob.core.windows.net/lumaai/dove_key0.jpg' },
-  { filename: 'dove_key1.jpg', url: 'https://theoraclesa.blob.core.windows.net/lumaai/dove_key1.jpg' },
-  // Add more images as needed
-];
-
 const Gallery = () => {
   const [images, setImages] = React.useState([]);
   const [loading, setLoading] = React.useState(true)
