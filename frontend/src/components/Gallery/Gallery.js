@@ -41,9 +41,7 @@ const Gallery = () => {
     <div style={{
       display: 'flex', 
       flexDirection: 'column', 
-      gap: '16px',
-      marginLeft: '30px',
-      width: 'calc(100% - 30px', }}>
+      width: '100%', }}>
       <div style={{
         position: 'fixed',
         left: 0,
@@ -51,7 +49,6 @@ const Gallery = () => {
         bottom: 0,
         width: '30px',
         backgroundColor: 'transparent', // Or any color you prefer
-        zIndex: 1100, // Ensure it's below the pagination bar
       }}></div>
       {paginatedImages.map((image, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
@@ -69,17 +66,17 @@ const Gallery = () => {
         </div>
       ))}
 
-      { /* Add pagination bar here */ }
+
       <Box sx={{ 
         position: 'fixed',
         bottom: 0,
-        left: '30px', // Width of collapsed sidebar
+        left: '30px',
         right: 0,
         height: '30px',
         backgroundColor: 'background.paper',
         borderTop: '1px solid #ddd',
         display: 'flex', 
-        justifyContent: 'space-between', 
+        justifyContent: 'space-between',
         alignItems: 'center',
         px: 2,
         zIndex: 1200
@@ -123,8 +120,6 @@ const Gallery = () => {
           </Select>
         </FormControl>
       </Box>
-      
-
     </div>
   );
 };
