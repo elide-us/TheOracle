@@ -31,7 +31,7 @@ async def handle_chat(ctx, command_str):
   
   split = command_str.split(" ")
   key = split[0]
-  prompt = split[1:]
+  prompt = " ".join(split[1:])
 
   await channel.send(f"Loading assistant data from data_assistants.json.")
   json = await load_json("data_assistants.json")
@@ -45,9 +45,6 @@ async def handle_chat(ctx, command_str):
     await channel.send(f"Error loading assistant: {key} not found.")
     return
 
-  assistant.prompt = " ".join(prompt)
-  await channel.send(f"Assistant prompt: {assistant.prompt}")
-
   # await channel.send("Loading template data from data_templates.json.")
   # template_data = await load_json("data_templates.json")
   # if not template_data:
@@ -60,12 +57,13 @@ async def handle_chat(ctx, command_str):
   #   return
   # prompt = template.format(**assistant)
 
+  await channel.send(f"Sending prompt to OpenAI: {prompt}")
   completion = await client.chat.completions.create(
     model=f"{assistant.model}",
     max_completion_tokens=f"{assistant.max_tokens}",
     messages=[
       {"role":"system","content":f"{assistant.role}"},
-      {"role":"user","content":f"{assistant.prompt}"}
+      {"role":"user","content":f"{prompt}"}
     ]
   )
   response_text = completion.choices[0].message.content
