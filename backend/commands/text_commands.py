@@ -60,7 +60,7 @@ async def handle_chat(ctx, command_str):
   await channel.send(f"Sending prompt to OpenAI: {prompt}")
   completion = await client.chat.completions.create(
     model=f"{assistant.model}",
-    max_completion_tokens=f"{assistant.max_tokens}",
+    max_completion_tokens=int({assistant.max_tokens}),
     messages=[
       {"role":"system","content":f"{assistant.role}"},
       {"role":"user","content":f"{prompt}"}
