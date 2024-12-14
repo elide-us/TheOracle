@@ -1,4 +1,3 @@
-# from commands.dispatcher import get_dispatcher, parse_and_dispatch
 from commands.text_commands import handle_chat
 
 def setup_bot_routes(bot):
@@ -24,8 +23,8 @@ def setup_bot_routes(bot):
 
   @bot.command(name="chat")
   async def chat(ctx, *args):
-    ctx.send("Chat command received.")
     command_str = " ".join(args)
+    await ctx.send("Chat command received.")
     response = await handle_chat(ctx, command_str)
     if response:
       await ctx.send(response)
