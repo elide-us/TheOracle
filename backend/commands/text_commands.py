@@ -21,30 +21,39 @@ async def handle_text_generate(args: str, channel, client):
   prompt = " ".join(args)
   return await generate_text(prompt, client, channel)
 
-
-
-
 async def handle_chat(ctx, command_str):
   app = ctx.bot.app
   bot = ctx.bot
+  channel = ctx.channel
   client = app.state.openai_client
   
-  # Extract the first argument, this is the assistant and template that we're going to use for this prompt
   split = command_str.split(" ")
   key = split[0]
   prompt = split[1:]
 
-  # Open the data_assistants.json file and load it
   json = await load_json("data_assistants.json")
+  if not json:
+    await channel.send("Error loading assistant data.")
+    return
 
-  assistant = json[key] # This is a dict for use in the template.format call
-  assistant.prompt = " ".join(prompt) # This is the prompt that the assistant will respond to
+  assistant = json[key]
+  if not assistant:
+    await channel.send(f"Error loading assistant: {key} not found.")
+    return
+
+  assistant.prompt = " ".join(prompt)
 
   # Open the data_templates.json file and load it
   template_data = await load_json("data_templates.json")
-  template = template_data["chatresponse"]
+  if not template_data:
+    await channel.send("Error loading template data.")
+    return
 
-  # Construct the client.chat.completions.create() call
+  template = template_data["chatresponse"]
+  if not template:
+    await channel.send("Error loading template: chatresponse not found.")
+    return
+
   prompt = template.format(**assistant)
 
   completion = await client.chat.completions.create(prompt)
