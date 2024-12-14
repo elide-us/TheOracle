@@ -24,7 +24,6 @@ def setup_bot_routes(bot):
   @bot.command(name="chat")
   async def chat(ctx, *args):
     command_str = " ".join(args)
-    await ctx.send("Chat command received.")
     response = await handle_chat(ctx, command_str)
     if response:
       await ctx.send(response)
