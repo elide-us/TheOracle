@@ -23,7 +23,6 @@ async def handle_text_generate(args: str, channel, client):
   return await generate_text(prompt, client, channel)
 
 async def handle_chat(ctx, command_str):
-  await ctx.send("Parsing chat command.")
   app = ctx.bot.app
   bot = ctx.bot
   channel = ctx.channel
@@ -33,13 +32,11 @@ async def handle_chat(ctx, command_str):
   key = split[0]
   prompt = " ".join(split[1:])
 
-  await channel.send(f"Loading assistant data from data_assistants.json.")
   json = await load_json("data_assistants.json")
   if not json:
     await channel.send("Error loading assistant data.")
     return
 
-  await channel.send(f"Loading assistant data for {key}.")
   assistant = json[key]
   if not assistant:
     await channel.send(f"Error loading assistant: {key} not found.")
@@ -59,11 +56,11 @@ async def handle_chat(ctx, command_str):
 
   await channel.send(f"Sending prompt to OpenAI: {prompt}")
   completion = await client.chat.completions.create(
-    model=f"{assistant.model}",
-    max_completion_tokens=f"{assistant.max_tokens}",
+    model=assistant.model,
+    max_completion_tokens=assistant.max_tokens,
     messages=[
-      {"role":"system","content":f"{assistant.role}"},
-      {"role":"user","content":f"{prompt}"}
+      {"role":"system","content": assistant.role },
+      {"role":"user","content": prompt }
     ]
   )
   response_text = completion.choices[0].message.content
