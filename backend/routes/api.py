@@ -5,7 +5,8 @@ router = APIRouter()
 @router.get("/files")
 async def list_files(request: Request):
     container_client = request.app.state.container_client
-    base_url = "https://theoraclesa.blob.core.windows.net/lumaai/"  # Replace with your actual base URL
+    container_name = container_client.container_name
+    base_url = f"https://theoraclesa.blob.core.windows.net/{container_name}/"  # Replace with your actual base URL
     blobs = []
     async for blob in container_client.list_blobs():
         blobs.append({
