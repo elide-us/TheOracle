@@ -5,4 +5,6 @@ async def get_container_client():
   conn_str = get_blob_connection_string()
   container_name = get_blob_container()
   blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-  return blob_service_client.get_container_client(container_name)
+  container_client = blob_service_client.get_container_client(container_name)
+  container_client.container_name = container_name
+  return container_client

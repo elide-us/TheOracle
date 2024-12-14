@@ -24,7 +24,6 @@ async def lifespan(app: FastAPI):
   
   container = await get_container_client()
   app.state.container_client = container
-
   setup_bot_routes(bot)
 
   loop = asyncio.get_event_loop()
