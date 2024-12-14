@@ -53,15 +53,17 @@ async def handle_chat(ctx, command_str):
   #   await channel.send("Error loading template: chatresponse not found.")
   #   return
   # prompt = template.format(**assistant)
-
+  await channel.send(f"Using model: {assistant.model}")
+  await channel.send(f"Using max_completion_tokens: {assistant.max_tokens}")
+  await channel.send(f"Using role: {assistant.role}")
   await channel.send(f"Sending prompt to OpenAI: {prompt}")
   completion = await client.chat.completions.create(
-    model=assistant.model,
+    model=f"{assistant.model}",
     max_completion_tokens=assistant.max_tokens,
     messages=[
-      {"role":"system","content": assistant.role },
+      {"role":"system","content": f"{assistant.role}" },
       {"role":"user","content": prompt }
     ]
   )
   response_text = completion.choices[0].message.content
-  await send_to_discord(bot.sys_channel, response_text)
+  return await send_to_discord(bot.sys_channel, response_text)
