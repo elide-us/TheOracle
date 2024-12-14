@@ -44,6 +44,15 @@ const Gallery = () => {
       gap: '16px',
       marginLeft: '30px',
       width: 'calc(100% - 30px', }}>
+      <div style={{
+        position: 'fixed',
+        left: 0,
+        top: 0,
+        bottom: 0,
+        width: '30px',
+        backgroundColor: 'transparent', // Or any color you prefer
+        zIndex: 1100, // Ensure it's below the pagination bar
+      }}></div>
       {paginatedImages.map((image, index) => (
         <div key={index} style={{ display: 'flex', alignItems: 'center' }}>
           <div style={{ flex: '0 0 19%', aspectRatio: '19 / 6', overflow: 'hidden' }}>
