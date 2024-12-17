@@ -2,7 +2,7 @@ import asyncio
 
 async def send_to_discord(channel, text: str, max_message_size: int = 250, delay: float = 1.0):
   for block in text.split("\n"):
-    if not block.strip() or block.strip() == "----":
+    if not block.strip() or block.strip() == "---":
       continue  # Skip empty lines and lines containing only ----
     
     start = 0
@@ -20,4 +20,3 @@ async def send_to_discord(channel, text: str, max_message_size: int = 250, delay
         await asyncio.sleep(delay)
       
       start = end
-      
