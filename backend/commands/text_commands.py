@@ -1,26 +1,5 @@
 from utils.messaging import send_to_discord
 from services.local_json import load_json
-import discord
-
-async def generate_text(prompt: str, client, channel) -> None:
-  await channel.send("Sending text prompt to OpenAI.")
-  completion = await client.chat.completions.create(
-    model="chatgpt-4o-latest",
-    max_completion_tokens=1000,
-    messages=[
-      {"role": "system", "content": "You are a helpful assistant."},
-      {"role": "user", "content": prompt}
-    ]
-  )
-  response_text = completion.choices[0].message.content
-  await send_to_discord(channel, response_text)
-
-async def handle_text_generate(args: str, channel, client):
-  if len(args) < 1:
-    await channel.send("Text generate requires a prompt.")
-    return
-  prompt = " ".join(args)
-  return await generate_text(prompt, client, channel)
 
 async def handle_chat(ctx, command_str):
   app = ctx.bot.app
@@ -42,18 +21,6 @@ async def handle_chat(ctx, command_str):
     await channel.send(f"Error loading assistant: {key} not found.")
     return
 
-  # await channel.send("Loading template data from data_templates.json.")
-  # template_data = await load_json("data_templates.json")
-  # if not template_data:
-  #   await channel.send("Error loading template data.")
-  #   return
-  # await channel.send(f"Loading template data for chatresponse.")
-  # template = template_data["chatresponse"]
-  # if not template:
-  #   await channel.send("Error loading template: chatresponse not found.")
-  #   return
-  # prompt = template.format(**assistant)
-
   channel.send(f"Sending prompt to OpenAI: {prompt}")
   try:
     completion = await client.chat.completions.create(
@@ -68,6 +35,6 @@ async def handle_chat(ctx, command_str):
   except Exception as e:
     await channel.send(f"Error communicating with OpenAI: {str(e)}")
     return
+  
   response_text = completion.choices[0].message.content
-  await channel.send(response_text)
   await send_to_discord(channel, response_text)
