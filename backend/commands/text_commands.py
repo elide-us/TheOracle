@@ -69,5 +69,4 @@ async def handle_chat(ctx, command_str):
     await channel.send(f"Error communicating with OpenAI: {str(e)}")
     return
   response_text = completion.choices[0].message.content
-  await channel.send(response_text)
   await send_to_discord(channel, response_text)
