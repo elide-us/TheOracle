@@ -1,4 +1,5 @@
 from commands.text_commands import handle_chat
+from commands.tts_commands import handle_tts
 from services.local_json import load_json
 
 def setup_bot_routes(bot):
@@ -36,8 +37,7 @@ def setup_bot_routes(bot):
   @bot.command(name="tts")
   async def tts_gen(ctx, *args):
     command_str = " ".join(args)
-    openai_client = ctx.bot.app.state.openai_client
-    response = await handle_tts(command_str, openai_client)
+    response = await handle_tts(ctx, command_str)
     if response:
       await ctx.send(response)
 
