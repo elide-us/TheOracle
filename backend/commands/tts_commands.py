@@ -20,7 +20,9 @@ async def handle_tts(ctx, command_str):
     container_client = await get_container_client()
     buffer = io.BytesIO()
     async with client.audio.speech.with_streaming_response.create(
-      
+      model='tts-1',
+      voice=voice,
+      input=text
     ) as response:
       async for chunk in response.iter_bytes():
         buffer.write(chunk)  # Write chunks to the buffer
