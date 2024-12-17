@@ -30,7 +30,7 @@ async def handle_tts(ctx, command_str):
       buffer.seek(0)  # Reset buffer position to the start
 
       # Upload the buffer to Azure Blob Storage
-      await container_client.upload_blob(data=buffer, overwrite=True)
+      await container_client.upload_blob(data=buffer, name=blob_name, overwrite=True)
 
       # Send the file to Discord
       buffer.seek(0)  # Reset buffer position again
