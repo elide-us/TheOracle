@@ -1,4 +1,5 @@
 from commands.text_commands import handle_chat
+from services.local_json import load_json
 
 def setup_bot_routes(bot):
   @bot.command(name="hello")
@@ -11,17 +12,13 @@ def setup_bot_routes(bot):
     if channel:
       await channel.send("TheOracleGPT Online.")
 
-  # @bot.command(name="imagen")
-  # async def imagen(ctx, *args):
-  #   command_str = " ".join(args)
-  #   channel = ctx.channel
-  #   dispatcher = await get_dispatcher()
-  #   openai_client = ctx.bot.app.state.openai_client
-  #   response = await parse_and_dispatch(command_str, channel, dispatcher, openai_client)
-  #   if response:
-  #     await ctx.send(response)
+  @bot.command(name="assistants", help="Lists the assistants available for the !chat command.")
+  async def assistants(ctx, *args):
+    data = await load_json("data_assistants.json")
+    assistants_list = ", ".join(data.keys())
+    await ctx.send(f"Available assistants: {assistants_list}")
 
-  @bot.command(name="chat")
+  @bot.command(name="chat", help="Format: !chat <assistant> <Your question here.> Each assistant is tuned to provide specific expertise.")
   async def chat(ctx, *args):
     command_str = " ".join(args)
     response = await handle_chat(ctx, command_str)
