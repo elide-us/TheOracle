@@ -33,13 +33,13 @@ def setup_bot_routes(bot):
   #   if response:
   #     await ctx.send(response)
 
-  # @bot.command(name="tts")
-  # async def tts_gen(ctx, *args):
-  #   command_str = " ".join(args)
-  #   openai_client = ctx.bot.app.state.openai_client
-  #   response = await handle_tts(command_str, openai_client)
-  #   if response:
-  #     await ctx.send(response)
+  @bot.command(name="tts")
+  async def tts_gen(ctx, *args):
+    command_str = " ".join(args)
+    openai_client = ctx.bot.app.state.openai_client
+    response = await handle_tts(command_str, openai_client)
+    if response:
+      await ctx.send(response)
 
   # @bot.command(name="image")
   # async def image_gen(ctx, *args):
