@@ -54,14 +54,18 @@ async def handle_chat(ctx, command_str):
   #   return
   # prompt = template.format(**assistant)
 
-  await channel.send(f"Sending prompt to OpenAI: {prompt}")
-  completion = await client.chat.completions.create(
-    model=assistant["model"],
-    max_completion_tokens=assistant["max_tokens"],
-    messages=[
-      {"role":"system","content": assistant["role"] },
-      {"role":"user","content": prompt }
-    ]
-  )
+  try:
+    completion = await client.chat.completions.create(
+      model=assistant["model"],
+      max_tokens=assistant["max_tokens"],
+      messages=[
+        {"role": "system", "content": assistant["role"]},
+        {"role": "user", "content": prompt}
+      ]
+    )
+    response_text = completion.choices[0].message.content
+  except Exception as e:
+    await channel.send(f"Error communicating with OpenAI: {str(e)}")
+    return
   response_text = completion.choices[0].message.content
   await send_to_discord(bot.sys_channel, response_text)
