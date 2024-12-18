@@ -70,13 +70,13 @@ const Gallery = () => {
       <Box sx={{ 
         position: 'fixed',
         bottom: 0,
-        left: '30px',
+        left: 0,
         right: 0,
         height: '30px',
         backgroundColor: 'background.paper',
         borderTop: '1px solid #ddd',
         display: 'flex', 
-        justifyContent: 'space-between',
+        justifyContent: 'center',
         alignItems: 'center',
         px: 2,
         zIndex: 1200
@@ -103,7 +103,7 @@ const Gallery = () => {
           </IconButton>
         </Box>
 
-        <FormControl size="small" sx={{ '& .MuiSelect-select': { py: 0 } }}>
+        <FormControl size="small" sx={{ position: 'absolute', right: '16px', '& .MuiSelect-select': { py: 0 } }}>
           <Select
             value={itemsPerPage}
             onChange={(e) => {
