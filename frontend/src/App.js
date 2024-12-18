@@ -22,13 +22,7 @@ function App() {
       <Router>
         <div style={{ display: 'flex' }}>
           <Sidebar open={open} setOpen={setOpen} />
-          <div 
-            style={{ 
-              flexGrow: 1,
-              marginLeft: open ? '0px' : '64px',
-              transition: 'margin-left 0.3s ease'
-            }}
-          >
+          <div style={{ marginLeft: '64px' }}>
             <Routes>
               <Route path="/" element={<Home />} />
               <Route path="/file-manager" element={<FileManager />} />
