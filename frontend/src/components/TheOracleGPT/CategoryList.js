@@ -1,5 +1,6 @@
 import React from "react";
 import CategoryBox from "./CategoryBox";
+import './index.css'
 
 const CategoryList = ({ categories, onTileClick }) => {
   return (

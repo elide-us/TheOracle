@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import CategoryList from "./CategoryList";
 import PromptBuilder from "./PromptBuilder";
 import data from "./templates.json";
+import './index.css'
 
 const TheOracleGPT = () => {
     const [selectedTemplate, setSelectedTemplate] = useState(null);
