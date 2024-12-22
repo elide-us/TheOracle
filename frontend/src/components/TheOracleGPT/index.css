@@ -1,54 +1,60 @@
-
-/* Outer category box with rounded corners and a gray frame */
+/* Outer container with gray background, white border, and rounded corners */
 .category-box {
-  width: 100%; /* Full width of the parent container */
+  width: 100%; /* Full width of the container */
   margin: 20px 0; /* Space between category boxes */
-  border: 2px solid #ccc; /* Light gray border for the outer box */
-  border-radius: 12px; /* Rounded corners for the outer box */
-  background-color: #000; /* Black background for the box */
-  overflow: hidden; /* Ensures inner elements stay within bounds */
+  border: 2px solid #ccc; /* White border */
+  border-radius: 12px; /* Rounded corners */
+  background-color: #dfdfdf; /* Gray background */
+  padding: 15px; /* Padding to create the gutter effect */
+  box-sizing: border-box; /* Ensure padding doesn't affect the size */
 }
 
-/* Title area at the top of the box */
+/* Title bar with the same gray background and left-aligned text */
 .category-title {
-  background-color: #222; /* Dark gray for the title background */
-  color: #eee; /* Light gray text for high contrast */
+  background-color: #dfdfdf; /* Matches the outer container background */
+  color: #333; /* Dark gray text */
   font-size: 1.2rem;
   font-weight: bold;
-  text-align: center;
+  text-align: left; /* Left-aligned title */
   padding: 10px 15px;
-  border-bottom: 2px solid #ccc; /* Same gray as the outer box border */
+  border-bottom: 2px solid #ccc; /* Subtle divider below the title */
 }
 
-/* Inner box for template items */
+/* Inner box with white border, black background, and inset margin */
 .category-inner-box {
   background-color: #000; /* Black background */
-  padding: 20px; /* Space for inner content */
-  display: flex;
-  flex-wrap: wrap; /* Wrap template items if necessary */
-  gap: 15px; /* Space between tiles */
-  justify-content: center; /* Center-align tiles */
+  border: 2px solid #ccc; /* White border */
+  border-radius: 8px; /* Slight rounding for inner box */
+  padding: 20px; /* Padding for content inside the box */
+  margin: 15px; /* Gray gutter effect between inner and outer box */
+  box-sizing: border-box; /* Ensure margin and padding don't overlap */
 }
 
 /* Individual tiles (template items) */
 .tile {
-  background-color: #000; /* Black background for the tile */
+  background-color: #222; /* Dark gray base for tiles */
   color: #eee; /* Light gray text for contrast */
-  border: 2px solid #ccc; /* Light gray outline for the tile */
-  border-radius: 5px; /* Subtle rounding on corners */
+  border-radius: 12px; /* Rounded corners for tiles */
   padding: 15px;
   text-align: center;
   cursor: pointer;
   flex: 1 1 calc(33% - 30px); /* Responsive: 3 tiles per row with spacing */
   max-width: calc(33% - 30px); /* Prevent oversized tiles */
   min-width: 100px; /* Minimum size for smaller screens */
-  transition: background-color 0.2s, border-color 0.2s; /* Smooth hover effects */
+
+  /* Glass tile effect */
+  border: 2px solid #444; /* Slightly lighter gray border */
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.2), /* Inner shine */
+              0 4px 6px rgba(0, 0, 0, 0.3); /* Outer shadow */
+  background: linear-gradient(145deg, #333, #111); /* Subtle gradient */
+  transition: background-color 0.2s, box-shadow 0.2s; /* Smooth hover effects */
 }
 
 /* Hover effect for tiles */
 .tile:hover {
-  background-color: #333; /* Dark gray on hover */
-  border-color: #fff; /* White border on hover */
+  background-color: #444; /* Slightly lighter gray on hover */
+  box-shadow: inset 0 1px 5px rgba(255, 255, 255, 0.3), /* Stronger shine */
+              0 6px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow */
   color: #fff; /* Bright white text on hover */
 }
 
@@ -59,8 +65,6 @@
   min-height: 100vh; /* Full viewport height */
   font-family: Arial, sans-serif;
 }
-
-
 
 
 
