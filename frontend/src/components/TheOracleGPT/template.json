@@ -1,0 +1,22 @@
+{
+    "Storyboard Templates": [
+      "Outdoors Urban",
+      "Outdoors Countryside",
+      "Outdoors Wilderness",
+      "Indoors Intimate",
+      "Indoors Casual",
+      "Indoors Grand"
+    ],
+    "Portrait Focus": [
+      "Professional Portraits",
+      "Casual Portraits",
+      "Character Concept Portraits",
+      "Group Portraits"
+    ],
+    "Panoramic & Landscape Focus": [
+      "Natural Features",
+      "Iconic Landmarks",
+      "Dramatic Horizons",
+      "Environmental Extremes"
+    ]
+  }

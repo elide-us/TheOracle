@@ -1,0 +1,59 @@
+/* Styles for the category box */
+.category-box {
+    margin: 20px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9;
+  }
+  
+  /* Title for the category */
+  .category-box h2 {
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+    color: #333;
+  }
+  
+  /* Row for tiles */
+  .tile-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: space-around;
+  }
+  
+  /* Individual tile styles */
+  .tile {
+    flex: 1 1 calc(33% - 20px); /* 3 tiles per row, with space for margin */
+    max-width: calc(33% - 20px);
+    min-width: 120px;
+    padding: 15px;
+    border: 2px solid #007BFF;
+    border-radius: 5px;
+    background-color: #eaf4ff;
+    text-align: center;
+    cursor: pointer;
+    transition: transform 0.2s, background-color 0.2s;
+  }
+  
+  .tile:hover {
+    background-color: #cce5ff;
+    transform: scale(1.05);
+  }
+  
+  /* Main page container */
+  .main-page {
+    margin: 20px;
+  }
+  
+  /* Prompting system page */
+  .prompting-system {
+    margin: 20px;
+    text-align: center;
+  }
+  
+  .prompting-system h1 {
+    font-size: 2rem;
+    color: #444;
+  }
+  
