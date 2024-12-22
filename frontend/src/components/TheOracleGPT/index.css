@@ -1,73 +1,86 @@
-/* Styles for the category box */
 .category-box {
-    margin: 20px;
-    padding: 15px;
-    border: 1px solid #ccc;
-    border-radius: 8px;
-    background-color: #f9f9f9;
-  }
+  width: 100%; /* Full width of the parent container */
+  max-width: 800px; /* Optional: Limit max width for larger screens */
+  margin: 20px auto; /* Center the box horizontally */
+  border: 2px solid #ccc; /* Gray border for the outer box */
+  border-radius: 12px; /* Rounded corners for the outer box */
+  background-color: #f9f9f9; /* Light gray background */
+  overflow: hidden; /* Ensures inner elements stay within bounds */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
   
-  /* Title for the category */
-  .category-box h2 {
-    margin-bottom: 10px;
-    font-size: 1.5rem;
-    color: #333;
-  }
-  
-  /* Row for tiles */
-  .tile-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: space-around;
-  }
-  
-  /* Individual tile styles */
-  .tile {
-    flex: 1 1 calc(33% - 20px); /* 3 tiles per row, with space for margin */
-    max-width: calc(33% - 20px);
-    min-width: 120px;
-    padding: 15px;
-    border: 2px solid #007BFF;
-    border-radius: 5px;
-    background-color: #eaf4ff;
-    text-align: center;
-    cursor: pointer;
-    transition: transform 0.2s, background-color 0.2s;
-  }
-  
-  .tile:hover {
-    background-color: #cce5ff;
-    transform: scale(1.05);
-  }
-  
-  /* Main page container */
-  .main-page {
-    margin: 20px;
-  }
-  
-  /* Prompting system page */
-  .prompt-builder {
-    margin: 20px;
-    text-align: center;
-  }
-  
-  .prompt-builder h1 {
-    font-size: 2rem;
-    color: #444;
-  }
-  
-  .the-oracle-gpt {
-    padding: 20px;
-    background-color: #f4f4f9; /* Subtle off-white background */
-    min-height: 100vh; /* Ensures the page covers the full viewport */
-    font-family: Arial, sans-serif; /* Clean, modern font */
-  }
+.category-title {
+  background-color: #e0e0e0; /* Slightly darker gray for the title area */
+  color: #333; /* Dark text for contrast */
+  font-size: 1.2rem;
+  font-weight: bold;
+  text-align: center;
+  padding: 10px 15px;
+  border-bottom: 2px solid #ccc; /* Line between title and inner box */
+}
 
-  .category-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px; /* Space between category boxes */
-    align-items: center; /* Center-aligns all boxes */
-  }
+.category-inner-box {
+  background-color: #000; /* Black background */
+  padding: 20px; /* Space for inner content */
+  display: flex;
+  flex-wrap: wrap; /* Wrap template items if necessary */
+  gap: 15px; /* Space between tiles */
+  justify-content: center; /* Center-align tiles within the box */
+}
+
+.tile-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: space-around;
+}
+
+/* Individual tile styles */
+.tile {
+  flex: 1 1 calc(33% - 20px); /* 3 tiles per row, with space for margin */
+  max-width: calc(33% - 20px);
+  min-width: 120px;
+  padding: 15px;
+  border: 2px solid #007BFF;
+  border-radius: 5px;
+  background-color: #eaf4ff;
+  text-align: center;
+  cursor: pointer;
+  transition: transform 0.2s, background-color 0.2s;
+}
+
+.tile:hover {
+  background-color: #cce5ff;
+  transform: scale(1.05);
+}
+
+/* Main page container */
+.main-page {
+  margin: 20px;
+}
+
+/* Prompting system page */
+.prompt-builder {
+  margin: 20px;
+  text-align: center;
+}
+
+.prompt-builder h1 {
+  font-size: 2rem;
+  color: #444;
+}
+
+.the-oracle-gpt {
+  padding: 20px;
+  background-color: #f4f4f9; /* Subtle off-white background */
+  min-height: 100vh; /* Ensures the page covers the full viewport */
+  font-family: Arial, sans-serif; /* Clean, modern font */
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between category boxes */
+  align-items: center; /* Center-aligns all boxes */
+}
   

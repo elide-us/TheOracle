@@ -1,10 +1,11 @@
 import React from "react";
+import './index.css'
 
 const CategoryBox = ({ categoryName, templates, onTileClick }) => {
   return (
     <div className="category-box">
-      <h2>{categoryName}</h2>
-      <div className="tile-row">
+      <div className="category-title">{categoryName}</div>
+      <div className="category-inner-box">
         {templates.map((template) => (
           <div
             key={template}
