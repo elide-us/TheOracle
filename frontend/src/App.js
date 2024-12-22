@@ -10,9 +10,6 @@ import FileManager from './components/FileManager/FileManager';
 import Gallery from './components/Gallery/Gallery';
 import DarkTheme from './config/darktheme';
 
-
-
-
 function App() {
   const [open, setOpen] = React.useState(false);
 
