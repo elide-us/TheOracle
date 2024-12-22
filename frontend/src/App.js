@@ -8,6 +8,7 @@ import Home from './components/Home/Home';
 import Sidebar from './components/Sidebar/Sidebar';
 import FileManager from './components/FileManager/FileManager';
 import Gallery from './components/Gallery/Gallery';
+import TheOracleGPT from './components/TheOracleGPT/TheOracleGPT';
 import DarkTheme from './config/darktheme';
 
 function App() {
