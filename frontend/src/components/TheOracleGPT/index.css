@@ -1,3 +1,10 @@
+.the-oracle-gpt {
+  width: 100%;
+  padding: 20px;
+  background-color: #111; /* Dark gray background for the entire page */
+  min-height: 100vh; /* Full viewport height */
+  font-family: Arial, sans-serif;
+}
 
 .category-list {
   display: flex;
@@ -5,14 +12,14 @@
   gap: 20px; /* Space between category boxes */
   width: 100%; /* Ensure it takes full container width */
 }
- 
+
 .category-box {
   width: 100%; /* Ensure category box fills container width */
   margin: 20px 0; /* Space between boxes */
   border: 1px solid #ccc;
   border-radius: 12px;
   background-color: #333;
-  padding: 15px;
+  padding: 5px 15px 15px 15px;
   box-sizing: border-box;
 }
 
@@ -21,6 +28,7 @@
   color: #dfdfdf; /* Dark gray text */
   font-size: 1.2rem;
   font-weight: bold;
+  margin-bottom: 5px;
   text-align: left; /* Left-aligned title */
 }
 
@@ -31,6 +39,8 @@
   padding: 20px; /* Padding for content inside the box */
   box-sizing: border-box;
 }
+
+
 
 /* Individual tiles (template items) */
 .tile {
@@ -58,15 +68,6 @@
   color: #fff;
 }
 
-/* Main page background and container */
-.the-oracle-gpt {
-  width: 100%;
-  padding: 20px;
-  margin-left: 30px;
-  background-color: #111; /* Dark gray background for the entire page */
-  min-height: 100vh; /* Full viewport height */
-  font-family: Arial, sans-serif;
-}
 
 .tile-row {
   display: flex;
@@ -74,6 +75,10 @@
   gap: 10px; /* Spacing between tiles */
   justify-content: space-between; /* Distribute tiles evenly */
 }
+
+
+
+
 
 
 /* Prompting system page */
