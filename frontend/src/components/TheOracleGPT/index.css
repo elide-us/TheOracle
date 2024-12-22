@@ -1,33 +1,36 @@
-/* Outer container with gray background, white border, and rounded corners */
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px; /* Space between category boxes */
+  align-items: center; /* Center-aligns all boxes */
+}
+ 
 .category-box {
   width: 100%; /* Full width of the container */
   margin: 20px 0; /* Space between category boxes */
-  border: 2px solid #ccc; /* White border */
+  border: 1px solid #ccc; /* White border */
   border-radius: 12px; /* Rounded corners */
-  background-color: #dfdfdf; /* Gray background */
+  background-color: #d333; /* Gray background */
   padding: 15px; /* Padding to create the gutter effect */
-  box-sizing: border-box; /* Ensure padding doesn't affect the size */
+  box-sizing: border-box;
 }
 
-/* Title bar with the same gray background and left-aligned text */
 .category-title {
-  background-color: #dfdfdf; /* Matches the outer container background */
-  color: #333; /* Dark gray text */
+  background-color: #333; /* Matches the outer container background */
+  color: #dfdfdf; /* Dark gray text */
   font-size: 1.2rem;
   font-weight: bold;
   text-align: left; /* Left-aligned title */
   padding: 10px 15px;
-  border-bottom: 2px solid #ccc; /* Subtle divider below the title */
 }
 
 /* Inner box with white border, black background, and inset margin */
 .category-inner-box {
   background-color: #000; /* Black background */
-  border: 2px solid #ccc; /* White border */
-  border-radius: 8px; /* Slight rounding for inner box */
+  border: 1px solid #ccc; /* White border */
   padding: 20px; /* Padding for content inside the box */
-  margin: 15px; /* Gray gutter effect between inner and outer box */
-  box-sizing: border-box; /* Ensure margin and padding don't overlap */
+  box-sizing: border-box;
 }
 
 /* Individual tiles (template items) */
@@ -41,6 +44,8 @@
   flex: 1 1 calc(33% - 30px); /* Responsive: 3 tiles per row with spacing */
   max-width: calc(33% - 30px); /* Prevent oversized tiles */
   min-width: 100px; /* Minimum size for smaller screens */
+  min-height: 100px;
+  box-sizing: border-box;
 
   /* Glass tile effect */
   border: 2px solid #444; /* Slightly lighter gray border */
@@ -61,12 +66,11 @@
 /* Main page background and container */
 .the-oracle-gpt {
   padding: 20px;
+  margin-left: 30px;
   background-color: #111; /* Dark gray background for the entire page */
   min-height: 100vh; /* Full viewport height */
   font-family: Arial, sans-serif;
 }
-
-
 
 .tile-row {
   display: flex;
@@ -75,10 +79,6 @@
   justify-content: space-around;
 }
 
-/* Main page container */
-.main-page {
-  margin: 20px;
-}
 
 /* Prompting system page */
 .prompt-builder {
@@ -91,10 +91,3 @@
   color: #444;
 }
 
-.category-list {
-  display: flex;
-  flex-direction: column;
-  gap: 20px; /* Space between category boxes */
-  align-items: center; /* Center-aligns all boxes */
-}
-  
