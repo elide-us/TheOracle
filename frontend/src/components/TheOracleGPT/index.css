@@ -47,13 +47,27 @@
   }
   
   /* Prompting system page */
-  .prompting-system {
+  .prompt-builder {
     margin: 20px;
     text-align: center;
   }
   
-  .prompting-system h1 {
+  .prompt-builder h1 {
     font-size: 2rem;
     color: #444;
+  }
+  
+  .the-oracle-gpt {
+    padding: 20px;
+    background-color: #f4f4f9; /* Subtle off-white background */
+    min-height: 100vh; /* Ensures the page covers the full viewport */
+    font-family: Arial, sans-serif; /* Clean, modern font */
+  }
+
+  .category-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Space between category boxes */
+    align-items: center; /* Center-aligns all boxes */
   }
   
