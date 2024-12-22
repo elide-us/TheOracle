@@ -24,6 +24,7 @@ function App() {
               <Route path="/" element={<Home />} />
               <Route path="/file-manager" element={<FileManager />} />
               <Route path="/gallery" element={<Gallery />} />
+              <Route path="/the-oracle-gpt" element={<TheOracleGPT />} />
             </Routes>
           </div>
         </div>
