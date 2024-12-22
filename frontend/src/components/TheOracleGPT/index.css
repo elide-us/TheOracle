@@ -22,7 +22,6 @@
   font-size: 1.2rem;
   font-weight: bold;
   text-align: left; /* Left-aligned title */
-  padding: 10px 15px;
 }
 
 /* Inner box with white border, black background, and inset margin */
@@ -61,6 +60,7 @@
 
 /* Main page background and container */
 .the-oracle-gpt {
+  width: 100%;
   padding: 20px;
   margin-left: 30px;
   background-color: #111; /* Dark gray background for the entire page */
