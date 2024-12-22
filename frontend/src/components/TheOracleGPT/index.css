@@ -1,18 +1,18 @@
 
 .category-list {
   display: flex;
-  flex-direction: column;
+  flex-direction: column; /* Retain column layout for categories */
   gap: 20px; /* Space between category boxes */
-  align-items: center; /* Center-aligns all boxes */
+  width: 100%; /* Ensure it takes full container width */
 }
  
 .category-box {
-  width: 100%; /* Full width of the container */
-  margin: 20px 0; /* Space between category boxes */
-  border: 1px solid #ccc; /* White border */
-  border-radius: 12px; /* Rounded corners */
-  background-color: #d333; /* Gray background */
-  padding: 15px; /* Padding to create the gutter effect */
+  width: 100%; /* Ensure category box fills container width */
+  margin: 20px 0; /* Space between boxes */
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  background-color: #333;
+  padding: 15px;
   box-sizing: border-box;
 }
 
@@ -35,32 +35,28 @@
 
 /* Individual tiles (template items) */
 .tile {
-  background-color: #222; /* Dark gray base for tiles */
-  color: #eee; /* Light gray text for contrast */
-  border-radius: 12px; /* Rounded corners for tiles */
+  flex: 1 1 calc(33.333% - 20px); /* 3 tiles per row with spacing */
+  max-width: calc(33.333% - 20px); /* Ensure maximum width aligns */
+  min-width: 150px; /* Set a sensible minimum width */
+  background-color: #222;
+  color: #eee;
+  border-radius: 12px;
   padding: 15px;
   text-align: center;
   cursor: pointer;
-  flex: 1 1 calc(33% - 30px); /* Responsive: 3 tiles per row with spacing */
-  max-width: calc(33% - 30px); /* Prevent oversized tiles */
-  min-width: 100px; /* Minimum size for smaller screens */
-  min-height: 100px;
   box-sizing: border-box;
-
-  /* Glass tile effect */
-  border: 2px solid #444; /* Slightly lighter gray border */
-  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.2), /* Inner shine */
-              0 4px 6px rgba(0, 0, 0, 0.3); /* Outer shadow */
-  background: linear-gradient(145deg, #333, #111); /* Subtle gradient */
-  transition: background-color 0.2s, box-shadow 0.2s; /* Smooth hover effects */
+  border: 2px solid #444;
+  box-shadow: inset 0 1px 3px rgba(255, 255, 255, 0.2),
+              0 4px 6px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(145deg, #333, #111);
+  transition: background-color 0.2s, box-shadow 0.2s;
 }
 
-/* Hover effect for tiles */
 .tile:hover {
-  background-color: #444; /* Slightly lighter gray on hover */
-  box-shadow: inset 0 1px 5px rgba(255, 255, 255, 0.3), /* Stronger shine */
-              0 6px 8px rgba(0, 0, 0, 0.5); /* Stronger shadow */
-  color: #fff; /* Bright white text on hover */
+  background-color: #444;
+  box-shadow: inset 0 1px 5px rgba(255, 255, 255, 0.3),
+              0 6px 8px rgba(0, 0, 0, 0.5);
+  color: #fff;
 }
 
 /* Main page background and container */
@@ -74,9 +70,9 @@
 
 .tile-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  justify-content: space-around;
+  flex-wrap: wrap; /* Allow wrapping for responsiveness */
+  gap: 10px; /* Spacing between tiles */
+  justify-content: space-between; /* Distribute tiles evenly */
 }
 
 
