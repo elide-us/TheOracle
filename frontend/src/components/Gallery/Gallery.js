@@ -66,7 +66,8 @@ const Gallery = () => {
         </div>
       ))}
 
-      <Box sx={{
+
+      <Box sx={{ 
         position: 'fixed',
         bottom: 0,
         left: 0,
@@ -75,19 +76,11 @@ const Gallery = () => {
         backgroundColor: 'background.paper',
         borderTop: '1px solid #ddd',
         display: 'flex',
-        justifyContent: 'center',
         alignItems: 'center',
-        flexWrap: 'wrap', // Allow wrapping of child elements
         px: 2,
-        zIndex: 1200,
+        zIndex: 1200
       }}>
-        <Box sx={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 1,
-          flex: '1 1 auto', // Allow the box to shrink and grow
-          justifyContent: { xs: 'center', sm: 'flex-start' }, // Center on small screens
-        }}>
+        <Box sx={{ flex: 1, display: 'flex', justifyContent: 'center', gap: 1 }}>
           <IconButton 
             onClick={() => setPage(p => Math.max(0, p - 1))}
             disabled={page === 0}
@@ -109,13 +102,7 @@ const Gallery = () => {
           </IconButton>
         </Box>
 
-        <FormControl size="small" 
-          sx={{
-            flex: '0 1 auto', // Allow the form control to shrink but not grow
-            position: { xs: 'static', sm: 'absolute' }, // Static on small screens
-            right: { xs: 'auto', sm: '16px' }, // Adjust position dynamically
-            '& .MuiSelect-select': { py: 0 },
-          }}>
+        <FormControl size="small" sx={{ '& .MuiSelect-select': { py: 0 } }}>
           <Select
             value={itemsPerPage}
             onChange={(e) => {
