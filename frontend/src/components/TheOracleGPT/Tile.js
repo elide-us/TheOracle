@@ -10,3 +10,5 @@ const Tile = ({ label, onClick }) => {
 };
 
 export default Tile;
+
+

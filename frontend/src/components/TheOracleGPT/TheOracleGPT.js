@@ -15,8 +15,21 @@ const TheOracleGPT = () => {
     }
 
     return (
-        <div className="the-oracle-gpt">
-            <CategoryList categories={data} onTileClick={handleTileClick} />
+        <div style={{
+            display: 'flex', 
+            flexDirection: 'column', 
+            width: '100%' }}>
+            <div style={{
+                position: 'fixed',
+                left: 0,
+                top: 0,
+                bottom: 0,
+                width: '30px',
+                backgroundColor: 'transparent'
+            }} />
+            <div className="the-oracle-gpt">
+                <CategoryList categories={data} onTileClick={handleTileClick} />
+            </div>
         </div>
     );
 };
