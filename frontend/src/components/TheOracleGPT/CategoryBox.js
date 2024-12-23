@@ -28,33 +28,51 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
             className="tile"
             onClick={() => onTileClick(template.title)}
             sx={{
-              padding: 2,
-              textAlign: "center",
+              position: "relative",
+              padding: "24px", // Space around the image
               border: "1px solid #ccc",
               borderRadius: "8px",
               cursor: "pointer",
+              overflow: "hidden",
               "&:hover": {
                 backgroundColor: "#f0f0f0",
               },
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
             }}
           >
+            {/* Image filling the entire tile, with no rounded corners */}
             <Box
               component="img"
               src={template.imageUrl}
               alt={template.title}
               sx={{
-                width: "160px",
-                height: "90px",
-                marginBottom: "12px",
-                borderRadius: "8px",
+                position: "absolute",
+                top: "24px",
+                left: "24px",
+                right: "24px",
+                bottom: "24px",
+                width: "calc(100% - 48px)", // Ensures the 24px margin
+                height: "calc(100% - 48px)",
                 objectFit: "cover",
+                borderRadius: "0", // No rounded corners
               }}
             />
-            {template.title}
+
+            {/* Overlayed text with a banner box */}
+            <Box
+              sx={{
+                position: "absolute",
+                bottom: "24px",
+                left: "24px",
+                right: "24px",
+                background: "linear-gradient(to right, rgba(204, 204, 204, 0) 0%, #fff 12px, #fff calc(100% - 12px), rgba(204, 204, 204, 0) 100%)",
+                borderTop: "1px solid #ccc",
+                borderBottom: "1px solid #ccc",
+                textAlign: "center",
+                padding: "4px 0",
+              }}
+            >
+              {template.title}
+            </Box>
           </Box>
         ))}
       </Box>
