@@ -9,17 +9,17 @@
 .category-list {
   display: flex;
   flex-direction: column; /* Retain column layout for categories */
-  gap: 20px; /* Space between category boxes */
+  gap: 5px; /* Space between category boxes */
   width: 100%; /* Ensure it takes full container width */
 }
 
 .category-box {
   width: 100%; /* Ensure category box fills container width */
-  margin: 20px 0; /* Space between boxes */
+  margin: 10px 20px; /* Space between boxes */
   border: 1px solid #ccc;
   border-radius: 12px;
   background-color: #333;
-  padding: 5px 15px 15px 15px;
+  padding: 5px 12px 12px 12px;
   box-sizing: border-box;
 }
 
