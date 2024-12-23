@@ -18,7 +18,7 @@ function App() {
     <ThemeProvider theme={ DarkTheme }>
       <CssBaseline />
       <Router>
-        <div style={{ display: 'flex' }}>
+        <div style={{ display: 'fixed', width: '100%' }}>
           <Sidebar open={open} setOpen={setOpen} />
           <div style={{ marginLeft: '60px' }}>
             <Routes>
