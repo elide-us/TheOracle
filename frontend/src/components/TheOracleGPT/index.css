@@ -14,7 +14,8 @@
 }
 
 .category-box {
-  width: 100%; /* Ensure category box fills container width */
+  align-self: center;
+  min-width: 50%; /* Ensure category box fills container width */
   margin: 10px 20px; /* Space between boxes */
   border: 1px solid #ccc;
   border-radius: 12px;

@@ -9,6 +9,7 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
       <Box className="category-inner-box" sx={{
         display: 'grid',
         gap: '10px', // Spacing between tiles
+        justifyContent: 'start',
         gridTemplateColumns: '1fr', // Default: single column
         '@media (min-width: 600px)': {
           gridTemplateColumns: 'repeat(2, 1fr)', // 2 columns for small screens (600px+)
