@@ -8,7 +8,7 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
       <div className="category-title">{categoryName}</div>
       <Box className="category-inner-box" sx={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(150px, 1fr))",
+        gridTemplateColumns: "repeat(3, 1fr)",
         gap: 2,
       }}>
         {templates.map((template) => (
