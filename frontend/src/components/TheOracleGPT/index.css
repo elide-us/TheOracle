@@ -46,8 +46,8 @@
 .tile {
   flex: 1 1 calc(33.333% - 20px); /* 3 tiles per row with spacing */
   max-width: calc(33.333% - 20px); /* Ensure maximum width aligns */
-  min-width: 300px; /* Set a sensible minimum width */
-  min-height: 200px;
+  min-width: 160px; /* Set a sensible minimum width */
+  min-height: 90px;
   background-color: #222;
   color: #eee;
   border-radius: 12px;
