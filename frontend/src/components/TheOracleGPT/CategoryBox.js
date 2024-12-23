@@ -35,7 +35,7 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
               borderRadius: "12px",
               cursor: "pointer",
               "&:hover": {
-                backgroundColor: "#f0f0f0",
+                backgroundColor: "#333",
               },
               display: "flex",
               flexDirection: "column",
@@ -46,19 +46,30 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
               textAlign: "center",
             }}
           >
-          <Box sx={{
-            bgcolor: 'background.paper',
-            borderTop: '1px solid #ccc',
-            borderBottom: '1px solid #ccc',
-            position: 'relative',
-            '&::before, &::after': { content: '""', position: 'absolute', top: 2, bottom: 0, width: '12px', background: 'linear-gradient(to right, background.paper 0%, transparent 100%)', zIndex: 1 },
-            '&::before': { left: 0 },
-            '&::after': { right: 0, transform: 'rotate(180deg)' } }}>{template.title}</Box>
+            <Box sx={{
+              bgcolor: 'background.paper',
+              borderTop: '1px solid #ccc',
+              borderBottom: '1px solid #ccc',
+              position: 'relative',
+              '&::before, &::after': { content: '""', position: 'absolute', top: 2, bottom: 0, width: '12px', background: 'linear-gradient(to right, background.paper 0%, transparent 100%)', zIndex: 1 },
+              '&::before': { left: 0 },
+              '&::after': { right: 0, transform: 'rotate(180deg)' } 
+            }}>
+              {template.title}
+            </Box>
             <Box
               component="img"
               src={template.imageUrl}
               alt={template.title}
-              sx={{ width: "160px", height: "90px", objectFit: "cover" }}
+              sx={{
+                width: "160px", 
+                height: "90px", 
+                objectFit: "cover",
+                position: "absolute",
+                top: 0,
+                left: 0,
+                zIndex: 1,
+              }}
             />
           </Box>
         ))}
