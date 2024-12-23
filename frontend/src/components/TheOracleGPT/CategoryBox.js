@@ -65,7 +65,7 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
                 width: "160px", 
                 height: "90px", 
                 objectFit: "cover",
-                position: "absolute",
+                position: "relative",
                 top: 0,
                 left: 0,
                 zIndex: 1,
