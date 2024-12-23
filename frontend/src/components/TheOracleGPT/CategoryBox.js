@@ -46,17 +46,6 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
               textAlign: "center",
             }}
           >
-            <Box sx={{
-              bgcolor: 'background.paper',
-              borderTop: '1px solid #ccc',
-              borderBottom: '1px solid #ccc',
-              position: 'relative',
-              '&::before, &::after': { content: '""', position: 'absolute', top: 2, bottom: 0, width: '12px', background: 'linear-gradient(to right, background.paper 0%, transparent 100%)', zIndex: 1 },
-              '&::before': { left: 0 },
-              '&::after': { right: 0, transform: 'rotate(180deg)' } 
-            }}>
-              {template.title}
-            </Box>
             <Box
               component="img"
               src={template.imageUrl}
@@ -70,7 +59,19 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
                 left: 0,
                 zIndex: 1,
               }}
-            />
+            >
+              <Box sx={{
+                bgcolor: 'background.paper',
+                borderTop: '1px solid #ccc',
+                borderBottom: '1px solid #ccc',
+                position: 'relative',
+                '&::before, &::after': { content: '""', position: 'absolute', top: 2, bottom: 0, width: '12px', background: 'linear-gradient(to right, background.paper 0%, transparent 100%)', zIndex: 1 },
+                '&::before': { left: 0 },
+                '&::after': { right: 0, transform: 'rotate(180deg)' } 
+              }}>
+                {template.title}
+              </Box>
+            </Box>
           </Box>
         ))}
       </Box>
