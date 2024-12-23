@@ -24,9 +24,9 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
       }}>
         {templates.map((template) => (
           <Box
-            key={template}
+            key={template.title}
             className="tile"
-            onClick={() => onTileClick(template)}
+            onClick={() => onTileClick(template.title)}
             sx={{
               padding: 2,
               textAlign: "center",
@@ -34,11 +34,27 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
               borderRadius: "8px",
               cursor: "pointer",
               "&:hover": {
-                backgroundColor: "#f0f0f0f",
-              }
+                backgroundColor: "#f0f0f0",
+              },
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
             }}
-          > 
-            {template}
+          >
+            <Box
+              component="img"
+              src={template.imageUrl}
+              alt={template.title}
+              sx={{
+                width: "160px",
+                height: "90px",
+                marginBottom: "12px",
+                borderRadius: "8px",
+                objectFit: "cover",
+              }}
+            />
+            {template.title}
           </Box>
         ))}
       </Box>
