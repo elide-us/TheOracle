@@ -7,9 +7,19 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
     <div className="category-box">
       <div className="category-title">{categoryName}</div>
       <Box className="category-inner-box" sx={{
-        display: "grid",
-        gridTemplateColumns: "repeat(3, 1fr)",
-        gap: 2,
+        display: 'grid',
+        gap: '10px', // Spacing between tiles
+        gridTemplateColumns: '1fr', // Default: single column
+        '@media (min-width: 600px)': {
+          gridTemplateColumns: 'repeat(2, 1fr)', // 2 columns for small screens (600px+)
+        },
+        '@media (min-width: 960px)': {
+          gridTemplateColumns: 'repeat(3, 1fr)', // 3 columns for medium screens (960px+)
+        },
+        width: '100%',
+        maxWidth: '600px', // Ensures the grid container doesn't exceed calculated width
+        margin: '0 auto', // Centers the container
+
       }}>
         {templates.map((template) => (
           <Box
