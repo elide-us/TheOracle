@@ -1,5 +1,4 @@
 {
-  "comp-framing-desc":"Arrangement of subjects in the frame. Required for all **Composition** templates.",
   "comp-framing":{
     "rule-of-thirds":"Divide the frame into a 3x3 grid and place key elements along the lines or intersections.",
     "central-framing":"Place the subject in the center of the frame for symmetry or to create a sense of power, isolation, or intensity.",
@@ -16,7 +15,6 @@
     "off-balance":"Place the subject off-center with extra weight on one side for tension or unease.",
     "asymmetry":"Create visual interest by deliberately breaking symmetry while maintaining balance in the composition."
   },
-  "comp-lights-desc":"Lighting setups for all shots. Required for all **Composition** templates.",
   "comp-lights":{
     "chiaroscuro":"Strong contrast between light and dark areas, often to highlight drama or mystery.",
     "silhouette":"Use backlighting to outline a subject in shadow against a bright background.",
@@ -30,7 +28,6 @@
     "foreground-context":"Include foreground objects in focus to frame and contextualize the subject in its environment.",
     "implied-motion":"Use motion blur, leading elements, or framing to suggest actions."
   },
-  "comp-focus-desc":"Camera placement for all shots. Required for all **Composition** templates.",
   "comp-focus":{
     "over-shoulder":"Frame the scene from behind a character`s shoulder to create intimacy or context.",
     "birds-eye-view":"Shoot from high above to create a sense of detachment or to highlight spatial relationships.",
@@ -42,7 +39,6 @@
     "wide-angle":"Show the environment to establish context or scale.",
     "tilt-shift":"Use selective focus and blurred edges to create the illusion of miniaturization, mimicking the shallow depth of field seen in macro photography."
   },
-  "comp-lines-desc":"Selective use for non-subject shots, scenery, vistas, architecture, etc.",
   "comp-lines":{
     "leading-lines":"Use natural or artificial lines (roads, rivers, architecture) to guide the viewer`s eye towards the subject or through the scene.",
     "diagonal-composition":"Arrange elements along diagonal lines to create dynamism, tension, or motion.",

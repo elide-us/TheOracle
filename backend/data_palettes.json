@@ -1,63 +1,293 @@
 {
-  "outdoor": [
-	    "golden-hour":"*Primary Color*: Warm golden yellows saturate the scene, casting a luminous and inviting glow. *Accent Colors*: Soft peaches and coral tones subtly enrich the palette with complementary warmth. *Texture*: Radiant and smooth, with long shadows that create a sense of fleeting beauty.",
-	    "blue-hour":"*Primary Color*: Deep indigo blues dominate, creating an enveloping and serene evening atmosphere. *Accent Colors*: Faint lavenders and cool slivers softly highlight lines and lend ethereal brightness. *Texture*: Soft and moody, with a tranquil haze that catures the quiet of twilight.",
-	    "winter-chill":"*Primary Color*: Icy blues define the palette, evoking sharp, crisp air and frozen clarity. *Accent Colors*: Silvery grays and pale whites accentuate the coldness and bring depth to reflective surfaces. *Texture*: Frosty and smooth, with a crystalline quality that feels sharp yet serene.",
-	    "desert-sun":"*Primary Color*: Burnt oranges dominate, capturing the intensity and radiance of desert sunlight. *Accent Colors*: Dusty mauves and ochre yellows soften the harshness, lending balance to the palette. *Texture*: Grainy and dry, evoking the textures of sand dunes and sun scorched landscapes.",
-	    "tropical-vibrance":"*Primary Color*: Saturated turqoise dominates, reflecting oceanic depths and lush tropical vegetation. *Accent Colors*: Bright yellows and sunset oranges add bursts of warmth, creating a lively, radiant pallete. *Texture*: Lush and textured, evoking vibrant plant life and sunlit waters.",
-	    "stormy-dusk":"*Primary Color*: Steel grays set the tone, conveying the heaviness of thick, turbulent skies. *Accent Colors*: Violet hazes and soft orange highlights break through, adding hints of fleeting light. *Texture*: Dramatic and dynamic, captivating the interplay of clouds, light, and impending rain.",
-	    "golden-plains":"*Primary Color*: Sunlit golds stretch wide, evoking the warmth and espand of open fields. *Accent Colors*: Pale sky blues and muted olive greens balance the brightness with subtle cool tones. *Texture*: Soft and dry, evoking the textures of grasses and wind-swept plains.",
-	    "overcast-blues":"*Primary Color*: Cool slate blues dominate, mirroring the softness of cloudy, rain-filled skies. *Accent Colors*: Faint olive greens and muted grays enright the subdued, moody palette. *Texture*: Smooth and diffuse, evoking the dampness and calm of overcast days.",
-	    "spring-bloom":"*Primary Color*: Soft pinks define the palette, symbolizing new life and blossoming beauty. *Accent Colors*: Pale greens and warm creams add balance and create a light, harmonious tone. *Texture*: Delicate and floral, evoking the freshness of petals and newly sprouted leaves.",
-	    "autumn-glow":"*Primary Color*: Rusty oranges dominate, capturing the right, warm tones of fall foliage. *Accent Colors*: Mustard yellows and muted red-browns enhance the warmth with complementary depth. *Texture*: Layered and textured, evoking the softness of leaves and the crispness of autumn air.",
-	    "twilight-magic":"*Primary Color*: Deep plums create a rich, mysterious foundation for the scene. *Accent Colors*: Muted golds and mightnight blues highlight the palette with subtle, contrasting tones. *Texture*: Luminous and soft, with velvety shadows and low, magical light."
-	  ],
-  "indoor": [
-	   "high-key-minimalism":"*Primary Color*: Birhgt white dominates, creating a clean and open atmosphere. *Accent Colors*: Pale gray and soft blush pinks provide gentle, carely noticeable contrast. *Texture*: Smooth and polished, with subtle matte surfaces emphasizing modern simplcity and lightness.",
-	   "vintage-pastels":"*Primary Color*: Dusty rose offers a soft, muted warmth that evokes retro charm. *Accent Colors*: Mint greens and creamy off-whites add balance and a nostalgic feel. *Texture*: Soft and worn, with a slightly powdery appearance reminiscent of old wallpaper.",
-	   "bohemian-warmth":"*Primary Color*: Rich burgundy saturates the scene, adding warmth and an inviting depth. *Accent Colors*: Mustard yellows and deep navy blues provide earthy, contrasting tones. *Texture*: Layers and textured, often evoking cozy fabrics, tapestries, or well-worn furniture.",
-	   "gothic-noir":"*Primary Color*: Deep black defines the palette, creating a dramatic, mysterious tone. *Accent Colors*: Shadwy burgundy and burnished gold add a sense of regal sophistication. *Texture*: Heavy and velvety, with sharp contrasts between darness and occasional highlights.",
-	   "sepia-nostalgia":"*Primary Color*: Warm brown conveys a sense of age and timelessness. *Accent Colors*: Muted gold and soft ivory add subtle richness and lightness to the scene. *Texture*: Grainy and aged, mimicking the feel of old photographs or antique wood.",
-	   "baroque-elegance":"*Primary Color*: Midnight blue creates a rich, moody foundation. *Accent Colors*: Antique gold and deep crimson highlight the scene with luxurious tones. *Texture*: Ornate and polished, evoking finely carved details and sumptuous materials.",
-    "industrial-grunge":"*Primary Color*: Charcoal gray brings a sense of muted neutrality to the palette. *Accent Colors*: Oxidized teal and rusted brown add earthy, weathered contrasts. *Texture*: Rough and distressed, with metallic finishes and raw surfaces like aged steel or concrete.",
-	   "candlelit-warmth":"*Primary Color*: Honey gold creates a cozy, glowing foundation. *Accent Colors*: Deep shadowy browns and soft peach tones lend balance and warmth. *Texture*: Soft and flickering, with subtle highlights that mimic the effect of candlelight.",
-	   "library-quiet":"*Primary Color*: Faded brown evokes the tones of well-worn leather and aged wood. *Accent Colors*: Forest green and muted cream create a scholarly, calming palette. *Texture*: Matte and subdued, with a tactile richness reminiscent of old books.",
-	   "evening-glow":"*Primary Color*: Warm amber tones dominate, evoking a dim, indoor twilight feel. *Accent Colors*: Dusky purples and soft grays create depth and add balance. *Texture*: Smooth and soft, with subtle gradients that mimic fading daylight.",
-	   "art-deco-chic":"*Primary Color*: Deep emerald green forms the base, evoking luxury and refinement. *Accent Colors*: Gold and black geometric patterns provide sharp, bold contrasts. *Texture*: Sleek and polished, with a reflective sheen that feels modern yet retro.",
-	   "rustic-farmhouse":"*Primary Color*: Weathered beige evokes a sense of natural, homey warmth. *Accent Colors*: Muted sage greens and soft cream tones add gentle, organic highlights. *Texture*: Rough and textured, with natural wood grain and matte, unpolished finishes.",
-	   "velvet-opulence":"*Primary Color*: Deep plum creates a foundation of richness and warmth. *Accent Colors*: Metallic golds and soft ivory tones add contrast and luxury. *Texture*: Plush and soft, with the feel of velvet drapes and fine upholstery.",
-	   "monochrome-drama":"*Primary Color*: Crisp black dominates, creating a stark, modern look. *Accent Colors*: Bright white and soft gray shades offer subtle gradients and contrast. *Texture*: Clean and sharp, with smooth surfaces and hard edges for a contemporary feel.",
-	   "earthy-hearth":"*Primary Color*: Warm terracotta forms the foundation, radiating homeliness and comfort. *Accent Colors*: Olive greens and sandy beige tones add balance and a rustic feel. *Texture*: Natural and textured, with surfaces reminiscent of clay, stone, and wood."
-  ],
-	 "special": [
-	   "teal-and-orange":"*Primary Color*: Cool teal dominates, creating a calming yet striking foundation. *Accent Colors*: Vibrant orange provides bold contrast, enhancing warmth and energy. *Texture*: Crisp and high contrast, with sharp, cinematic highlights and rich shadows.",
-	   "cyberpunk-glow":"*Primary Color*: Neon magenta sets the tone with its vibrant, futuristic energy. *Accent Colors*: Electric cyan and deep black create sharp, glowing contrasts. *Texture*: Reflective and glossy, evoking the sleek surfaces of neon-lit urban environments.",
-	   "modern-neon":"*Primary Color*: Vivid magenta forms the base, radiating a bold and energetic feel. *Accent Colors*: Lime green and bright blue add sharp, fluorescent highlights. *Texture*: Glowing and electric, with a lively, high-energy aesthetic.",
-	   "painters-palette":"*Primary Color*: Cerulean blue anchors the palette with a vivid, expressive tone. *Accent Colors*: Cadmium red and lemon yellow provide bold, complementary highlights. *Texture*: Textured and raw, with visible brushstrokes and a dynamic sense of movement.",
-	   "surreal-dreamscape":"*Primary Color*: Lavender dominates, lending a soft, ethereal quality. *Accent Colors*: Pastel peach and luminous aqua enhance the dreamy, otherworldly feel. *Texture*: Soft and glowing, with diffuse edges that suggest a surreal, magical atmosphere.",
-	   "apocalyptic-dust":"*Primary Color*: Beige-gray conveys desolation and subtle neutrality. *Accent Colors*: Faded green and smoky black add depth and somber contrast. *Texture*: Grainy and dry, evoking abandonment and the textures of ash or sand.",
-	   "ethereal-light":"*Primary Color*: Pale gold adds a subtle, radiant warmth. *Accent Colors*:  Soft lavender and translucent white enhance the delicate, glowing ambiance. *Texture*: Luminous and airy, with a diaphanous quality that evokes an angelic or heavenly feel.",
-	   "night-carnival":"*Primary Color*: Deep navy creates a rich, dark foundation. *Accent Colors*: Bright magenta and shimmering green provide lively, playful highlights. *Texture*: Bold and shimmering, with reflective surfaces that suggest lights against a night sky.",
-	   "aurora-glow":"*Primary Color*: Vibrant teal anchors the palette with a cool, radiant energy. *Accent Colors*: Radiant pink and deep violet shift dynamically across the scene. *Texture*: Shimmering and luminous, mimicking the movement of polar lights across a dark canvas.",
-	   "neon-noir":"*Primary Color*: Blackened teal forms the base, giving a dark and brooding foundation. *Accent Colors*: Electric pink and muted neon yellow add sharp, striking contrasts. *Texture*: Dark and glossy, with glowing edges and gritty, retro-futuristic undertones.",
-	   "chromatic-blur":"*Primary Color*: Gradient blues shift across the base, evoking smooth transitions of light. *Accent Colors*: Soft pink and golden hues blur into the scene, creating subtle highlights. *Texture*: Diffuse and hazy, with a flowing, abstract softness that suggests motion.",
-	   "iridescent-pearl":"*Primary Color*: Pale cream shines with subtle luminescence, forming the base of the palette. *Accent Colors*: Shifting blues and soft pinks add a dynamic, reflective quality. *Texture*: Smooth and lustrous, with a polished surface that shimmers like a pearl.",
-	   "prismatic-pulse":"*Primary Color*: Vibrant cyan bursts across the scene, full of energy and brightness. *Accent Colors*: Neon yellow and magenta pulse dynamically, creating bold, energetic contrasts. *Texture*: Glowing and sharp, with distinct lines that resemble beams of refracted light.",
-	   "electric-pastel":"*Primary Color*: Soft mint green dominates with a fresh, playful tone. *Accent Colors*: Pastel pinks and sunny yellows provide gentle but lively contrasts. *Texture*: Smooth and matte, with a retro-inspired, slightly faded aesthetic.",
-	   "cosmic-nebula":"*Primary Color*: Deep indigo fills the base, capturing the vastness of space. *Accent Colors*: Swirling magentas and luminous teal evoke the vibrant energy of nebulae. *Texture*: Wispy and glowing, with soft edges that mimic cosmic gas clouds.",
-	   "glass-prism":"*Primary Color*: Transparent white serves as the base, creating a clean and open canvas. *Accent Colors*: Refracted rainbows add splashes of red, yellow, green, and blue in sharp streaks. *Texture*: Smooth and polished, with sharp light refractions that evoke clarity and precision.",
-	   "molten-metal":"*Primary Color*: Liquid silver dominates, creating a sleek, reflective base. *Accent Colors*: Bright copper and deep bronze add warmth and depth to the metallic tones. *Texture*: Fluid and glossy, with a molten, almost otherworldly shine.",
-	   "radiant-sunset":"*Primary Color*: Deep orange creates a warm, glowing base. *Accent Colors*: Rich purples and pinks add depth and vibrance to the sunset hues. *Texture*: Smooth and gradient, with seamless transitions between warm and cool tones.",
-	   "galactic-glow":"*Primary Color*: Midnight blue sets the stage for cosmic wonder. *Accent Colors*: Glowing purples and radiant whites form starbursts and highlights. *Texture*: Luminous and scattered, with sharp contrasts resembling starry skies.",
-	   "fragmented-light":"*Primary Color*: Bright white dominates, creating a fractured sense of brightness. *Accent Colors*: Irregular bursts of red, green, and blue break across the palette. *Texture*: Sharp and angular, evoking shattered glass or fragmented prisms."
-  ],
-		"gfb": [
-			 "white":"*Primary Color*: White. *Secondary Color*: Gold.",
-	   "yellow":"*Primary Color*: Yellow. *Secondary Color*: White.",
-	   "red":"*Primary Color*: Blood Red. *Secondary Color*: Flame Red.",
-	   "orange":"*Primary Color*: Orange. *Secondary Color*: Black, Red, Yellow.",
-	   "black":"*Primary Color*: Black. *Secondary Color*: Purple.",
-	   "blue":"*Primary Color*: Blue. *Secondary Color*: Aqua.",
-	   "green":"*Primary Color*: Green. *Secondary Color*: Brown."
-  ]
+	"outdoor":{
+		"golden-hour":{
+			"primary-color":"Warm golden yellows saturate the scene, casting a luminous and inviting glow.",
+			"accent-colors":"Soft peaches and coral tones subtly enrich the palette with complementary warmth.",
+			"qualities":"Radiant and smooth, with long shadows that create a sense of fleeting beauty.",
+			"tags":["shimmering-highlights", "ethereal-glows"]
+		},
+		"blue-hour":{
+			"primary-color":"Deep indigo blues dominate, creating an enveloping and serene evening atmosphere.",
+			"accent-colors":"Faint lavenders and cool slivers softly highlight lines and lend ethereal brightness.",
+			"qualities":"Soft and moody, with a tranquil haze that captures the quiet of twilight.",
+			"tags":["ethereal-glows", "subtle-textures"]
+		},
+		"winter-chill":{
+			"primary-color":"Icy blues define the palette, evoking sharp, crisp air and frozen clarity.",
+			"accent-colors":"Silvery grays and pale whites accentuate the coldness and bring depth to reflective surfaces.",
+			"qualities":"Frosty and smooth, with a crystalline quality that feels sharp yet serene.",
+			"tags":["reflections-mirrored-surfaces", "weathered-worn-surfaces"]
+		},
+		"desert-sun":{
+			"primary-color":"Burnt oranges dominate, capturing the intensity and radiance of desert sunlight.",
+			"accent-colors":"Dusty mauves and ochre yellows soften the harshness, lending balance to the palette.",
+			"qualities":"Grainy and dry, evoking the textures of sand dunes and sun-scorched landscapes.",
+			"tags":["weathered-worn-surfaces", "tactile-surfaces"]
+		},
+		"tropical-vibrance":{
+			"primary-color":"Saturated turquoise dominates, reflecting oceanic depths and lush tropical vegetation.",
+			"accent-colors":"Bright yellows and sunset oranges add bursts of warmth, creating a lively, radiant palette.",
+			"qualities":"Lush and textured, evoking vibrant plant life and sunlit waters.",
+			"tags":["organic-forms", "shimmering-highlights"]
+		},
+		"stormy-dusk":{
+			"primary-color":"Steel grays set the tone, conveying the heaviness of thick, turbulent skies.",
+			"accent-colors":"Violet hazes and soft orange highlights break through, adding hints of fleeting light.",
+			"qualities":"Dramatic and dynamic, capturing the interplay of clouds, light, and impending rain.",
+			"tags":["dramatic-lighting", "subtle-textures"]
+		},
+		"golden-plains":{
+			"primary-color":"Sunlit golds stretch wide, evoking the warmth and expanse of open fields.",
+			"accent-colors":"Pale sky blues and muted olive greens balance the brightness with subtle cool tones.",
+			"qualities":"Soft and dry, evoking the textures of grasses and wind-swept plains.",
+			"tags":["tactile-surfaces", "subtle-textures"]
+		},
+		"overcast-blues":{
+			"primary-color":"Cool slate blues dominate, mirroring the softness of cloudy, rain-filled skies.",
+			"accent-colors":"Faint olive greens and muted grays enrich the subdued, moody palette.",
+			"qualities":"Smooth and diffuse, evoking the dampness and calm of overcast days.",
+			"tags":["weathered-worn-surfaces", "subtle-textures"]
+		},
+		"spring-bloom":{
+			"primary-color":"Soft pinks define the palette, symbolizing new life and blossoming beauty.",
+			"accent-colors":"Pale greens and warm creams add balance and create a light, harmonious tone.",
+			"qualities":"Delicate and floral, evoking the freshness of petals and newly sprouted leaves.",
+			"tags":["organic-flourish", "delicate-textures"]
+		},
+		"autumn-glow":{
+			"primary-color":"Rusty oranges dominate, capturing the bright, warm tones of fall foliage.",
+			"accent-colors":"Mustard yellows and muted red-browns enhance the warmth with complementary depth.",
+			"qualities":"Layered and textured, evoking the softness of leaves and the crispness of autumn air.",
+			"tags":["weathered-worn-surfaces", "organic-flourish"]
+		},
+		"twilight-magic":{
+			"primary-color":"Deep plums create a rich, mysterious foundation for the scene.",
+			"accent-colors":"Muted golds and midnight blues highlight the palette with subtle, contrasting tones.",
+			"qualities":"Luminous and soft, with velvety shadows and low, magical light.",
+			"tags":["ethereal-glows", "artistic-flourishes"]
+		}
+	},
+	"indoor": {
+    "gothic-noir": {
+      "primary-color": "Deep black defines the palette, creating a dramatic, mysterious tone.",
+      "accent-colors": "Shadowy burgundy and burnished gold add a sense of regal sophistication.",
+      "qualities": "Velvety and heavy, with stark contrasts between darkness and highlights.",
+      "tags": ["weathered-worn-surfaces", "shimmering-highlights", "fine-engraving", "ethereal-glows"]
+    },
+    "high-key-minimalism": {
+      "primary-color": "Bright white dominates, creating a clean and open atmosphere.",
+      "accent-colors": "Pale gray and soft blush pinks provide gentle contrast.",
+      "qualities": "Smooth and polished, with subtle matte surfaces emphasizing simplicity.",
+      "tags": ["subtle-textures", "geometric-shapes", "reflections-mirrored-surfaces"]
+    },
+    "vintage-pastels": {
+      "primary-color": "Dusty rose offers a soft, muted warmth that evokes retro charm.",
+      "accent-colors": "Mint greens and creamy off-whites add balance and nostalgia.",
+      "qualities": "Soft and worn, with a powdery appearance reminiscent of old wallpaper.",
+      "tags": ["weathered-worn-surfaces", "organic-forms", "fine-engraving"]
+    },
+    "bohemian-warmth": {
+      "primary-color": "Rich burgundy saturates the scene, adding warmth and depth.",
+      "accent-colors": "Mustard yellows and deep navy blues provide earthy contrast.",
+      "qualities": "Layered and textured, evoking cozy fabrics and well-worn furniture.",
+      "tags": ["weathered-worn-surfaces", "tactile-surfaces", "organic-flourish"]
+    },
+    "sepia-nostalgia": {
+      "primary-color": "Warm brown conveys a sense of age and timelessness.",
+      "accent-colors": "Muted gold and soft ivory add richness and lightness.",
+      "qualities": "Grainy and aged, mimicking old photographs or antique wood.",
+      "tags": ["weathered-worn-surfaces", "decorative-accents", "tactile-surfaces"]
+    },
+    "baroque-elegance": {
+      "primary-color": "Midnight blue creates a rich, moody foundation.",
+      "accent-colors": "Antique gold and deep crimson add luxurious highlights.",
+      "qualities": "Ornate and polished, evoking carved details and sumptuous materials.",
+      "tags": ["decorative-accents", "shimmering-highlights", "fine-engraving"]
+    },
+    "industrial-grunge": {
+      "primary-color": "Charcoal gray brings muted neutrality to the palette.",
+      "accent-colors": "Oxidized teal and rusted brown add earthy contrasts.",
+      "qualities": "Rough and distressed, with finishes like aged steel or concrete.",
+      "tags": ["weathered-worn-surfaces", "geometric-shapes", "tactile-surfaces"]
+    },
+    "candlelit-warmth": {
+      "primary-color": "Honey gold creates a glowing foundation.",
+      "accent-colors": "Shadowy browns and soft peach tones lend warmth.",
+      "qualities": "Soft and flickering, mimicking candlelight.",
+      "tags": ["ethereal-glows", "shimmering-highlights", "tactile-surfaces"]
+    },
+    "library-quiet": {
+      "primary-color": "Faded brown evokes tones of leather and aged wood.",
+      "accent-colors": "Forest green and muted cream create a calming palette.",
+      "qualities": "Matte and subdued, reminiscent of old books.",
+      "tags": ["weathered-worn-surfaces", "decorative-accents", "organic-forms"]
+    },
+    "evening-glow": {
+      "primary-color": "Warm amber tones dominate, evoking indoor twilight.",
+      "accent-colors": "Dusky purples and soft grays add balance.",
+      "qualities": "Smooth and soft, with gradients mimicking fading daylight.",
+      "tags": ["ethereal-glows", "shimmering-highlights", "reflections-mirrored-surfaces"]
+    },
+    "art-deco-chic": {
+      "primary-color": "Deep emerald green forms the base, evoking luxury.",
+      "accent-colors": "Gold and black patterns provide bold contrasts.",
+      "qualities": "Sleek and polished, with a reflective sheen.",
+      "tags": ["intricate-patterns", "shimmering-highlights", "geometric-shapes"]
+    },
+    "rustic-farmhouse": {
+      "primary-color": "Weathered beige evokes natural warmth.",
+      "accent-colors": "Muted sage greens and soft cream tones add highlights.",
+      "qualities": "Rough and textured, with wood grain and matte finishes.",
+      "tags": ["weathered-worn-surfaces", "tactile-surfaces", "organic-forms"]
+    },
+    "velvet-opulence": {
+      "primary-color": "Deep plum creates richness and warmth.",
+      "accent-colors": "Metallic golds and soft ivory tones add contrast.",
+      "qualities": "Plush and soft, evoking velvet and fine upholstery.",
+      "tags": ["tactile-surfaces", "shimmering-highlights", "decorative-accents"]
+    },
+    "monochrome-drama": {
+      "primary-color": "Crisp black dominates, creating a stark look.",
+      "accent-colors": "Bright white and soft gray offer subtle contrast.",
+      "qualities": "Clean and sharp, with smooth surfaces and edges.",
+      "tags": ["geometric-shapes", "reflections-mirrored-surfaces", "subtle-textures"]
+    },
+    "earthy-hearth": {
+      "primary-color": "Warm terracotta forms the foundation.",
+      "accent-colors": "Olive greens and sandy beige add balance.",
+      "qualities": "Natural and textured, reminiscent of clay and stone.",
+      "tags": ["tactile-surfaces", "weathered-worn-surfaces", "organic-forms"]
+    }
+  },
+  "special": {
+	"cyberpunk-glow": {
+		"primary-color": "Neon magenta establishes a bold, futuristic energy with intense vibrancy, creating a striking central hue.",
+		"accent-colors": "Electric cyan and deep black create sharp, glowing contrasts.",
+		"qualities": "Reflective and glossy, evoking the sleek surfaces of neon-lit urban environments.",
+		"tags": ["shimmering-highlights", "reflections-mirrored-surfaces", "geometric-shapes"]
+	},
+	"teal-and-orange": {
+		"primary-color": "Cool teal commands attention, balancing calmness with a striking visual presence as the dominant hue.",
+		"accent-colors": "Vibrant orange provides bold contrast, enhancing warmth and energy.",
+		"qualities": "Crisp and high contrast, with sharp, cinematic highlights and rich shadows.",
+		"tags": ["sharp-focus-small-objects", "geometric-shapes", "shimmering-highlights"]
+	},
+	"modern-neon": {
+		"primary-color": "Vivid magenta radiates energy and boldness, setting a dynamic tone as the foundation.",
+		"accent-colors": "Lime green and bright blue add sharp, fluorescent highlights.",
+		"qualities": "Glowing and electric, with a lively, high-energy aesthetic.",
+		"tags": ["shimmering-highlights", "reflections-mirrored-surfaces", "artistic-flourishes"]
+	},
+	"painters-palette": {
+		"primary-color": "Cerulean blue anchors the palette with a vivid, expressive tone.",
+		"accent-colors": "Cadmium red and lemon yellow provide bold, complementary highlights.",
+		"qualities": "Textured and raw, with visible brushstrokes and a dynamic sense of movement.",
+		"tags": ["artistic-flourishes", "organic-forms", "subtle-textures"]
+	},
+	"surreal-dreamscape": {
+		"primary-color": "Lavender infuses the scene with softness and an ethereal atmosphere, enhancing its otherworldly charm.",
+		"accent-colors": "Pastel peach and luminous aqua enhance the dreamy, otherworldly feel.",
+		"qualities": "Soft and glowing, with diffuse edges that suggest a surreal, magical atmosphere.",
+		"tags": ["ethereal-glows", "artistic-flourishes", "organic-flourish"]
+	},
+	"apocalyptic-dust": {
+		"primary-color": "Beige-gray suggests desolation and muted neutrality, evoking the textures of dust and decay.",
+		"accent-colors": "Faded green and smoky black add depth and somber contrast.",
+		"qualities": "Grainy and dry, evoking abandonment and the textures of ash or sand.",
+		"tags": ["weathered-worn-surfaces", "subtle-textures", "tactile-surfaces"]
+	},
+	"ethereal-light": {
+		"primary-color": "Pale gold imparts a gentle radiance, casting a warm and inviting glow.",
+		"accent-colors": "Soft lavender and translucent white enhance the delicate, glowing ambiance.",
+		"qualities": "Luminous and airy, with a diaphanous quality that evokes an angelic or heavenly feel.",
+		"tags": ["ethereal-glows", "shimmering-highlights", "fine-engraving"]
+	},
+	"night-carnival": {
+		"primary-color": "Deep navy blue creates a rich, dark foundation.",
+		"accent-colors": "Bright magenta and shimmering green inject vibrancy, creating lively contrasts against the deep base.",
+		"qualities": "Bold and shimmering, with reflective surfaces that suggest lights against a night sky.",
+		"tags": ["reflections-mirrored-surfaces", "shimmering-highlights", "artistic-flourishes"]
+	},
+	"aurora-glow": {
+		"primary-color": "Vibrant teal anchors the palette with a cool, radiant energy.",
+		"accent-colors": "Radiant pink and deep violet shift dynamically across the scene.",
+		"qualities": "Shimmering and luminous, mimicking the movement of polar lights across a dark canvas.",
+		"tags": ["ethereal-glows", "organic-forms", "shimmering-highlights"]
+	},
+	"neon-noir": {
+		"primary-color": "Blackened teal forms the base, giving a dark and brooding foundation.",
+		"accent-colors": "Electric pink and muted neon yellow add sharp, striking contrasts.",
+		"qualities": "Dark and glossy, with glowing edges and gritty, retro-futuristic undertones.",
+		"tags": ["reflections-mirrored-surfaces", "geometric-shapes", "weathered-worn-surfaces"]
+	},
+	"chromatic-blur": {
+		"primary-color": "Gradient blues shift across the base, evoking smooth transitions of light.",
+		"accent-colors": "Soft pink and golden hues blur into the scene, creating subtle highlights.",
+		"qualities": "Diffuse and hazy, with a flowing, abstract softness that suggests motion.",
+		"tags": ["subtle-textures", "artistic-flourishes", "ethereal-glows"]
+	},
+	"iridescent-pearl": {
+		"primary-color": "Pale cream shines with subtle luminescence, forming the base of the palette.",
+		"accent-colors": "Shifting blues and soft pinks add a dynamic, reflective quality.",
+		"qualities": "Smooth and lustrous, with a polished surface that shimmers like a pearl.",
+		"tags": ["shimmering-highlights", "reflections-mirrored-surfaces", "artisan-glasswork"]
+	},
+	"prismatic-pulse": {
+		"primary-color": "Vibrant cyan bursts across the scene, full of energy and brightness.",
+		"accent-colors": "Neon yellow and magenta pulse dynamically, creating bold, energetic contrasts.",
+		"qualities": "Glowing and sharp, with distinct lines that resemble beams of refracted light.",
+		"tags": ["shimmering-highlights", "geometric-shapes", "reflections-mirrored-surfaces"]
+	},
+	"electric-pastel": {
+		"primary-color": "Soft mint green dominates with a fresh, playful tone.",
+		"accent-colors": "Pastel pinks and sunny yellows provide gentle but lively contrasts.",
+		"qualities": "Smooth and matte, with a retro-inspired, slightly faded aesthetic.",
+		"tags": ["subtle-textures", "organic-forms", "artistic-flourishes"]
+	},
+	"cosmic-nebula": {
+		"primary-color": "Deep indigo anchors the palette, evoking the infinite expanse and mystery of space.",
+		"accent-colors": "Swirling magentas and luminous teal evoke the vibrant energy of nebulae.",
+		"qualities": "Wispy and glowing, with soft edges that mimic cosmic gas clouds.",
+		"tags": ["ethereal-glows", "organic-forms", "artistic-flourishes"]
+	},
+	"glass-prism": {
+		"primary-color": "Transparent white provides a pristine base, amplifying the clarity and brilliance of refracted rainbows.",
+		"accent-colors": "Refracted rainbows add splashes of red, yellow, green, and blue in sharp streaks.",
+		"qualities": "Smooth and polished, with sharp light refractions that evoke clarity and precision.",
+		"tags": ["reflections-mirrored-surfaces", "geometric-shapes", "shimmering-highlights"]
+	},
+	"molten-metal": {
+		"primary-color": "Liquid silver flows with sleek reflectivity, forming a base of dynamic, metallic brilliance.",
+		"accent-colors": "Bright copper and deep bronze add warmth and depth to the metallic tones.",
+		"qualities": "Fluid and glossy, with a molten, almost otherworldly shine.",
+		"tags": ["shimmering-highlights", "tactile-surfaces", "artisan-glasswork"]
+	},
+	"radiant-sunset": {
+		"primary-color": "Deep orange creates a warm, glowing base.",
+		"accent-colors": "Rich purples and pinks add depth and vibrance to the sunset hues.",
+		"qualities": "Smooth and gradient, with seamless transitions between warm and cool tones.",
+		"tags": ["ethereal-glows", "subtle-textures", "artistic-flourishes"]
+	},
+	"galactic-glow": {
+		"primary-color": "Midnight blue sets the stage for cosmic wonder.",
+		"accent-colors": "Glowing purples and radiant whites form starbursts and highlights.",
+		"qualities": "Luminous and scattered, with sharp contrasts resembling starry skies.",
+		"tags": ["ethereal-glows", "organic-forms", "shimmering-highlights"]
+	},
+	"fragmented-light": {
+		"primary-color": "Bright white dominates, creating a fractured sense of brightness.",
+		"accent-colors": "Irregular bursts of red, green, and blue break across the palette.",
+		"qualities": "Sharp and angular, evoking shattered glass or fragmented prisms.",
+		"tags": ["geometric-shapes", "reflections-mirrored-surfaces", "shimmering-highlights"]
+	}
+},
+	"gfb":{
+		"white":"*Primary Color*: White. *Secondary Color*: Gold.",
+		"yellow":"*Primary Color*: Yellow. *Secondary Color*: White.",
+		"red":"*Primary Color*: Blood Red. *Secondary Color*: Flame Red.",
+		"orange":"*Primary Color*: Orange. *Secondary Color*: Black, Red, Yellow.",
+		"black":"*Primary Color*: Black. *Secondary Color*: Purple.",
+		"blue":"*Primary Color*: Blue. *Secondary Color*: Aqua.",
+		"green":"*Primary Color*: Green. *Secondary Color*: Brown."
+	}
 }
