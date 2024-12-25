@@ -10,8 +10,8 @@
 	"description": "The Elideus Group",
 	"scripts": {
 		"start": "vite",
-		"build": "vite build",
 		"lint": "eslint .",
+		"build": "vite build",
 		"preview": "vite preview"
 	},
 	"dependencies": {
