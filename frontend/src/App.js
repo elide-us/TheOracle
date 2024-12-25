@@ -5,11 +5,10 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@mui/material';
 import DarkTheme from './config/darktheme';
 import Sidebar from './components/Sidebar';
-import Home from './pages/Home';
-import FileManager from './pages/FileManager';
-import Gallery from './pages/Gallery';
-import TheOracleGPT from './pages/TheOracleGPT';
-
+import Home from './components/Home';
+import FileManager from './components/FileManager';
+import Gallery from './components/Gallery';
+import TheOracleGPT from './components/TheOracleGPT';
 
 function App() {
 	const [open, setOpen] = useState(false);
