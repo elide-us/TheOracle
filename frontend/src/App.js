@@ -1,37 +1,37 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { useState } from 'react';
 import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Box, Container } from '@mui/material';
+import DarkTheme from './darktheme';
+import Sidebar from './components/Sidebar';
+import Home from './pages/Home';
+import FileManager from './pages/FileManager';
+import Gallery from './pages/Gallery';
+import TheOracleGPT from './pages/TheOracleGPT';
 
-import Home from './components/Home/Home';
-import Sidebar from './components/Sidebar/Sidebar';
-import FileManager from './components/FileManager/FileManager';
-import Gallery from './components/Gallery/Gallery';
-import TheOracleGPT from './components/TheOracleGPT/TheOracleGPT';
-import DarkTheme from './config/darktheme';
 
 function App() {
-  const [open, setOpen] = React.useState(false);
+	const [open, setOpen] = useState(false);
 
-  return (
-    <ThemeProvider theme={ DarkTheme }>
-      <CssBaseline />
-      <Router>
-        <div style={{ display: 'fixed', width: '100%' }}>
-          <Sidebar open={open} setOpen={setOpen} />
-          <div style={{ marginLeft: '60px' }}>
-            <Routes>
-              <Route path="/" element={<Home />} />
-              <Route path="/file-manager" element={<FileManager />} />
-              <Route path="/gallery" element={<Gallery />} />
-              <Route path="/the-oracle-gpt" element={<TheOracleGPT />} />
-            </Routes>
-          </div>
-        </div>
-      </Router>
-    </ThemeProvider>
-  );
+	return (
+		<ThemeProvider theme={ DarkTheme }>
+            <CssBaseline />
+            <Router>
+                <Container sx={{ width: '100%', display: 'block' }}>
+                    <Sidebar open={open} setOpen={setOpen} />
+                    <Box sx={{ position: 'relative', left: '30px' }}>
+                        <Routes>
+                            <Route path='/' element={<Home />} />
+                            <Route path="/file-manager" element={<FileManager />} />
+                            <Route path="/gallery" element={<Gallery />} />
+                            <Route path="/the-oracle-gpt" element={<TheOracleGPT />} />
+                        </Routes>
+                    </Box>
+                </Container>
+            </Router>
+		</ThemeProvider>
+	);
 }
 
 export default App;
