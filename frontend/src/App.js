@@ -3,7 +3,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Box, Container } from '@mui/material';
-import DarkTheme from './darktheme';
+import DarkTheme from './config/darktheme';
 import Sidebar from './components/Sidebar';
 import Home from './pages/Home';
 import FileManager from './pages/FileManager';
