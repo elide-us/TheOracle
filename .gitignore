@@ -1,3 +1,5 @@
+origin/
+
 # Local environment specific
 .azure/
 .vscode/
