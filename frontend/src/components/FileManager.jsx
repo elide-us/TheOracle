@@ -15,19 +15,19 @@ function FileManager() {
                 setFiles([]);
             }
             setLoading(false);
-        }).catch(error => {
+        }).catch(e => {
             setLoading(false);
         });
     }, []);
 
-    if (loading) return <Typography>Loading files...</Typography>;
+    if (loading) return (<Typography>Loading files...</Typography>);
 
     return (
         <List>
             {files.map(file => (
-                <ListItem button component={Link} to={file.url} key={file.name}>
-                    <ListItemText primary={file.name} />
-                    <LinkIcon />
+                <ListItem>
+                    <ListItemText><Typography>{file.name}</Typography></ListItemText>
+                    <Link href={file.url}><LinkIcon /></Link>
                 </ListItem>
             ))}
         </List>
