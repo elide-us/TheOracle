@@ -1,0 +1,45 @@
+{
+	"name": "elideus-group",
+	"homepage": "/static",
+	"main": "index.jsx",
+	"version": "0.2.0",
+	"author": "Aaron Stackpole",
+	"license": "Apache-2.0",
+	"private": true,
+	"description": "The Elideus Group",
+	"dependencies": {
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.0",
+		"@mui/icons-material": "^6.3.0",
+		"@mui/material": "^6.3.0",
+		"axios": "^1.7.9",
+		"react": "^18.3.0",
+		"react-dom": "^18.3.0",
+		"react-router-dom": "^6.0.0"
+	},
+	"devDependencies": {
+		"vite": "^6.0.0"
+	},
+	"scripts": {
+		"start": "vite",
+		"build": "vite build",
+		"preview": "vite preview"
+	},
+	"eslintConfig": {
+		"extends": [
+			"react-app"
+		]
+	},
+	"browserslist": {
+		"production": [
+			">0.2%",
+			"not dead",
+			"not op_mini all"
+		],
+		"development": [
+			"last 1 chrome version",
+			"last 1 firefox version",
+			"last 1 safari version"
+		]
+	}
+}
