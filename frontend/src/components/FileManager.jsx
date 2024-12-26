@@ -2,7 +2,7 @@ import React from 'react';
 import axios from 'axios';
 import LinkIcon from '@mui/icons-material/Link';
 
-const FileManager = () => {
+function FileManager() {
   const [files, setFiles] = React.useState([]);
   const [loading, setLoading] = React.useState(true);
 
