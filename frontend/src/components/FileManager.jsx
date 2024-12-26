@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link as LinkIcon } from '@mui/icons-material';
-import { List, ListItem, Typography } from '@mui/material';
+import { List, ListItem, Typography, Link } from '@mui/material';
 
 function FileManager() {
 	const [files, setFiles] = useState([]);
@@ -23,8 +23,8 @@ function FileManager() {
 	return (
 		<List>
 			{files.map(file => (
-				<ListItem key={file.name}>
-					<Typography variant='p'>{file.name}</Typography> <a href={file.url} target="_blank" rel="noopener noreferrer"><LinkIcon /></a>
+				<ListItem key={file.name} sx={{ padding: '12px', }}>
+					<Typography variant='p'>{file.name}</Typography> <Link href={file.url} target="_blank" rel="noopener noreferrer"><LinkIcon /></Link>
 				</ListItem>
 			))}
 		</List>
