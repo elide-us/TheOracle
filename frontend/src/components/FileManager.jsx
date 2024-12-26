@@ -26,7 +26,7 @@ function FileManager() {
 				<ListItem key={file.name} sx={{ padding: '12px', }}>
 					<Typography variant='p'>{file.name}</Typography>
 					<Box sx={{
-						padding: '5px 10px 0 10px',
+						marginLeft: '10px',
 						border: '1px solid #ccc',
 						borderRadius: '5px',
 					}}>
