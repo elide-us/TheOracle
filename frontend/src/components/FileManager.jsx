@@ -1,22 +1,20 @@
-import React from 'react';
+import { useState, useEffect } from 'react';
 import axios from 'axios';
 import LinkIcon from '@mui/icons-material/Link';
 
 function FileManager() {
-  const [files, setFiles] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const [files, setFiles] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  React.useEffect(() => {
+  useEffect(() => {
     axios.get('/api/files').then(response => {
       if (response.data && Array.isArray(response.data.files)) {
         setFiles(response.data.files);
       } else {
-        console.error('Expected an array but got:', response.data);
         setFiles([]);
       }
       setLoading(false);
     }).catch(error => {
-      console.error('Error fetching files:', error);
       setLoading(false);
     });
   }, []);
