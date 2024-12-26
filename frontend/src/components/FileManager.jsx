@@ -1,40 +1,39 @@
-// import { useState, useEffect } from 'react';
-// import { Typography, List, ListItem, ListItemText, Link as LinkIcon } from '@mui/material';
-// import { Link } from 'react-router-dom';
-// import axios from 'axios';
+import React from 'react';
+import axios from 'axios';
+import LinkIcon from '@mui/icons-material/Link';
 
-import { Typography } from '@mui/material';
+const FileManager = () => {
+  const [files, setFiles] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
 
-function FileManager() {
-    return <Typography sx={{ padding: '12px' }}>File Manager</Typography>
-    // const [files, setFiles] = useState([]);
-    // const [loading, setLoading] = useState(true);
+  React.useEffect(() => {
+    axios.get('/api/files').then(response => {
+      if (response.data && Array.isArray(response.data.files)) {
+        setFiles(response.data.files);
+      } else {
+        console.error('Expected an array but got:', response.data);
+        setFiles([]);
+      }
+      setLoading(false);
+    }).catch(error => {
+      console.error('Error fetching files:', error);
+      setLoading(false);
+    });
+  }, []);
 
-    // useEffect(() => {
-    //     axios.get('/api/files').then(response => {
-    //         if (response.data && Array.isArray(response.data.files)) {
-    //             setFiles(response.data.files);
-    //         } else {
-    //             setFiles([]);
-    //         }
-    //         setLoading(false);
-    //     }).catch(e => {
-    //         setLoading(false);
-    //     });
-    // }, []);
+  if (loading) return <p>Loading files...</p>;
 
-    // if (loading) return (<Typography>Loading files...</Typography>);
-
-    // return (
-    //     <List>
-    //         {files.map(file => (
-    //             <ListItem>
-    //                 <ListItemText><Typography>{file.name}</Typography></ListItemText>
-    //                 <Link href={file.url}><LinkIcon /></Link>
-    //             </ListItem>
-    //         ))}
-    //     </List>
-    // );
+  return (
+    <ul>
+      {files.map(file => (
+        <li key={file.name}>
+        	{file.name} <a href={file.url} target="_blank" rel="noopener noreferrer">
+        	<LinkIcon />
+        </a>
+      </li>
+      ))}
+    </ul>
+  );
 }
 
 export default FileManager;
