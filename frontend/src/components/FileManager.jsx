@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link as LinkIcon, List, ListItem, Typography } from '@mui/icons-material';
+import { Link as LinkIcon } from '@mui/icons-material';
+import { List, ListItem, Typography } from '@mui/material';
 
 function FileManager() {
 	const [files, setFiles] = useState([]);
