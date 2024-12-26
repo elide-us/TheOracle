@@ -27,6 +27,7 @@ function FileManager() {
 					<Typography variant='p'>{file.name}</Typography>
 					<Box sx={{
 						marginLeft: '10px',
+						padding: '5px 8px 0 8px',
 						border: '1px solid #ccc',
 						borderRadius: '5px',
 					}}>
