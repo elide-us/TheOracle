@@ -24,7 +24,14 @@ function FileManager() {
 		<List>
 			{files.map(file => (
 				<ListItem key={file.name} sx={{ padding: '12px', }}>
-					<Typography variant='p'>{file.name}</Typography> <Link href={file.url} target="_blank" rel="noopener noreferrer"><LinkIcon /></Link>
+					<Typography variant='p'>{file.name}</Typography>
+					<Box sx={{
+						padding: '10px',
+						border: '1px solid #ccc',
+						borderRadius: '5px',
+					}}>
+						<Link href={file.url} target="_blank" rel="noopener noreferrer"><LinkIcon /></Link>
+					</Box>
 				</ListItem>
 			))}
 		</List>
