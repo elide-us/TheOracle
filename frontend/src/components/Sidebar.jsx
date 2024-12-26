@@ -1,4 +1,3 @@
-import React from 'react';
 import { Drawer, Box, IconButton, Tooltip, List, ListItem, ListItemText } from '@mui/material';
 import { Menu as MenuIcon, Login as LoginIcon } from '@mui/icons-material';
 import { Link } from 'react-router-dom';

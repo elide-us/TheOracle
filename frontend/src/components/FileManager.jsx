@@ -1,10 +1,12 @@
-import { useState, useEffect } from 'react';
-import { Typography, List, ListItem, ListItemText, Link as LinkIcon } from '@mui/material';
-import { Link } from 'react-router-dom';
-import axios from 'axios';
+// import { useState, useEffect } from 'react';
+// import { Typography, List, ListItem, ListItemText, Link as LinkIcon } from '@mui/material';
+// import { Link } from 'react-router-dom';
+// import axios from 'axios';
+
+import { Typography } from '@mui/material';
 
 function FileManager() {
-    return <Typography>File Manager</Typography>
+    return <Typography sx={{ padding: '12px' }}>File Manager</Typography>
     // const [files, setFiles] = useState([]);
     // const [loading, setLoading] = useState(true);
 

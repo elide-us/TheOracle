@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Typography, Link, CardMedia } from '@mui/material';
 import Links from '../config/links';
 import Logo from '../assets/elideus_group_green.png'
