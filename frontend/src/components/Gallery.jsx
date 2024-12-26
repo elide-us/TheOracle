@@ -34,19 +34,19 @@ function Gallery() {
 	return (
 		<Box>
 			{paginatedImages.map((image, index) => (
-				<div key={index} style={{ display: 'flex', alignItems: 'center' }}>
-					<div style={{ flex: '0 0 19%', aspectRatio: '19 / 6', overflow: 'hidden' }}>
+				<Box key={index} style={{ display: 'flex', alignItems: 'center' }}>
+					<Box style={{ flex: '0 0 19%', aspectRatio: '19 / 6', overflow: 'hidden' }}>
 						<img src={image.url} alt={image.name} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-					</div>
-					<div style={{ flex: '1', paddingLeft: '16px', display: 'flex', alignItems: 'center' }}>
+					</Box>
+					<Box style={{ flex: '1', paddingLeft: '16px', display: 'flex', alignItems: 'center' }}>
 						<span style={{ flex: '1' }}>{image.name}</span>
 						<Tooltip title="Copy URL">
 							<IconButton onClick={() => copyToClipboard(image.url)}>
 								<FileCopyIcon />
 							</IconButton>
 						</Tooltip>
-					</div>
-				</div>
+					</Box>
+				</Box>
 			))}
 
 			<Box sx={{ 
@@ -56,7 +56,7 @@ function Gallery() {
 				right: 0,
 				height: '30px',
 				backgroundColor: 'background.paper',
-				borderTop: '1px solid #ddd',
+				borderTop: '1px solid #ccc',
 				display: 'flex',
 				alignItems: 'center',
 				px: 2,

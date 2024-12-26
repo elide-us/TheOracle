@@ -11,7 +11,6 @@ import Gallery from './components/Gallery';
 import TheOracleGPT from './components/TheOracleGPT';
 import Prism from './components/Prism';
 
-
 function App() {
 	const [open, setOpen] = useState(false);
 
@@ -21,7 +20,7 @@ function App() {
 			<Router>
 				<Container sx={{ width: '100%', display: 'block' }}>
 					<Sidebar open={open} setOpen={setOpen} />
-					<Box sx={{ position: 'relative', left: '30px' }}>
+					<Box sx={{ position: 'relative', left: '40px' }}>
 						<Routes>
 							<Route path='/' element={<Home />} />
 							<Route path='/file-manager' element={<FileManager />} />
