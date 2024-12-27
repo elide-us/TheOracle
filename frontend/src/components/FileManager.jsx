@@ -30,8 +30,8 @@ function FileManager() {
 	return (
 		<Box>
 			<List>
-				{paginatedFiles.map(file => (
-					<ListItem key={file.name} sx={{ padding: '12px', }}>
+				{paginatedFiles.map((file, index) => (
+					<ListItem key={index} sx={{ padding: '12px', }}>
 						<Typography variant='p'>{file.name}</Typography>
 						<Box sx={{
 							marginLeft: '10px',
