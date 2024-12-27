@@ -1,7 +1,7 @@
 import { IconButton, Select, MenuItem, FormControl, Box, Typography } from '@mui/material';
 import { NavigateNext, NavigateBefore } from '@mui/icons-material';
 
-function PaginationControls(page, setPage, totalPages, itemsPerPage, setItemsPerPage) {
+function PaginationControls({page, setPage, totalPages, itemsPerPage, setItemsPerPage}) {
     return (
         <Box sx={{ 
             position: 'fixed',
