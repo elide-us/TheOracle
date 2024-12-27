@@ -42,7 +42,7 @@ function Gallery() {
                     <Box style={{ flex: '1', paddingLeft: '16px', display: 'flex', alignItems: 'center' }}>
                         <span style={{ flex: '1' }}>{image.name}</span>
                         <Tooltip title="Copy URL">
-                            <IconButton onClick={() => copyToClipboard(image.url)}>
+                            <IconButton sx={{ marginRight: '16px' }} onClick={() => copyToClipboard(image.url)}>
                                 <FileCopyIcon />
                             </IconButton>
                         </Tooltip>
