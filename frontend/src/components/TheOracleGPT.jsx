@@ -108,6 +108,13 @@ const Tile = ({ template, onTileClick }) => {
 				borderRadius: 2,
 				padding: 2,
 				cursor: 'pointer',
+				transition: 'transform 0.2s, box-shadow 0.2s, background-color 0.2s',
+				backgroundColor: '#000', // Default background
+				'&:hover': {
+				  transform: 'scale(1.03)', // Slightly enlarge on hover
+				  boxShadow: 3, // Elevation shadow on hover
+				  backgroundColor: '#1e1e1e', // Light gray background on hover
+				},
 			}}
 		>
 			<Typography variant="subtitle1">{template.title}</Typography>
