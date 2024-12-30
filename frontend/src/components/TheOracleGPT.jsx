@@ -129,6 +129,9 @@ const TileGrid = ({ templates, onTileClick }) => {
 				gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
 				gap: 2,
 				marginTop: 2,
+				border: '1px solid #CCC',
+				padding: '12px',
+				background: '#000',
 			}}
 		>
 			{templates.map((template, index) => (
@@ -144,7 +147,15 @@ const TileGrid = ({ templates, onTileClick }) => {
 
 const CategoryBox = ({ categoryName, templates, onTileClick }) => {
 	return (
-		<Box sx={{ marginBottom: 4, }}>
+		<Box sx={{
+			marginBottom: 4,
+			marginLeft: 4,
+			marginRight: 4,
+			border: '1px solid #ccc',
+			borderRadius:'12px',
+			padding:'12px',
+			background: '#333',
+		}}>
 			<Typography variant="h6" gutterBottom>
 				{categoryName}
 			</Typography>
@@ -156,9 +167,7 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
 const CategoryList = ({ categories, onTileClick }) => {
 	return (
 		<Box>
-			<Typography variant="h5" gutterBottom>
-				Category List
-			</Typography>
+			<Typography variant="h5" gutterBottom>Select Persona:</Typography>
 			{Object.entries(categories).map(([categoryName, templates]) => (
 				<CategoryBox
 					key={categoryName}
@@ -189,7 +198,6 @@ function TheOracleGPT() {
 
     return (
         <Box>
-            <Typography>The Oracle GPT</Typography>
             <CategoryList categories={data} onTileClick={handleTileClick} />
         </Box>
     )
