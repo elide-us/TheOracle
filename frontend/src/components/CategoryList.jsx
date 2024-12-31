@@ -5,7 +5,7 @@ const Tile = ({ template, onTileClick }) => {
 		<Box
 			key={template.title}
 			className="tile"
-			onClick={() => onTileClick(template.title)}
+			onClick={() => onTileClick(template)}
 			sx={{
 				border: '1px solid #ccc',
 				borderRadius: 2,
