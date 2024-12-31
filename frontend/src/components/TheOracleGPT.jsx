@@ -82,7 +82,9 @@ const PromptBuilderOptionSelector = ({ selectedTemplate }) => {
 	return (
 		<Box sx={{ flexGrow:1 }}>
 			<Box sx={{ marginTop:1 }}>
-				<Typography>Template dropdowns here</Typography>
+				<Typography>
+					{`Template dropdowns here: ${selectedTemplate}`}
+				</Typography>
 			</Box>
 		</Box>
 	);
