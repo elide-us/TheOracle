@@ -54,7 +54,7 @@ const PromptBuilderComplexityBar = ({ percentage }) => {
 	);
 };
 
-const PromptBuilderInputBar = ({ }) => {
+const PromptBuilderInputBar = () => {
 	return (
 		<Box>
 			<Typography variant="subtitle1" gutterBottom>
