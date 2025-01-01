@@ -33,7 +33,7 @@ async def image_generation(request: Request):
     incoming_data = await request.json()
 
     app = request.app
-    bot = app.state.bot
+    bot = app.state.discord_bot
 
     template_key = incoming_data.get("template", "default")
     user_input = incoming_data.get("input", "")
