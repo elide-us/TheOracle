@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Request
+from commands.image_commands import generate_and_upload_image
 
 router = APIRouter()
 
@@ -26,3 +27,22 @@ async def list_files(request: Request):
 #   container_client = request.app.state.container_client
 #   await container_client.upload_blob(filename)
 #   return {"status": "uploaded", "file": filename}
+
+@router.get("imagen")
+async def image_generation(request: Request):
+    incoming_data = await request.json()
+
+    app = request.app
+    bot = app.state.bot
+
+    template_key = incoming_data.get("template", "default")
+    user_input = incoming_data.get("input", "")
+    selected_keys = incoming_data.get("keys", {})
+
+    try:
+        azure_image_url = await generate_and_upload_image(app, bot, template_key, selected_keys, user_input)
+        return { "imageUrl": azure_image_url }
+    except Exception as e:
+        return {"error": str(e)}
+
+

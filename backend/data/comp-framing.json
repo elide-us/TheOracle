@@ -1,0 +1,16 @@
+{
+    "rule-of-thirds":"Divide the frame into a 3x3 grid and place key elements along the lines or intersections.",
+    "central-framing":"Place the subject in the center of the frame for symmetry or to create a sense of power, isolation, or intensity.",
+    "fibonacci-grid":"Use proportions derived from the Fibonacci sequemce to create a harmonious composition (1:1.618)",
+    "frame-within-frame":"Use elements like windows, doors, or arches to create a `frame` around the subject.",
+    "triangular-composition":"Group subjects or elements to form an implied triangle, often used to convey stability, hierarchy, or narrative.",
+    "radial-composition":"Arrange elements to radiate from or converge toward a central point.",
+    "dynamic-tension":"Place visual elements in opposing directions to create energy or conflict.",
+    "subdivided-composition":"Break the frame into smaller sections (e.g., split screen or layered narrative).",
+    "overlapping-elements":"Arrange subjects to partially obscure one another, rempasizing depth or relationships.",
+    "foreground-obstruction":"Use out-of-focus objects in the foreground to create a sense of depth or voyeurism.",
+    "silhouetted-figures":"Use darkened foreground figures against a lit background to hightlight scale and drama.",
+    "negative-space":"Emphaize the subject by surrounding it with empty or neutral space for minimalism or to convey loneliness or focus.",
+    "off-balance":"Place the subject off-center with extra weight on one side for tension or unease.",
+    "asymmetry":"Create visual interest by deliberately breaking symmetry while maintaining balance in the composition."
+}

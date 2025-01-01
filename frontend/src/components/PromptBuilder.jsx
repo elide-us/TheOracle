@@ -255,8 +255,10 @@ const PromptBuilder = ({ selectedTemplate }) => {
       		return;
     	}
 
+		// This is where we set up the JSON that gets sent
+
     	const payload = {
-      		...selections,
+      		keys: selections,
       		template: selectedTemplate.title,
       		input: inputText,
     	};
@@ -281,7 +283,7 @@ const PromptBuilder = ({ selectedTemplate }) => {
         		});
 			} else {
 				const data = await response.json();
-				if (data.newImageUrl) {
+				if (data.imageUrl) {
 					setCurrentImageUrl(data.newImageUrl);
 					setNotification({
 						open: true,
