@@ -26,3 +26,4 @@
   - 'gunicorn -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000 main:app'
   - Set the -w variable to the number of CPU in your system (e.g.: Azure App Service Basic 1 = 1 CPU)
 - React frontend served from /static, packages built and deployed in CI/CD pipeline
+- Build pipeline uses Vite for both development (npm start) and production (npm run build)
