@@ -4,10 +4,10 @@
       "title": "Outdoors Urban",
       "description": "Bustling cityscapes, streets, parks, alleyways, rooftops.",
       "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
-      "layer1": "Style: {style} Tone: {tone} Mood: {mood} Medium: {medium}",
+      "layer1": "Tone: {tone} Mood: {mood}",
       "layer2": "Framing: {comp-framing} Presentation: {comp-presentation} Lines: {comp-lines} Depth Effect: {depth}",
-      "layer3": "Palette (Outdoors): {palette-outdoor} Light Source: {lighting-source} Details: {details}",
-      "layer4": "Subject: {subject} Background: {background}",
+      "layer3": "Palette (Outdoors): {palette-outdoor} Light Effect: {lighting-effect} Details: {details}",
+      "layer4": "Background: {background}",
       "input": "Provide a building, vehicle, monument, or other outdoor city scene."
     },
     {
