@@ -284,7 +284,7 @@ const PromptBuilder = ({ selectedTemplate }) => {
 			} else {
 				const data = await response.json();
 				if (data.imageUrl) {
-					setCurrentImageUrl(data.newImageUrl);
+					setCurrentImageUrl(data.imageUrl);
 					setNotification({
 						open: true,
 						message: 'Image updated successfully.',
