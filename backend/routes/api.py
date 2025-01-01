@@ -30,6 +30,7 @@ async def list_files(request: Request):
 
 @router.post("/imagen")
 async def image_generation(request: Request):
+    print("image_generation")
     incoming_data = await request.json()
 
     app = request.app

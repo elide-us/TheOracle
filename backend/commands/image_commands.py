@@ -9,6 +9,7 @@ from services.blob_storage import get_container_client
 ###############################################################################
 
 async def get_template(template_key: str) -> str:
+    print("get_template")
     templates_data = await load_json("data_templates.json")
     if not templates_data:
         raise ValueError("Error loading data_templates.json")
@@ -17,6 +18,7 @@ async def get_template(template_key: str) -> str:
     return templates_data[template_key]
 
 async def get_elements(selected_keys: Dict[str, str]) -> Dict[str, str]:
+    print("get_elements")
     elements = {}
 
     async def fetch_element(key: str, value: str):
@@ -57,9 +59,11 @@ def generate_filename(identifier: str, extension: str = ".png") -> str:
     return f"{timestamp}_{identifier}{extension}"
 
 async def format_template(template: str, replacements: dict) -> str:
+    print("format_template")
     return template.format(**replacements)
 
 async def build_prompt(template_key: str, selected_keys: dict, user_input: str) -> str:
+    print("build_prompt")
     template = await get_template(template_key)
     elements = await get_elements(selected_keys)
     
@@ -92,6 +96,7 @@ async def download_and_post_image(image_url: str, template_key: str, bot) -> str
     return azure_image_url
 
 async def generate_and_upload_image(app, bot, template_key: str, selected_keys: dict, user_input: str):
+    print("generate_and_upload_image")
     openai_client = app.state.openai_client
     
     prompt_text = await build_prompt(template_key, selected_keys, user_input )

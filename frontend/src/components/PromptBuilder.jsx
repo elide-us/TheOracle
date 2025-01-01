@@ -283,7 +283,13 @@ const PromptBuilder = ({ selectedTemplate }) => {
         		});
 			} else {
 				const data = await response.json();
-				if (data.imageUrl) {
+				if (data.error) {
+					setNotification({
+						open: true,
+						message: `Server error: ${data.error}`,
+						severity: 'error',
+					});
+				} else if (data.imageUrl) {
 					setCurrentImageUrl(data.imageUrl);
 					setNotification({
 						open: true,
