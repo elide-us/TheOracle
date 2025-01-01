@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { IconButton, Tooltip, Box, Typography } from '@mui/material';
 import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import axios from 'axios';
-import PaginationControls from './PaginationControls';
+import PaginationControls from './shared/PaginationControls';
 
 function Gallery() {
     const [page, setPage] = useState(0);

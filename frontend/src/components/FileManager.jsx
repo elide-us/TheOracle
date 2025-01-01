@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Link as LinkIcon } from '@mui/icons-material';
 import { List, ListItem, Typography, Link, Box } from '@mui/material';
-import PaginationControls from './PaginationControls';
+import PaginationControls from './shared/PaginationControls';
 
 function FileManager() {
 	const [page, setPage] = useState(0);
