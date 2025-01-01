@@ -1,4 +1,4 @@
-import { Typography, Box } from "@mui/material";
+import { Box, Tooltip, Typography } from "@mui/material";
 
 const Tile = ({ template, onTileClick }) => {
 	return (
@@ -14,19 +14,21 @@ const Tile = ({ template, onTileClick }) => {
 				transition: 'transform 0.2s, box-shadow 0.2s, background-color 0.2s',
 				backgroundColor: '#000', // Default background
 				'&:hover': {
-				  transform: 'scale(1.03)', // Slightly enlarge on hover
-				  boxShadow: 3, // Elevation shadow on hover
-				  backgroundColor: '#1e1e1e', // Light gray background on hover
+					transform: 'scale(1.03)', // Slightly enlarge on hover
+					boxShadow: 3, // Elevation shadow on hover
+					backgroundColor: '#1e1e1e', // Light gray background on hover
 				},
 			}}
 		>
-			<Typography variant="subtitle1">{template.title}</Typography>
-			<Box
-				component="img"
-				src={template.imageUrl}
-				alt={template.title}
-				sx={{ width: '100%', height: 'auto', marginTop: 1 }}
-			/>
+            <Tooltip title={template.description}>
+                <Typography variant="subtitle1">{template.title}</Typography>
+                <Box
+                    component="img"
+                    src={template.imageUrl}
+                    alt={template.title}
+                    sx={{ width: '100%', height: 'auto', marginTop: 1 }}
+                />
+            </Tooltip>
 		</Box>
 	);
 };

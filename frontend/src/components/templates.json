@@ -1,64 +1,365 @@
 {
-    "Storyboard Templates": [
-      {
-        "title": "Outdoors Urban",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20243828203809_hobotech_gothic-noir.png"
-      },
-      {
-        "title": "Outdoors Countryside",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20241928201932_hobotech_tropical-vibrance.png"
-      },
-      {
-        "title": "Outdoors Wilderness",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20242228202205_hobotech_twilight-magic.png"
-      },
-      {
-        "title": "Indoors Intimate",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Indoors Casual",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Indoors Grand",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      }
-    ],
-    "Portrait Focus": [
-      {
-        "title": "Professional Portraits",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Casual Portraits",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Character Concept Portraits",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Group Portraits",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      }
-    ],
-    "Panoramic & Landscape Focus": [
-      {
-        "title": "Natural Features",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Iconic Landmarks",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Dramatic Horizons",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      },
-      {
-        "title": "Environmental Extremes",
-        "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png"
-      }
-    ]
-  }
+  "Storyboard Templates": [
+    {
+      "title": "Outdoors Urban",
+      "description": "Bustling cityscapes, streets, parks, alleyways, rooftops.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20243828203809_hobotech_gothic-noir.png",
+      "layer1": "Style: {style} Tone: {tone} Mood: {mood} Medium: {medium}",
+      "layer2": "Framing: {comp-framing} Presentation: {comp-presentation} Lines: {comp-lines} Depth Effect: {depth}",
+      "layer3": "Palette (Outdoors): {palette-outdoor} Light Source: {lighting-source} Details: {details}",
+      "layer4": "Subject: {subject} Background: {background}",
+      "input": "Provide a building, vehicle, monument, or other outdoor object or scene."
+    },
+    {
+      "title": "Outdoors Countryside",
+      "description": "Rolling hills, farms, meadows, distant villages.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20241928201932_hobotech_tropical-vibrance.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Outdoors Wilderness",
+      "description": "Dense forests, desert dunes, frozen tundras.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20242228202205_hobotech_twilight-magic.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Indoors Intimate",
+      "description": "Cozy living spaces, libraries, candlelit rooms.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Indoors Casual",
+      "description": "Cafés, lounges, common areas, offices.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Indoors Grand",
+      "description": "Cathedrals, mansions, ballrooms, conference halls.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    }
+  ],
+  "Portrait Focus": [
+    {
+      "title": "Professional Portraits",
+      "description": "Studio-lit, formal attire, neutral backdrops.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Casual Portraits",
+      "description": "Natural lighting, candid poses, soft environments.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Character Concept Portraits",
+      "description": "Fantasy/gothic-inspired designs with specific traits.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Group Portraits",
+      "description": "Small groups interacting, posed or candid.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    }
+  ],
+  "Panoramic & Landscape Focus": [
+    {
+      "title": "Natural Features",
+      "description": "Mountains, cliffs, waterfalls, lakes.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Iconic Landmarks",
+      "description": "Eiffel Tower, Statue of Liberty, Mount Fuji.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Dramatic Horizons",
+      "description": "Sunsets, storms, starry skies.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    },
+    {
+      "title": "Environmental Extremes",
+      "description": "Volcanic eruptions, hurricanes, glaciers.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "Light Type: {lighting-type}, Light Source: {lighting-source}, Light Effect: {lighting-effect}, Details: {details}",
+      "layer4": ""
+    }
+  ],
+  "Object Focus": [
+    {
+      "title": "Iconic Objects",
+      "description": "Historical artifacts, monuments, significant statues.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Still Life",
+      "description": "Everyday objects in moody lighting.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Technology",
+      "description": "Modern gadgets, industrial tools, vehicles.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    }
+  ],
+  "Architectural Styles": [
+    {
+      "title": "Military/Industrial",
+      "description": "Bunkers, hangars, factories.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Historical Buildings",
+      "description": "Castles, temples, ancient ruins.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Urban Modern",
+      "description": "Skyscrapers, cityscapes, public plazas.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Gothic & Fantasy",
+      "description": "Spires, bridges, labyrinths.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    }    
+  ],
+  "Outdoor Focus": [
+    {
+      "title": "Rural Scenes",
+      "description": "Barns, windmills, open fields.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Urban Decay",
+      "description": "Abandoned factories, graffiti-covered walls.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Military Zones",
+      "description": "Trenches, barricades, supply depots.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Seasons",
+      "description": "Snow-covered forests, autumn foliage, spring blossoms.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    }
+  ],
+  "Indoor Focus": [
+    {
+      "title": "Workspaces",
+      "description": "Offices, studios, workshops.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Intimate Corners",
+      "description": "Fireplaces, reading nooks, garden rooms.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Functional Spaces",
+      "description": "Kitchens, laboratories, libraries.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    }
+  ],
+  "Action-Oriented Scenes": [
+    {
+      "title": "Battlefields",
+      "description": "Epic conflicts, skirmishes, post-battle silence.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Adventurer`s Camps",
+      "description": "Campsites with gear and firelight.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Exploration",
+      "description": "Dungeons, caves, shipwrecks.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    }
+  ],
+  "Specialized Scenes": [
+    {
+      "title": "Iconic Settings",
+      "description": "Famous battlefields, mythic locations.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Climatic Events",
+      "description": "Solar eclipses, auroras, meteor storms.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Monumental Views",
+      "description": "Vast canyons, cityscapes from above, unbroken horizons.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    }
+  ],
+  "Miscellaneous & Abstract": [
+    {
+      "title": "Dreamlike",
+      "description": "Surreal lighting, floating objects, impossible structures.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Symbolic",
+      "description": "Single powerful element, e.g., a sword in stone.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Hobo Style",
+      "description": "Military outdoor themes, rugged, survivalist.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    },
+    {
+      "title": "Isolated Subjects",
+      "description": "Focus on a single character or object in a vast space.",
+      "imageUrl": "https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
+      "layer1": "",
+      "layer2": "",
+      "layer3": "",
+      "layer4": ""
+    }
+  ]
+}
