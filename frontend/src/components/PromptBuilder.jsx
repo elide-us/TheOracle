@@ -1,3 +1,4 @@
+// import { useState } from 'react';
 import { Box, Select, Typography, MenuItem } from "@mui/material";
 
 import dataLayer1 from './data_layer1.json';
@@ -6,6 +7,15 @@ import dataLayer3 from './data_layer3.json';
 import dataLayer4 from './data_layer4.json';
 
 const LayerBox = ({ parts, data }) => {
+	// const [selectedValues, setSelectedValues] = useState({});
+	// const handleSelectChange = (groupIndex, event) => {
+	// 	const { value } = event.target;
+	// 	setSelectedValues((prev) => ({
+	// 		...prev,
+	// 		[groupIndex]: value,
+	// 	}));
+	// };
+
 	const groupedParts = [];
 	let tempGroup = [];
 
@@ -61,6 +71,92 @@ const LayerBox = ({ parts, data }) => {
 		</Box>
 	);
 };
+
+// const LayerBox2 = ({ parts, data }) => {
+// 	const [selectedValues, setSelectedValues] = useState({});
+// 	const handleSelectChange = (groupIndex, event) => {
+// 		const { value } = event.target;
+// 		setSelectedValues((prev) => ({
+// 			...prev,
+// 			[groupIndex]: value,
+// 		}));
+// 	};
+// 	const groupedParts = [];
+// 	let tempGroup = [];
+// 	parts.forEach((part, index) => {
+// 		tempGroup.push({ ...part, key: index });
+// 		if (part.type === 'dropdown') {
+// 			groupedParts.push([...tempGroup]);
+// 			tempGroup = [];
+// 		}
+// 	});
+// 	if (tempGroup.length > 0) {
+// 		groupedParts.push([...tempGroup]);
+// 	}
+// 	return (
+// 		<Box display="flex" flexDirection="column" gap={2}>
+// 			{groupedParts.map((group, groupIndex) => {
+// 				const dropdownPart = group.find((part) => part.type === 'dropdown');
+// 				const placeholder = dropdownPart ? dropdownPart.placeholder : null;
+// 				return (
+// 					<Box
+// 						key={`group-${groupIndex}`}
+// 						display="flex"
+// 						flexDirection="column"
+// 					>
+// 						<Box display="flex" alignItems="center" gap={1}>
+// 							{group.map((part) => {
+// 								if (part.type === 'text') {
+// 									return (
+// 									<Typography
+// 										key={`text-${part.key}`}
+// 										variant="body1"
+// 										style={{ marginRight: '8px' }}
+// 									>
+// 										{part.text}
+// 									</Typography>
+// 									);
+// 								} else if (part.type === 'dropdown') {
+// 									const options = data[part.placeholder] || {};
+// 									return (
+// 									<Select
+// 										key={`select-${part.key}`}
+// 										size="small"
+// 										sx={{ minWidth: 120 }}
+// 										value={selectedValues[groupIndex] || ''}
+// 										onChange={(event) => handleSelectChange(groupIndex, event)}
+// 										displayEmpty
+// 									>
+// 										<MenuItem value="" disabled>Select</MenuItem>
+// 										{Object.keys(options).map((key) => (
+// 										<MenuItem key={key} value={key}>
+// 											{key}
+// 										</MenuItem>
+// 										))}
+// 									</Select>
+// 									);
+// 								}
+// 								return null;
+// 							})}
+// 						</Box>
+// 						{selectedValues[groupIndex] && (
+// 							<Box sx={{
+// 								marginTop:2,
+// 								padding:2,
+// 								border:'1px solid #ccc',
+// 								backgroundColor:'#000',
+// 							}}>
+// 								<Typography variant="body2">
+// 									{data[placeholder]?.[selectedValues[groupIndex]] || 'No description available.'}
+// 								</Typography>
+// 							</Box>
+// 						)}
+// 					</Box>
+// 				)}
+// 			)}
+// 		</Box>
+// 	  );
+// };
 
 const PromptBuilderOptionSelector = ({ selectedTemplate }) => {
     const parseTemplate = (text) => {
