@@ -1,0 +1,12 @@
+{
+    "ambient":"Soft, evently distributed light with no specific direction.",
+    "direct":"Focused, hard light casting sharp shadows.",
+    "diffuse":"Soft lighting scattering evenly, reducing shadows.",
+    "backlit":"Light source behind the subject, creating silhouettes or halos.",
+    "side-lit":"Light from the side, emphasizing depth and texture.",
+    "top-lit":"Overhead light, creating dramatic shadows below.",
+    "low-key":"Predominantly dark, high contrast, moodly lighting.",
+    "high-key":"Bright, low contrast, minimal shadows.",
+    "chiaroscuro":"Strong contrast between light and dark for drama.",
+    "dappled":"Light filtered through objects (ex., leaves, curtains)."
+}

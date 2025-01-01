@@ -1,0 +1,11 @@
+{
+    "soft-diffusion":"Gentle blending of light and shadow.",
+    "harsh-shadows":"Sharp, high-contrast shadows.",
+    "warm-glow":"Golden or reddish light creating cozy warmth.",
+    "cool-tint":"Bluish or greenish light for a cold atmosphere.",
+    "lens-flare":"Streaks of light caused by reflections in the lens.",
+    "bloom":"A soft glow that makes highlights appear radiant.",
+    "specular-highlights":"Bright, reflective spots on shiny surfaces.",
+    "shadow-gradient":"Gradual fading of shadows into light.",
+    "rim-lighting":"Halo-like glow around the subject edges."
+}
