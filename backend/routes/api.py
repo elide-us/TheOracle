@@ -28,7 +28,7 @@ async def list_files(request: Request):
 #   await container_client.upload_blob(filename)
 #   return {"status": "uploaded", "file": filename}
 
-@router.get("imagen")
+@router.post("imagen")
 async def image_generation(request: Request):
     incoming_data = await request.json()
 
