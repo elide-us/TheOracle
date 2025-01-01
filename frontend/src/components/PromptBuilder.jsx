@@ -6,27 +6,60 @@ import dataLayer3 from './data_layer3.json';
 import dataLayer4 from './data_layer4.json';
 
 const LayerBox = ({ parts, data }) => {
-    return (
-        <Box sx={{ marginTop: 1, border: '1px solid #333', padding: 1, backgroundColor: '#111', borderRadius: '6px' }}>
-            <Typography>
-                {parts.map((part, index) => {
-                    if (part.type === "text") return <span key={`text-${index}`}>{part.text}</span>;
-                    
-                    const options = data[part.placeholder] || {};
-                    
-                    return (
-                        <Select key={`select-${index}`} size="small" sx={{ margin:1, padding:1, minWidth:120 }} autoWidth>
-                            {Object.keys(options).map((key) => (
-                                <MenuItem key={key} value={key}>
-                                    {key}
-                                </MenuItem>
-                            ))}
-                        </Select>
-                    );
-                })}
-            </Typography>
-        </Box>
-    );
+	const groupedParts = [];
+	let tempGroup = [];
+
+	parts.forEach((part, index) => {
+		tempGroup.push({ ...part, key: index });
+		if (part.type === 'dropdown') {
+			groupedParts.push([...tempGroup]);
+			tempGroup = [];
+		}
+	});
+
+	if (tempGroup.length > 0) {
+		groupedParts.push([...tempGroup]);
+	}
+
+	return (
+		<Box display="flex" flexWrap="wrap" gap={2}>
+			{groupedParts.map((group, groupIndex) => (
+				<Box
+					key={`group-${groupIndex}`}
+					display="flex"
+					alignItems="center"
+				>
+					{group.map((part) => {
+						if (part.type === 'text') {
+							return (
+							<span key={`text-${part.key}`} style={{ marginRight: '8px' }}>
+								{part.text}
+							</span>
+							);
+						} else if (part.type === 'dropdown') {
+							const options = data[part.placeholder] || {};
+							return (
+								<Select
+									key={`select-${part.key}`}
+									size="small"
+									sx={{ minWidth: 120 }}
+									autoWidth
+									defaultValue=""
+								>
+									{Object.keys(options).map((key) => (
+										<MenuItem key={key} value={key}>
+											{key}
+										</MenuItem>
+									))}
+								</Select>
+							);
+						}
+						return null;
+					})}
+				</Box>
+			))}
+		</Box>
+	);
 };
 
 const PromptBuilderOptionSelector = ({ selectedTemplate }) => {
