@@ -1,4 +1,5 @@
 import asyncio, aiohttp, io, discord
+from openai import OpenAIError
 from typing import Dict
 from datetime import datetime, timezone
 from services.local_json import load_json
@@ -9,7 +10,6 @@ from services.blob_storage import get_container_client
 ###############################################################################
 
 async def get_template(template_key: str) -> str:
-    print("get_template")
     templates_data = await load_json("data_templates.json")
     if not templates_data:
         raise ValueError("Error loading data_templates.json")
@@ -18,7 +18,6 @@ async def get_template(template_key: str) -> str:
     return templates_data[template_key]
 
 async def get_elements(selected_keys: Dict[str, str]) -> Dict[str, str]:
-    print("get_elements")
     elements = {}
 
     async def fetch_element(key: str, value: str):
@@ -58,23 +57,26 @@ def generate_filename(identifier: str, extension: str = ".png") -> str:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
     return f"{timestamp}_{identifier}{extension}"
 
+class SafeDict(dict):
+    def __missing__(self, key):
+        return ''
+
 async def format_template(template: str, replacements: dict) -> str:
-    print("format_template")
-    return template.format(**replacements)
+    return template.format_map(SafeDict(replacements))
 
 async def build_prompt(template_key: str, selected_keys: dict, user_input: str) -> str:
-    print("build_prompt")
     template = await get_template(template_key)
     elements = await get_elements(selected_keys)
     
-    return await format_template(template, elements) + "\n" + user_input
+    return await format_template(template, elements) + "*Main Subject Prompt*: " + user_input
 
 ###############################################################################
 # Image Generation Flow
 ###############################################################################
 
 async def download_and_post_image(image_url: str, template_key: str, bot) -> str:
-    channel = bot.sys_channel
+    print("download_and_post_image")
+    channel = bot.get_channel(bot.sys_channel)
     container_client = await get_container_client()
     buffer = io.BytesIO()
     async with aiohttp.ClientSession() as session:
@@ -96,22 +98,41 @@ async def download_and_post_image(image_url: str, template_key: str, bot) -> str
     return azure_image_url
 
 async def generate_and_upload_image(app, bot, template_key: str, selected_keys: dict, user_input: str):
-    print("generate_and_upload_image")
     openai_client = app.state.openai_client
     
-    prompt_text = await build_prompt(template_key, selected_keys, user_input )
+    try:
+        prompt_text = await build_prompt(template_key, selected_keys, user_input)
+        print(f"Prompt: {prompt_text}")
 
-    print(f"Prompt: {prompt_text}")
-    completion = await openai_client.images.generate(
-        model="dall-e-3",
-        prompt=prompt_text,
-        size="1920x1080",
-        n=1
-    )
-    if not completion or "data" not in completion or len(completion.data) == 0:
-        raise ValueError("No image returned from OpenAI.")
-    
-    generated_image_url = completion.data[0].url
-    blob_image_url = await download_and_post_image(generated_image_url, template_key, bot)
+        completion = await openai_client.images.generate(
+            model="dall-e-3",
+            prompt=prompt_text,
+            size="1792x1024",
+            n=1
+        )
 
-    return blob_image_url
+        # Check for errors in the response
+        if hasattr(completion, 'error') and completion.error:
+            error_message = completion.error.message if hasattr(completion.error, 'message') else 'An error occurred.'
+            raise ValueError(f"OpenAI API error: {error_message}")
+
+        # Validate the response data
+        if not completion or not hasattr(completion, 'data') or len(completion.data) == 0:
+            raise ValueError("No image returned from OpenAI.")
+
+        generated_image_url = completion.data[0].url
+        print(f"{generated_image_url}")
+
+        blob_image_url = await download_and_post_image(generated_image_url, template_key, bot)
+
+        return blob_image_url
+
+    except OpenAIError as e:
+        # Handle OpenAI API errors
+        print(f"OpenAI API error: {e}")
+        raise
+    except Exception as e:
+        # Handle other exceptions
+        print(f"An unexpected error occurred: {e}")
+        raise
+
