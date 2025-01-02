@@ -27,3 +27,11 @@
   - Set the -w variable to the number of CPU in your system (e.g.: Azure App Service Basic 1 = 1 CPU)
 - React frontend served from /static, packages built and deployed in CI/CD pipeline
 - Build pipeline uses Vite for both development (npm start) and production (npm run build)
+- Backend devstart.cmd will build React, copy, and serve the solution on FastAPI for backend testing
+- Calls .env loader for local variables:
+  - AZURE_BLOB_CONNECTION_STRING=""
+  - AZURE_BLOB_CONTAINER_NAME=
+  - DISCORD_CHANNEL=
+  - DISCORD_SECRET=
+  - LUMAAI_SECRET=
+  - OPENAI_SECRET=
