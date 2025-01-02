@@ -260,7 +260,7 @@ const PromptBuilder = ({ selectedTemplate }) => {
     	const payload = {
       		keys: selections,
       		template: selectedTemplate.title,
-      		input: inputText,
+      		userinput: inputText,
     	};
 
     	setIsLoading(true);
