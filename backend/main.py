@@ -3,6 +3,9 @@ from fastapi.staticfiles import StaticFiles
 from routes import api, web
 from lifespan import lifespan
 
+from dotenv import load_dotenv
+load_dotenv()
+
 app = FastAPI(lifespan=lifespan)
 
 app.mount("/static", StaticFiles(directory="static"), name="static")

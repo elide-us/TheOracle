@@ -101,6 +101,7 @@ async def generate_and_upload_image(app, bot, template_key: str, selected_keys: 
     
     prompt_text = await build_prompt(template_key, selected_keys, user_input )
 
+    print(f"Prompt: {prompt_text}")
     completion = await openai_client.images.generate(
         model="dall-e-3",
         prompt=prompt_text,
