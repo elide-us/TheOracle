@@ -37,7 +37,7 @@ async def image_generation(request: Request):
     bot = app.state.discord_bot
 
     template_key = incoming_data.get("template", "default")
-    user_input = incoming_data.get("input", "")
+    user_input = incoming_data.get("userinput", "")
     selected_keys = incoming_data.get("keys", {})
 
     try:
