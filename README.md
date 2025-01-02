@@ -35,3 +35,23 @@
   - DISCORD_SECRET=
   - LUMAAI_SECRET=
   - OPENAI_SECRET=
+
+**Roadmap**:
+- (Current) Working Prompt Builder POC with Frontend/Backend interactions - 80%
+- Authentication (MSAL.js/MSAL) and bearer token system.
+- PostgreSQL database for templates, prompts, user configuration, etc. - 5%
+- Additional storage account management features.
+
+# User Account Management:
+- Users will be able to log in with various OAuth2 identity providers to access services via bearer tokens.
+- Users will have their own workspace provisioned on the storage account.
+- Storage Account custom domain should be implemented (elideus.net).
+# Prompt Builder:
+- Ability to save and recall template settings.
+- User Suggestion: Ability to randomize settings.
+- Front-end template data from backend API.
+- Style tag system, style popup description.
+- Template testing and customization.
+# File Manager:
+- Upload/Download/Link/Delete files from container.
+- Separate containers per user.
