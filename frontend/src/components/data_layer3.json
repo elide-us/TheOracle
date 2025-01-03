@@ -60,6 +60,15 @@
         "blue":"Primary Color: Blue. Secondary Color: Aqua.",
         "green":"Primary Color: Green. Secondary Color: Brown."
     },
+    "shape-gfb":{
+        "white":"Circle.",
+        "yellow":"Saw Wave.",
+        "red":"Line.",
+        "orange":"Crescent.",
+        "black":"Chevron.",
+        "blue":"Sine Wave",
+        "green":"Cyclone."
+    },
     "lighting-type":{
         "ambient":"Soft, evently distributed light with no specific direction.",
         "direct":"Focused, hard light casting sharp shadows.",
