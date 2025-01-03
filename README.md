@@ -55,3 +55,11 @@
 ### File Manager:
 - Upload/Download/Link/Delete files from container.
 - Separate containers per user.
+- Post to Socials.
+- Image formatter, overlay and Clip conversion.
+### Clip Manager:
+- Luma/Sora Clip Maker.
+- Attach audio.
+### Gallery:
+- Filter type
+- Playback module (A/V)
