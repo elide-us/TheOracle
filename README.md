@@ -63,3 +63,7 @@
 ### Gallery:
 - Filter type
 - Playback module (A/V)
+### Style Extractor
+- Extract a style from a sample.
+### Template Builder
+- Guided template creation process.
