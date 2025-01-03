@@ -68,7 +68,7 @@
       "imageUrl":"https://theoraclesa.blob.core.windows.net/theoraclegpt/20245528215515_hobotech_apocalyptic-dust.png",
       "layer1":"",
       "layer2":"",
-      "layer3":"palette-gfb",
+      "layer3":"Palette: {palette-gfb}",
       "layer4":"",
       "input":"No input is required for this prompt, only the selection of the pallete."
     },
