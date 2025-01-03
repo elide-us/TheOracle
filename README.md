@@ -67,3 +67,4 @@
 - Extract a style from a sample.
 ### Template Builder
 - Guided template creation process.
+- Key optimizer
