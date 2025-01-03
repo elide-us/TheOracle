@@ -1,11 +1,9 @@
 {
-    "shape-gfb":{
-        "white":"Circle.",
-        "yellow":"Saw Wave.",
-        "red":"Line.",
-        "orange":"Crescent.",
-        "black":"Chevron.",
-        "blue":"Sine Wave",
-        "green":"Cyclone."
-    }
+    "white":"Circle.",
+    "yellow":"Saw Wave.",
+    "red":"Line.",
+    "orange":"Crescent.",
+    "black":"Chevron.",
+    "blue":"Sine Wave",
+    "green":"Cyclone."
 }
