@@ -52,13 +52,13 @@
         "fragmented-light": "Sharp and angular, evoking shattered glass or fragmented prisms."
     },
     "palette-gfb":{
-        "white":"Primary Color: White, Secondary Color: Gold.",
-        "yellow":"Primary Color: Yellow, Secondary Color: White.",
-        "red":"Primary Color: Blood red, Secondary Color: Flame red.",
-        "orange":"Primary Color: Orange, Secondary Color: Black, red, and yellow.",
-        "black":"Primary Color: Black, Secondary Color: Purple.",
-        "blue":"Primary Color: Blue, Secondary Color: Aqua.",
-        "green":"Primary Color: Green, Secondary Color: Brown."
+        "white":"Primary Color - White. Secondary Color - Gold.",
+        "yellow":"Primary Color - Yellow. Secondary Color - White.",
+        "red":"Primary Color - Blood red. Secondary Color - Flame red.",
+        "orange":"Primary Color - Orange. Secondary Color - Black, red, and yellow.",
+        "black":"Primary Color - Black. Secondary Color - Purple.",
+        "blue":"Primary Color: Blue. Secondary Color: Aqua.",
+        "green":"Primary Color: Green. Secondary Color: Brown."
     },
     "lighting-type":{
         "ambient":"Soft, evently distributed light with no specific direction.",
