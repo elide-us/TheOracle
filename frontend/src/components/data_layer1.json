@@ -22,7 +22,8 @@
         "whimsical-and-playful": "A tone that features light-hearted colors and imaginative elements to create a fun and carefree mood.",
         "somber-and-reflective": "A tone that employs subdued colors and contemplative compositions to encourage introspection and seriousness.",
         "harsh-and-confrontational": "A tone that uses strong contrasts and bold elements to create a challenging or provocative atmosphere.",
-        "dreamlike-and-ethereal": "A tone that incorporates soft colors and blurry or floating elements to create a surreal and otherworldly feeling."
+        "dreamlike-and-ethereal": "A tone that incorporates soft colors and blurry or floating elements to create a surreal and otherworldly feeling.",
+        "gfb":"gfb"
     },
     "mood": {
         "tranquil": "A mood that conveys peace and calmness, often with serene landscapes and gentle colors.",
