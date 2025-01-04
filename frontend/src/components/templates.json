@@ -63,6 +63,16 @@
   ],
   "Portrait Focus": [
     {
+      "title":"gfb",
+      "description":"gfb",
+      "imageUrl":"https://theoraclesa.blob.core.windows.net/theoraclegpt/20250103025339_Magic%20Elf%20Bust.png",
+      "layer1":"Style: {style} Tone: {tone} Medium: {medium}",
+      "layer2":"Framing: {comp-framing} Presentation: {comp-presentation} Depth Effect: {depth}",
+      "layer3":"Palette: {palette-gfb} Shape: {shape-gfb} Details: {details} Lighting Type: {lighting-type} Lighting Source: {lighting-source}",
+      "layer4":"Subject: {subject} Outfit: {outfit} Background: {background}",
+      "input":"DO NOT PROVIDE INPUT for this prompt, only the selection of the pallete and shape."
+    },
+    {
       "title":"Magic Elf Bust",
       "description":"An elf bust in a gothic cathedral for Prism school of magic social posts.",
       "imageUrl":"https://theoraclesa.blob.core.windows.net/theoraclegpt/20250103025339_Magic%20Elf%20Bust.png",

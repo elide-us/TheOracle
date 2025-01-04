@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":4
+    },
     "solitary-human-figure": "A single person depicted alone, emphasizing solitude and introspection.",
     "group-of-characters": "Multiple characters interacting or positioned together, highlighting relationships or dynamics.",
     "animal-in-motion": "An animal captured in motion, showcasing grace, speed, or natural behavior.",
@@ -8,5 +11,6 @@
     "childlike-figure-in-a-surreal-world": "A youthful character navigating an imaginative and dream-like environment.",
     "heroic-protagonist": "A central character portrayed with traits of bravery and nobility, often leading the narrative.",
     "villain-in-shadows": "An antagonistic figure partially obscured by darkness, suggesting menace and mystery.",
-    "mysterious-silhouette": "An undefined or shadowy outline of a figure, evoking curiosity and intrigue."
+    "mysterious-silhouette": "An undefined or shadowy outline of a figure, evoking curiosity and intrigue.",
+    "gfb":"A female elf with angular, refined, and mystical features, exuding an air of elegance and quiet strength. She has a fair complexion, and her expression is calm and composed, maintaining a direct, engaging gaze toward the viewer. Her full, flowing hair frames her face softly, adding volume and balance to the composition."
 }

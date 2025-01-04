@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":4
+    },
     "flowing-robes": "Clothing characterized by long, graceful fabrics that move fluidly, suggesting elegance or mysticism.",
     "layered-armor": "Protective gear composed of multiple layers, indicating strength and readiness for battle.",
     "ethereal-gown": "Light and delicate dresses that convey a sense of otherworldliness and grace.",
@@ -8,5 +11,6 @@
     "futuristic-tech-suit": "Advanced, high-tech outfits that imply a connection to futuristic or sci-fi settings.",
     "vintage-inspired-clothing": "Apparel that draws from past fashion eras, evoking nostalgia and classic style.",
     "minimalist-uniform": "Simple and streamlined outfits that emphasize functionality and understated elegance.",
-    "patchwork-scavenger-style": "Clothing made from various fabrics and materials, reflecting resourcefulness and a makeshift aesthetic."
+    "patchwork-scavenger-style": "Clothing made from various fabrics and materials, reflecting resourcefulness and a makeshift aesthetic.",
+    "gfb":"The character is dressed in a skin tight, intricately detailed outfit featuring sparse contour tracing piping that adds accentuation and depth, creating an intense, vibrant style. The color combination should evoke warmth and energy, maintaining an otherworldly appearance without any dark or heavy shading."
 }

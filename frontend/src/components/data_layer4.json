@@ -9,7 +9,8 @@
 		"childlike-figure-in-a-surreal-world": "A youthful character navigating an imaginative and dream-like environment.",
 		"heroic-protagonist": "A central character portrayed with traits of bravery and nobility, often leading the narrative.",
 		"villain-in-shadows": "An antagonistic figure partially obscured by darkness, suggesting menace and mystery.",
-		"mysterious-silhouette": "An undefined or shadowy outline of a figure, evoking curiosity and intrigue."
+		"mysterious-silhouette": "An undefined or shadowy outline of a figure, evoking curiosity and intrigue.",
+		"gfb":"gfb"
 	},
 	"outfit": {
 		"flowing-robes": "Clothing characterized by long, graceful fabrics that move fluidly, suggesting elegance or mysticism.",
@@ -21,7 +22,8 @@
 		"futuristic-tech-suit": "Advanced, high-tech outfits that imply a connection to futuristic or sci-fi settings.",
 		"vintage-inspired-clothing": "Apparel that draws from past fashion eras, evoking nostalgia and classic style.",
 		"minimalist-uniform": "Simple and streamlined outfits that emphasize functionality and understated elegance.",
-		"patchwork-scavenger-style": "Clothing made from various fabrics and materials, reflecting resourcefulness and a makeshift aesthetic."
+		"patchwork-scavenger-style": "Clothing made from various fabrics and materials, reflecting resourcefulness and a makeshift aesthetic.",
+		"gfb":"gfb"
 	},
 	"background": {
 		"forest-clearing": "A natural setting with open space surrounded by dense trees, providing a serene or magical backdrop.",
@@ -33,7 +35,8 @@
 		"abstract-void": "A non-representational space that emphasizes emptiness or surreal elements.",
 		"starry-sky": "A night sky filled with stars, adding a celestial and expansive feel to the scene.",
 		"underground-cavern": "A subterranean space with rocky formations and dim lighting, suggesting depth and mystery.",
-		"distant-ruins": "Remnants of ancient structures far in the background, hinting at history and decay."
+		"distant-ruins": "Remnants of ancient structures far in the background, hinting at history and decay.",
+		"gfb":"gfb"
 	},
 	"foreground": {
 		"lush-vegetation": "Rich, abundant plant life in the front layer, adding depth and a sense of vitality.",

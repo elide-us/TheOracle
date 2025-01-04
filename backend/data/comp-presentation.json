@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":2
+    },
     "over-shoulder":"Frame the scene from behind a character`s shoulder to create intimacy or context.",
     "birds-eye-view":"Shoot from high above to create a sense of detachment or to highlight spatial relationships.",
     "worms-eye-view":"Shoot from below to emphasize scale, power, or vulnerability.",
@@ -12,5 +15,6 @@
     "tilt-shift":"Use selective focus and blurred edges to create the illusion of miniaturization, mimicking the shallow depth of field seen in macro photography.",
     "wide-panoramic": "A broad, sweeping view that captures expansive landscapes or large groups, emphasizing breadth and grandeur.",
     "intimate-cropped-frame": "A tightly focused framing that isolates specific parts of the subject, enhancing emotional connection.",
-    "expansive-wide-angle": "A wide-field perspective that captures a large area, often with a sense of depth and space."
+    "expansive-wide-angle": "A wide-field perspective that captures a large area, often with a sense of depth and space.",
+    "gfb":"A professional portrait of a head-and-shoulders bust, with the camera positioned at eye level for a natural, direct eyeline that conveys presence and confidence."
 }

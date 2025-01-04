@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":3
+    },
     "ambient":"Soft, evently distributed light with no specific direction.",
     "direct":"Focused, hard light casting sharp shadows.",
     "diffuse":"Soft lighting scattering evenly, reducing shadows.",
@@ -8,5 +11,6 @@
     "low-key":"Predominantly dark, high contrast, moodly lighting.",
     "high-key":"Bright, low contrast, minimal shadows.",
     "chiaroscuro":"Strong contrast between light and dark for drama.",
-    "dappled":"Light filtered through objects (ex., leaves, curtains)."
+    "dappled":"Light filtered through objects (ex., leaves, curtains).",
+    "gfb":"Diffuse, front-facing light to create an even, flattering illumination with minimal harsh shadows."
 }
