@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":3
+    },
     "natural-sunlight":"Daylight as a primary light source.",
     "moonlight":"Cooler, subtle natural light.",
     "candlelight":"Warm, flickering light with natural movement.",
@@ -8,5 +11,6 @@
     "reflective-light":"Light bounced off surfaces to soften intensity.",
     "firelight":"Warm, flickering light from flames.",
     "streetlight-sodium":"Warm, orange-yellow light creating a moody, vintage feel.",
-    "streetlight-halide":"Bright white-bluish light, offering crisp visibility and modern aestetic."
+    "streetlight-halide":"Bright white-bluish light, offering crisp visibility and modern aestetic.",
+    "gfb":"Softbox lighting for a consistent, soft light that mimics natural sunlight and enhances skin tones and texture."
 }

@@ -9,7 +9,8 @@
         "gothic": "A style that emphasizes dark, medieval elements, intricate details, and a sense of mystery or grandeur.",
         "fantasy": "A style that incorporates magical or supernatural elements, creating imaginative and otherworldly scenes.",
         "cyberpunk": "A style that blends high-tech and futuristic elements with dystopian and gritty urban settings, often featuring neon lights and advanced technology.",
-        "neo-romantic": "A style that revives Romanticism's emphasis on emotion, individualism, and nature, often with a modern twist."
+        "neo-romantic": "A style that revives Romanticism's emphasis on emotion, individualism, and nature, often with a modern twist.",
+        "gfb":"gfb"
     },
     "tone": {
         "dark-and-muted": "A tone that uses subdued colors and shadows to create a somber or serious atmosphere.",
@@ -46,6 +47,7 @@
         "pastel": "A medium using soft, stick-like pigments, known for their vibrant colors and ability to create soft, blended effects.",
         "mixed-media": "A medium that combines multiple materials and techniques, allowing for diverse textures and layered effects.",
         "rendering": "A digital medium that creates three-dimensional images using software, allowing for detailed and realistic visualizations.",
-		"photography":"A medium for capturing live images with digital or analog film and lenses."
+		"photography":"A medium for capturing live images with digital or analog film and lenses.",
+        "gfb":"gfb"
     }
 }

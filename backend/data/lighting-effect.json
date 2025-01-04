@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":3
+    },
     "soft-diffusion":"Gentle blending of light and shadow.",
     "harsh-shadows":"Sharp, high-contrast shadows.",
     "warm-glow":"Golden or reddish light creating cozy warmth.",

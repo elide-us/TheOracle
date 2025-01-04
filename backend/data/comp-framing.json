@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":2
+    },
     "rule-of-thirds":"Divide the frame into a 3x3 grid and place key elements along the lines or intersections.",
     "central-framing":"Place the subject in the center of the frame for symmetry or to create a sense of power, isolation, or intensity.",
     "fibonacci-grid":"Use proportions derived from the Fibonacci sequemce to create a harmonious composition (1:1.618)",
@@ -12,5 +15,6 @@
     "silhouetted-figures":"Use darkened foreground figures against a lit background to hightlight scale and drama.",
     "negative-space":"Emphaize the subject by surrounding it with empty or neutral space for minimalism or to convey loneliness or focus.",
     "off-balance":"Place the subject off-center with extra weight on one side for tension or unease.",
-    "asymmetry":"Create visual interest by deliberately breaking symmetry while maintaining balance in the composition."
+    "asymmetry":"Create visual interest by deliberately breaking symmetry while maintaining balance in the composition.",
+    "gfb":"The subject is positioned prominently in the foreground, with a deep, open space extending behind them. The background features expansive yet defined boundaries evoking grand settings."
 }

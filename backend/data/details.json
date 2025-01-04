@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":3
+    },
     "intricate-patterns":"Include finely detailed patterns like filigree, brocade, or fractals, enhancing the complexity and visual depth of the subject.",
     "subtle-textures":"Incorporate faint textures like brushed metal, soft fabric weaves, or delicate grain to add realism and tactile appeal.",
     "sharp-focus-small-objects":"Highlight small objects or details in sharp focus to draw attention to their intricate design and craftsmanship.",
@@ -13,5 +16,6 @@
     "ethereal-glows":"Introduce soft, luminous glows around objects to evoke a sense of mystique and wonder.",
     "organic-flourish":"Add elements like creeping vines, blooming flowers, or branching patterns to infuse the design with life and movement.",
     "fine-engraving":"Include intricate engravings or etchings to add depth and a handcrafted aesthetic to the surfaces.",
-    "artisan-glasswork":"Showcase details like solder lines, air bubbles, and uneven textures in stained glass for a crafted, tactile feel."
+    "artisan-glasswork":"Showcase details like solder lines, air bubbles, and uneven textures in stained glass for a crafted, tactile feel.",
+    "gfb":"Metallic, foil-like highlights in secondary colors and defined shapes should accentuate the base surfaces of the outfit."
 }

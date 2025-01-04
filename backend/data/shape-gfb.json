@@ -1,9 +1,12 @@
 {
-    "white":"Circle.",
-    "yellow":"Saw Wave.",
-    "red":"Line.",
-    "orange":"Crescent.",
-    "black":"Chevron.",
-    "blue":"Sine Wave",
-    "green":"Cyclone."
+    "desc":{
+        "layer":3
+    },
+    "white":"Circles and rings, perfectly round things.",
+    "yellow":"Saw wave, lightning bolt, zig-zag.",
+    "red":"Straight line edge box.",
+    "orange":"Crescent, curves, convex.",
+    "black":"Chevron, spike, v.",
+    "blue":"Sine wave, ocean wave, frequency.",
+    "green":"Cyclone, spiral, rotating spiral."
 }

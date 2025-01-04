@@ -79,7 +79,8 @@
         "low-key":"Predominantly dark, high contrast, moodly lighting.",
         "high-key":"Bright, low contrast, minimal shadows.",
         "chiaroscuro":"Strong contrast between light and dark for drama.",
-        "dappled":"Light filtered through objects (ex., leaves, curtains)."
+        "dappled":"Light filtered through objects (ex., leaves, curtains).",
+        "gfb":"gfb"
     },
     "lighting-source":{
         "natural-sunlight":"Daylight as a primary light source.",
@@ -91,7 +92,8 @@
         "reflective-light":"Light bounced off surfaces to soften intensity.",
         "firelight":"Warm, flickering light from flames.",
         "streetlight-sodium":"Warm, orange-yellow light creating a moody, vintage feel.",
-        "streetlight-halide":"Bright white-bluish light, offering crisp visibility and modern aestetic."
+        "streetlight-halide":"Bright white-bluish light, offering crisp visibility and modern aestetic.",
+        "gfb":"gfb"
     },
     "lighting-effect":{
         "soft-diffusion":"Gentle blending of light and shadow.",
@@ -119,6 +121,7 @@
         "ethereal-glows":"Introduce soft, luminous glows around objects to evoke a sense of mystique and wonder.",
         "organic-flourish":"Add elements like creeping vines, blooming flowers, or branching patterns to infuse the design with life and movement.",
         "fine-engraving":"Include intricate engravings or etchings to add depth and a handcrafted aesthetic to the surfaces.",
-        "artisan-glasswork":"Showcase details like solder lines, air bubbles, and uneven textures in stained glass for a crafted, tactile feel."    
+        "artisan-glasswork":"Showcase details like solder lines, air bubbles, and uneven textures in stained glass for a crafted, tactile feel.",
+        "gfb":"gfb"
     }
 }

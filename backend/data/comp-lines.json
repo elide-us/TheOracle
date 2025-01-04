@@ -1,4 +1,7 @@
 {
+    "desc":{
+        "layer":2
+    },
     "leading-lines":"Use natural or artificial lines (roads, rivers, architecture) to guide the viewer's eye towards the subject or through the scene.",
     "diagonal-composition":"Arrange elements along diagonal lines to create dynamism, tension, or motion.",
     "one-point":"All lines converge toward a single vanishing point, often used for symmetry or depth.",
