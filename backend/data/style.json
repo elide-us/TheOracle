@@ -1,16 +1,39 @@
 {
     "desc":{
-        "layer":1
+        "layer":1,
+        "keytext":"style"
     },
-    "realism": "A style that aims to depict subjects accurately and truthfully, without idealization or distortion, focusing on detail and lifelike representation.",
-    "impressionism": "A style characterized by small, thin brush strokes and an emphasis on the accurate depiction of light and its changing qualities.",
-    "abstract": "A style that uses shapes, colors, forms, and gestural marks to achieve its effect rather than depicting objects realistically.",
-    "surrealism": "A style that seeks to channel the unconscious to unlock the power of the imagination, often featuring dream-like and fantastical imagery.",
-    "expressionism": "A style that presents the world from a subjective perspective, distorting it for emotional effect to evoke moods or ideas.",
-    "minimalism": "A style that employs simplicity and focuses on the essentials of form and color, often characterized by a lack of detail.",
-    "gothic": "A style that emphasizes dark, medieval elements, intricate details, and a sense of mystery or grandeur.",
-    "fantasy": "A style that incorporates magical or supernatural elements, creating imaginative and otherworldly scenes.",
-    "cyberpunk": "A style that blends high-tech and futuristic elements with dystopian and gritty urban settings, often featuring neon lights and advanced technology.",
-    "neo-romantic": "A style that revives Romanticism's emphasis on emotion, individualism, and nature, often with a modern twist.",
-    "gfb":"Capture lifelike detail, enhancing the subject`s features to reflect an idealized magical essence. Emphasize the gracy, beauty and perfection of legendary elven royalty. Focus on refined, subtle idealization to achieve a hyper-detailed look."
+    "realism":{
+        "private":"A style that aims to depict subjects accurately and truthfully, without idealization or distortion, focusing on detail and lifelike representation."
+    },
+    "impressionism":{
+        "private":"A style characterized by small, thin brush strokes and an emphasis on the accurate depiction of light and its changing qualities."
+    },
+    "abstract":{
+        "private":"A style that uses shapes, colors, forms, and gestural marks to achieve its effect rather than depicting objects realistically."
+    },
+    "surrealism":{
+        "private":"A style that seeks to channel the unconscious to unlock the power of the imagination, often featuring dream-like and fantastical imagery."
+    },
+    "expressionism":{
+        "private":"A style that presents the world from a subjective perspective, distorting it for emotional effect to evoke moods or ideas."
+    },
+    "minimalism":{
+        "private":"A style that employs simplicity and focuses on the essentials of form and color, often characterized by a lack of detail."
+    },
+    "gothic":{
+        "private":"A style that emphasizes dark, medieval elements, intricate details, and a sense of mystery or grandeur."
+    },
+    "fantasy":{
+        "private":"A style that incorporates magical or supernatural elements, creating imaginative and otherworldly scenes."
+    },
+    "cyberpunk":{
+        "private":"A style that blends high-tech and futuristic elements with dystopian and gritty urban settings, often featuring neon lights and advanced technology."
+    },
+    "neo-romantic":{
+        "private":"A style that revives Romanticism's emphasis on emotion, individualism, and nature, often with a modern twist."
+    },
+    "gfb":{
+        "private":"Capture lifelike detail, enhancing the subject`s features to reflect an idealized magical essence. Emphasize the gracy, beauty and perfection of legendary elven royalty. Focus on refined, subtle idealization to achieve a hyper-detailed look."
+    }
 }

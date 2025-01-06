@@ -1,20 +1,51 @@
 {
     "desc":{
-        "layer":3
+        "layer":3,
+        "keytext":"palette-indoor"
     },
-    "gothic-noir": "Velvety and heavy, with stark contrasts between darkness and highlights.",
-    "high-key-minimalism": "Smooth and polished, with subtle matte surfaces emphasizing simplicity.",
-    "vintage-pastels": "Soft and worn, with a powdery appearance reminiscent of old wallpaper.",
-    "bohemian-warmth": "Layered and textured, evoking cozy fabrics and well-worn furniture.",
-    "sepia-nostalgia": "Grainy and aged, mimicking old photographs or antique wood.",
-    "baroque-elegance": "Ornate and polished, evoking carved details and sumptuous materials.",
-    "industrial-grunge": "Rough and distressed, with finishes like aged steel or concrete.",
-    "candlelit-warmth": "Soft and flickering, mimicking candlelight.",
-    "library-quiet": "Matte and subdued, reminiscent of old books.",
-    "evening-glow": "Smooth and soft, with gradients mimicking fading daylight.",
-    "art-deco-chic": "Sleek and polished, with a reflective sheen.",
-    "rustic-farmhouse": "Rough and textured, with wood grain and matte finishes.",
-    "velvet-opulence": "Plush and soft, evoking velvet and fine upholstery.",
-    "monochrome-drama": "Clean and sharp, with smooth surfaces and edges.",
-    "earthy-hearth": "Natural and textured, reminiscent of clay and stone."
+    "gothic-noir":{
+        "private":"Velvety and heavy, with stark contrasts between darkness and highlights."
+    },
+    "high-key-minimalism":{
+        "private":"Smooth and polished, with subtle matte surfaces emphasizing simplicity."
+    },
+    "vintage-pastels":{
+        "private":"Soft and worn, with a powdery appearance reminiscent of old wallpaper."
+    },
+    "bohemian-warmth":{
+        "private":"Layered and textured, evoking cozy fabrics and well-worn furniture."
+    },
+    "sepia-nostalgia":{
+        "private":"Grainy and aged, mimicking old photographs or antique wood."
+    },
+    "baroque-elegance":{
+        "private":"Ornate and polished, evoking carved details and sumptuous materials."
+    },
+    "industrial-grunge":{
+        "private":"Rough and distressed, with finishes like aged steel or concrete."
+    },
+    "candlelit-warmth":{
+        "private":"Soft and flickering, mimicking candlelight."
+    },
+    "library-quiet":{
+        "private":"Matte and subdued, reminiscent of old books."
+    },
+    "evening-glow":{
+        "private":"Smooth and soft, with gradients mimicking fading daylight."
+    },
+    "art-deco-chic":{
+        "private":"Sleek and polished, with a reflective sheen."
+    },
+    "rustic-farmhouse":{
+        "private":"Rough and textured, with wood grain and matte finishes."
+    },
+    "velvet-opulence":{
+        "private":"Plush and soft, evoking velvet and fine upholstery."
+    },
+    "monochrome-drama":{
+        "private":"Clean and sharp, with smooth surfaces and edges."
+    },
+    "earthy-hearth":{
+        "private":"Natural and textured, reminiscent of clay and stone."
+    }
 }

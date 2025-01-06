@@ -2,11 +2,25 @@
     "desc":{
         "layer":3
     },
-    "white":"Circles and rings, perfectly round things.",
-    "yellow":"Saw wave, lightning bolt, zig-zag.",
-    "red":"Straight line edge box.",
-    "orange":"Crescent, curves, convex.",
-    "black":"Chevron, spike, v.",
-    "blue":"Sine wave, ocean wave, frequency.",
-    "green":"Cyclone, spiral, rotating spiral."
+    "white":{
+        "private":"Circles and rings, perfectly round things."
+    },
+    "yellow":{
+        "private":"Saw wave, lightning bolt, zig-zag."
+    },
+    "red":{
+        "private":"Straight line edge box."
+    },
+    "orange":{
+        "private":"Crescent, curves, convex."
+    },
+    "black":{
+        "private":"Chevron, spike, thorn, valley."
+    },
+    "blue":{
+        "private":"Sine wave, ocean wave, frequency."
+    },
+    "green":{
+        "private":"Cyclone, spiral, rotating spiral, twisting vines."
+    }
 }

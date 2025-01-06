@@ -2,11 +2,25 @@
     "desc":{
         "layer":2
     },
-    "leading-lines":"Use natural or artificial lines (roads, rivers, architecture) to guide the viewer's eye towards the subject or through the scene.",
-    "diagonal-composition":"Arrange elements along diagonal lines to create dynamism, tension, or motion.",
-    "one-point":"All lines converge toward a single vanishing point, often used for symmetry or depth.",
-    "two-point":"Two vanishing points create a sense of width and depth, commly used in architectural shots.",
-    "repetition-pattern":"Use recurring shapes, lines, or textures to create a rythm, with or without a break for emphasis.",
-    "s-curve":"Lead the viewer's sys with a winding path or shape, often assiciated with elegance or flow.",
-    "golden-triangle":"Divide the frame into triangles using diagonal lines and arrange subjects along these lines."
+    "leading-lines":{
+        "private":"Use natural or artificial lines (roads, rivers, architecture) to guide the viewer's eye towards the subject or through the scene."
+    },
+    "diagonal-composition":{
+        "private":"Arrange elements along diagonal lines to create dynamism, tension, or motion."
+    },
+    "one-point":{
+        "private":"All lines converge toward a single vanishing point, often used for symmetry or depth."
+    },
+    "two-point":{
+        "private":"Two vanishing points create a sense of width and depth, commly used in architectural shots."
+    },
+    "repetition-pattern":{
+        "private":"Use recurring shapes, lines, or textures to create a rythm, with or without a break for emphasis."
+    },
+    "s-curve":{
+        "private":"Lead the viewer's sys with a winding path or shape, often assiciated with elegance or flow."
+    },
+    "golden-triangle":{
+        "private":"Divide the frame into triangles using diagonal lines and arrange subjects along these lines."
+    }
 }

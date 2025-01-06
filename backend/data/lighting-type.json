@@ -2,15 +2,37 @@
     "desc":{
         "layer":3
     },
-    "ambient":"Soft, evently distributed light with no specific direction.",
-    "direct":"Focused, hard light casting sharp shadows.",
-    "diffuse":"Soft lighting scattering evenly, reducing shadows.",
-    "backlit":"Light source behind the subject, creating silhouettes or halos.",
-    "side-lit":"Light from the side, emphasizing depth and texture.",
-    "top-lit":"Overhead light, creating dramatic shadows below.",
-    "low-key":"Predominantly dark, high contrast, moodly lighting.",
-    "high-key":"Bright, low contrast, minimal shadows.",
-    "chiaroscuro":"Strong contrast between light and dark for drama.",
-    "dappled":"Light filtered through objects (ex., leaves, curtains).",
-    "gfb":"Diffuse, front-facing light to create an even, flattering illumination with minimal harsh shadows."
+    "ambient":{
+        "private":"Soft, evently distributed light with no specific direction."
+    },
+    "direct":{
+        "private":"Focused, hard light casting sharp shadows."
+    },
+    "diffuse":{
+        "private":"Soft lighting scattering evenly, reducing shadows."
+    },
+    "backlit":{
+        "private":"Light source behind the subject, creating silhouettes or halos."
+    },
+    "side-lit":{
+        "private":"Light from the side, emphasizing depth and texture."
+    },
+    "top-lit":{
+        "private":"Overhead light, creating dramatic shadows below."
+    },
+    "low-key":{
+        "private":"Predominantly dark, high contrast, moodly lighting."
+    },
+    "high-key":{
+        "private":"Bright, low contrast, minimal shadows."
+    },
+    "chiaroscuro":{
+        "private":"Strong contrast between light and dark for drama."
+    },
+    "dappled":{
+        "private":"Light filtered through objects (ex., leaves, curtains)."
+    },
+    "gfb":{
+        "private":"Diffuse, front-facing light to create an even, flattering illumination with minimal harsh shadows."
+    }
 }

@@ -2,20 +2,52 @@
     "desc":{
         "layer":3
     },
-    "intricate-patterns":"Include finely detailed patterns like filigree, brocade, or fractals, enhancing the complexity and visual depth of the subject.",
-    "subtle-textures":"Incorporate faint textures like brushed metal, soft fabric weaves, or delicate grain to add realism and tactile appeal.",
-    "sharp-focus-small-objects":"Highlight small objects or details in sharp focus to draw attention to their intricate design and craftsmanship.",
-    "decorative-accents":"Add ornate and artistic accents such as carvings, embroidery, or gilded trims for a sophisticated touch.",
-    "geometric-shapes":"Use clean and precise geometric shapes like polygons, grids, or tessellations to create structured visual balance.",
-    "weathered-worn-surfaces":"Depict surfaces with signs of age or wear, such as scratches, patina, or faded finishes for authenticity.",
-    "shimmering-highlights":"Incorporate glimmering or reflective highlights to emphasize light interaction and create a luminous effect.",
-    "reflections-mirrored-surfaces":"Include reflective or mirrored surfaces capturing surrounding elements for dynamic and layered visual impact.",
-    "organic-forms":"Blend natural, flowing shapes inspired by plants, waves, or curves to introduce a sense of harmony and movement.",
-    "tactile-surfaces":"Portray surfaces with touchable qualities, such as velvet softness, gritty roughness, or glossy smoothness.",
-    "artistic-flourishes":"Incorporate whimsical or creative touches, such as abstract brushstrokes or surreal elements, for a unique aesthetic.",
-    "ethereal-glows":"Introduce soft, luminous glows around objects to evoke a sense of mystique and wonder.",
-    "organic-flourish":"Add elements like creeping vines, blooming flowers, or branching patterns to infuse the design with life and movement.",
-    "fine-engraving":"Include intricate engravings or etchings to add depth and a handcrafted aesthetic to the surfaces.",
-    "artisan-glasswork":"Showcase details like solder lines, air bubbles, and uneven textures in stained glass for a crafted, tactile feel.",
-    "gfb":"Metallic, foil-like highlights in secondary colors and defined shapes should accentuate the base surfaces of the outfit."
+    "intricate-patterns":{
+        "private":"Include finely detailed patterns like filigree, brocade, or fractals, enhancing the complexity and visual depth of the subject."
+    },
+    "subtle-textures":{
+        "private":"Incorporate faint textures like brushed metal, soft fabric weaves, or delicate grain to add realism and tactile appeal."
+    },
+    "sharp-focus-small-objects":{
+        "private":"Highlight small objects or details in sharp focus to draw attention to their intricate design and craftsmanship."
+    },
+    "decorative-accents":{
+        "private":"Add ornate and artistic accents such as carvings, embroidery, or gilded trims for a sophisticated touch."
+    },
+    "geometric-shapes":{
+        "private":"Use clean and precise geometric shapes like polygons, grids, or tessellations to create structured visual balance."
+    },
+    "weathered-worn-surfaces":{
+        "private":"Depict surfaces with signs of age or wear, such as scratches, patina, or faded finishes for authenticity."
+    },
+    "shimmering-highlights":{
+        "private":"Incorporate glimmering or reflective highlights to emphasize light interaction and create a luminous effect."
+    },
+    "reflections-mirrored-surfaces":{
+        "private":"Include reflective or mirrored surfaces capturing surrounding elements for dynamic and layered visual impact."
+    },
+    "organic-forms":{
+        "private":"Blend natural, flowing shapes inspired by plants, waves, or curves to introduce a sense of harmony and movement."
+    },
+    "tactile-surfaces":{
+        "private":"Portray surfaces with touchable qualities, such as velvet softness, gritty roughness, or glossy smoothness."
+    },
+    "artistic-flourishes":{
+        "private":"Incorporate whimsical or creative touches, such as abstract brushstrokes or surreal elements, for a unique aesthetic."
+    },
+    "ethereal-glows":{
+        "private":"Introduce soft, luminous glows around objects to evoke a sense of mystique and wonder."
+    },
+    "organic-flourish":{
+        "private":"Add elements like creeping vines, blooming flowers, or branching patterns to infuse the design with life and movement."
+    },
+    "fine-engraving":{
+        "private":"Include intricate engravings or etchings to add depth and a handcrafted aesthetic to the surfaces."
+    },
+    "artisan-glasswork":{
+        "private":"Showcase details like solder lines, air bubbles, and uneven textures in stained glass for a crafted, tactile feel."
+    },
+    "gfb":{
+        "private":"Metallic, foil-like highlights in secondary colors and defined shapes should accentuate the base surfaces of the outfit."
+    }
 }

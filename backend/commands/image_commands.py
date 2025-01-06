@@ -33,7 +33,8 @@ async def get_elements(selected_keys: Dict[str, str]) -> Dict[str, str]:
         if value not in data:
             raise ValueError(f"Key '{value}' not found in '{file_path}'.")
         
-        description = data[value]
+        element = data[value]
+        description = element.get("private")
         
         if not isinstance(description, str):
             raise ValueError(f"Invalid data for key '{value}' in '{file_path}': Expected a string description.")

@@ -2,16 +2,40 @@
     "desc":{
         "layer":1
     },
-    "watercolor": "A medium known for its translucent and fluid qualities, allowing colors to blend softly and create ethereal effects.",
-    "oil-painting": "A medium that uses oil-based pigments, known for their rich colors, texture, and slow drying time, allowing for detailed blending.",
-    "digital-sketch": "A medium involving digital tools to create preliminary drawings or detailed illustrations, offering flexibility and precision.",
-    "pencil-graphite": "A traditional medium using graphite pencils, known for its versatility in creating fine lines, shading, and detailed drawings.",
-    "charcoal": "A medium using charred organic materials, known for its rich blacks and ability to create dramatic contrasts and textures.",
-    "ink-and-wash": "A medium that combines ink drawing with watercolor-like washes, allowing for both bold lines and subtle shading.",
-    "acrylic": "A fast-drying medium that uses water-based paints, known for its versatility and ability to mimic both oil and watercolor textures.",
-    "pastel": "A medium using soft, stick-like pigments, known for their vibrant colors and ability to create soft, blended effects.",
-    "mixed-media": "A medium that combines multiple materials and techniques, allowing for diverse textures and layered effects.",
-    "rendering": "A digital medium that creates three-dimensional images using software, allowing for detailed and realistic visualizations.",
-    "photography":"A medium for capturing live images with digital or analog film and lenses.",
-    "gfb":"Studio portrait photography captured with a 50mm lens, simulating professional glam shot photography with natural bokeh and realistic skin diffusion for a hyper-realistic, lifelike appearance."
+    "watercolor":{
+        "private":"A medium known for its translucent and fluid qualities, allowing colors to blend softly and create ethereal effects."
+    },
+    "oil-painting":{
+        "private":"A medium that uses oil-based pigments, known for their rich colors, texture, and slow drying time, allowing for detailed blending."
+    },
+    "digital-sketch":{
+        "private":"A medium involving digital tools to create preliminary drawings or detailed illustrations, offering flexibility and precision."
+    },
+    "pencil-graphite":{
+        "private":"A traditional medium using graphite pencils, known for its versatility in creating fine lines, shading, and detailed drawings."
+    },
+    "charcoal":{
+        "private":"A medium using charred organic materials, known for its rich blacks and ability to create dramatic contrasts and textures."
+    },
+    "ink-and-wash":{
+        "private":"A medium that combines ink drawing with watercolor-like washes, allowing for both bold lines and subtle shading."
+    },
+    "acrylic":{
+        "private":"A fast-drying medium that uses water-based paints, known for its versatility and ability to mimic both oil and watercolor textures."
+    },
+    "pastel":{
+        "private":"A medium using soft, stick-like pigments, known for their vibrant colors and ability to create soft, blended effects."
+    },
+    "mixed-media":{
+        "private":"A medium that combines multiple materials and techniques, allowing for diverse textures and layered effects."
+    },
+    "rendering":{
+        "private":"A digital medium that creates three-dimensional images using software, allowing for detailed and realistic visualizations."
+    },
+    "photography":{
+        "private":"A medium for capturing live images with digital or analog film and lenses."
+    },
+    "gfb":{
+        "private":"Studio portrait photography captured with a 50mm lens, simulating professional glam shot photography with natural bokeh and realistic skin diffusion for a hyper-realistic, lifelike appearance."
+    }
 }

@@ -2,15 +2,37 @@
     "desc":{
         "layer":3
     },
-    "natural-sunlight":"Daylight as a primary light source.",
-    "moonlight":"Cooler, subtle natural light.",
-    "candlelight":"Warm, flickering light with natural movement.",
-    "softbox":"Diffused artificial light for smooth highlights.",
-    "spotlight":"Focused, intense light on a specific subject.",
-    "ring-light":"Even, circular light often used for portraits.",
-    "reflective-light":"Light bounced off surfaces to soften intensity.",
-    "firelight":"Warm, flickering light from flames.",
-    "streetlight-sodium":"Warm, orange-yellow light creating a moody, vintage feel.",
-    "streetlight-halide":"Bright white-bluish light, offering crisp visibility and modern aestetic.",
-    "gfb":"Softbox lighting for a consistent, soft light that mimics natural sunlight and enhances skin tones and texture."
+    "natural-sunlight":{
+        "private":"Daylight as a primary light source."
+    },
+    "moonlight":{
+        "private":"Cooler, subtle natural light."
+    },
+    "candlelight":{
+        "private":"Warm, flickering light with natural movement."
+    },
+    "softbox":{
+        "private":"Diffused artificial light for smooth highlights."
+    },
+    "spotlight":{
+        "private":"Focused, intense light on a specific subject."
+    },
+    "ring-light":{
+        "private":"Even, circular light often used for portraits."
+    },
+    "reflective-light":{
+        "private":"Light bounced off surfaces to soften intensity."
+    },
+    "firelight":{
+        "private":"Warm, flickering light from flames."
+    },
+    "streetlight-sodium":{
+        "private":"Warm, orange-yellow light creating a moody, vintage feel."
+    },
+    "streetlight-halide":{
+        "private":"Bright white-bluish light, offering crisp visibility and modern aestetic."
+    },
+    "gfb":{
+        "private":"Softbox lighting for a consistent, soft light that mimics natural sunlight and enhances skin tones and texture."
+    }
 }
