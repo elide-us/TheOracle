@@ -14,7 +14,7 @@
 		"negative-space":"Emphaize the subject by surrounding it with empty or neutral space for minimalism or to convey loneliness or focus.",
 		"off-balance":"Place the subject off-center with extra weight on one side for tension or unease.",
 		"asymmetry":"Create visual interest by deliberately breaking symmetry while maintaining balance in the composition.",
-		"gfb":"gfb"
+		"gfb":"A professional bust photo."
 	},
 	"comp-presentation":{
 		"over-shoulder":"Frame the scene from behind a character`s shoulder to create intimacy or context.",
@@ -31,7 +31,7 @@
         "wide-panoramic": "A broad, sweeping view that captures expansive landscapes or large groups, emphasizing breadth and grandeur.",
         "intimate-cropped-frame": "A tightly focused framing that isolates specific parts of the subject, enhancing emotional connection.",
         "expansive-wide-angle": "A wide-field perspective that captures a large area, often with a sense of depth and space.",
-		"gfb":"gfb"
+		"gfb":"Eye-level camera."
 	},
 	"comp-lines":{
 		"leading-lines":"Use natural or artificial lines (roads, rivers, architecture) to guide the viewer's eye towards the subject or through the scene.",
@@ -53,6 +53,6 @@
         "negative-space-midground": "A composition that incorporates vast empty areas in the middle layer, drawing attention to foreground and background.",
         "tight-foreground-distant-background": "A scene where the foreground is closely framed, and the background appears distant, enhancing spatial separation.",
         "blurred-midground-for-transitions": "A technique where the middle layer is softly blurred, providing a gentle transition between foreground and background.",
-		"gfb":"gfb"
+		"gfb":"Blurred background."
     }
 }
