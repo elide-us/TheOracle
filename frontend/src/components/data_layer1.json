@@ -10,7 +10,7 @@
         "fantasy": "A style that incorporates magical or supernatural elements, creating imaginative and otherworldly scenes.",
         "cyberpunk": "A style that blends high-tech and futuristic elements with dystopian and gritty urban settings, often featuring neon lights and advanced technology.",
         "neo-romantic": "A style that revives Romanticism's emphasis on emotion, individualism, and nature, often with a modern twist.",
-        "gfb":"gfb"
+        "gfb":"A photograph."
     },
     "tone": {
         "dark-and-muted": "A tone that uses subdued colors and shadows to create a somber or serious atmosphere.",
@@ -23,7 +23,7 @@
         "somber-and-reflective": "A tone that employs subdued colors and contemplative compositions to encourage introspection and seriousness.",
         "harsh-and-confrontational": "A tone that uses strong contrasts and bold elements to create a challenging or provocative atmosphere.",
         "dreamlike-and-ethereal": "A tone that incorporates soft colors and blurry or floating elements to create a surreal and otherworldly feeling.",
-        "gfb":"gfb"
+        "gfb":"Professional."
     },
     "mood": {
         "tranquil": "A mood that conveys peace and calmness, often with serene landscapes and gentle colors.",
@@ -49,6 +49,25 @@
         "mixed-media": "A medium that combines multiple materials and techniques, allowing for diverse textures and layered effects.",
         "rendering": "A digital medium that creates three-dimensional images using software, allowing for detailed and realistic visualizations.",
 		"photography":"A medium for capturing live images with digital or analog film and lenses.",
-        "gfb":"gfb"
+        "gfb":"Photography in front of an open, blurred background."
+    },
+    "technique": {
+        "wet-brushwork":"A technique that uses wet paint on wet surfaces, creating soft, blended transitions and organic flow.",
+        "dry-brushwork":"A method using a dry brush with minimal paint, creating a scratchy, textured effect with visible strokes.",
+        "impasto":"A painting technique where paint is applied thickly, creating a three-dimensional, textured surface.",
+        "smooth-blending":"A technique that focuses on seamless transitions between colors or tones, often used for a polished, realistic look.",
+        "layering":"The process of building an image through multiple layers of color, texture, or detail, adding depth and richness.",
+        "sketch-like":"A technique that emphasizes rough, loose lines and an unfinished, hand-drawn quality.",
+        "fine-detailing":"A precision-focused technique that highlights intricate, small details to enhance realism or texture.",
+        "cross-hatching":"A drawing technique using intersecting lines to create shading, texture, and depth.",
+        "photographic-depth":"A digital or photographic technique that mimics realistic depth of field, using focus and blur to enhance depth.",
+        "matte-finish":"A technique that results in a flat, non-reflective appearance, often with a soft, muted look.",
+        "glossy-finish":"A technique that gives a shiny, reflective appearance, emphasizing light and highlights.",
+        "grainy-texture":"A technique that adds a subtle, visible grain to the image, often used in photography and digital art.",
+        "airbrushing":"A method that uses soft, gradual shading to create smooth transitions and highlights, often used in portraiture.",
+        "etching":"A technique that mimics engraved lines, creating fine, detailed linework with a tactile quality.",
+        "painterly":"A style that leaves visible brushstrokes, giving the image a handcrafted, artistic appearance.",
+        "block-print-style":"A technique resembling traditional woodblock printing, with bold lines and flat areas of color.",
+        "smudging":"A method of blending colors or shading by smearing or rubbing, often creating soft, diffuse edges."
     }
 }

@@ -62,12 +62,12 @@
     },
     "shape-gfb":{
         "white":"Circle.",
-        "yellow":"Saw Wave.",
+        "yellow":"Bolt.",
         "red":"Line.",
         "orange":"Crescent.",
         "black":"Chevron.",
-        "blue":"Sine Wave",
-        "green":"Cyclone."
+        "blue":"Wave",
+        "green":"Spiral."
     },
     "lighting-type":{
         "ambient":"Soft, evently distributed light with no specific direction.",
@@ -80,7 +80,7 @@
         "high-key":"Bright, low contrast, minimal shadows.",
         "chiaroscuro":"Strong contrast between light and dark for drama.",
         "dappled":"Light filtered through objects (ex., leaves, curtains).",
-        "gfb":"gfb"
+        "gfb":"Professional softbox lighting."
     },
     "lighting-source":{
         "natural-sunlight":"Daylight as a primary light source.",
@@ -93,7 +93,7 @@
         "firelight":"Warm, flickering light from flames.",
         "streetlight-sodium":"Warm, orange-yellow light creating a moody, vintage feel.",
         "streetlight-halide":"Bright white-bluish light, offering crisp visibility and modern aestetic.",
-        "gfb":"gfb"
+        "gfb":"Front-lit."
     },
     "lighting-effect":{
         "soft-diffusion":"Gentle blending of light and shadow.",
@@ -122,6 +122,6 @@
         "organic-flourish":"Add elements like creeping vines, blooming flowers, or branching patterns to infuse the design with life and movement.",
         "fine-engraving":"Include intricate engravings or etchings to add depth and a handcrafted aesthetic to the surfaces.",
         "artisan-glasswork":"Showcase details like solder lines, air bubbles, and uneven textures in stained glass for a crafted, tactile feel.",
-        "gfb":"gfb"
+        "gfb":"Piping and find details on outfit."
     }
 }

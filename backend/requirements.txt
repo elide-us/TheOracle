@@ -7,3 +7,4 @@ lumaai
 azure-storage-blob
 aiofiles
 python-dotenv
+asyncpg
