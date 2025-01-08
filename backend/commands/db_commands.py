@@ -31,10 +31,9 @@ async def db_get_public(conn):
   return result_dict
 
 
-async def get_public_template(id, pool):
-  async with pool.acquire() as conn:
-    match id:
-      case 0:
-        return db_get_public(conn)
-      case _:
-        return None
+async def get_public_template(id, conn):
+  match id:
+    case 0:
+      return db_get_public(conn)
+    case _:
+      return None
