@@ -108,6 +108,7 @@ async def generate_and_upload_image(app, bot, template_key: str, selected_keys: 
         completion = await openai_client.images.generate(
             model="dall-e-3",
             prompt=prompt_text,
+            style="vivid",
             size="1792x1024",
             n=1
         )
