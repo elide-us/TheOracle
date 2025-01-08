@@ -1,15 +1,36 @@
 {
     "desc":{
-        "layer":1
+        "layer":1,
+        "keytext":"mood"
     },
-    "tranquil": "A mood that conveys peace and calmness, often with serene landscapes and gentle colors.",
-    "tense": "A mood that creates a sense of anxiety or anticipation, using sharp lines and contrasting elements.",
-    "joyful": "A mood that exudes happiness and positivity, featuring bright colors and lively compositions.",
-    "mysterious": "A mood that evokes curiosity and intrigue, often using shadowy or ambiguous elements.",
-    "nostalgic": "A mood that reflects longing for the past, with vintage colors and sentimental imagery.",
-    "awe-struck": "A mood that inspires wonder and amazement, often through grand or stunning visuals.",
-    "exuberant": "A mood that is full of energy and excitement, with vibrant colors and dynamic compositions.",
-    "suspenseful": "A mood that builds anticipation and uncertainty, using dark tones and dramatic lighting.",
-    "ominous": "A mood that suggests something bad is going to happen, often with dark, foreboding elements.",
-    "hopeful": "A mood that conveys optimism and positivity, with uplifting colors and inspiring imagery."
+    "tranquil":{
+        "private":"A mood that conveys peace and calmness, often with serene landscapes and gentle colors."
+    },
+    "tense":{
+        "private":"A mood that creates a sense of anxiety or anticipation, using sharp lines and contrasting elements."
+    },
+    "joyful":{
+        "private":"A mood that exudes happiness and positivity, featuring bright colors and lively compositions."
+    },
+    "mysterious":{
+        "private":"A mood that evokes curiosity and intrigue, often using shadowy or ambiguous elements."
+    },
+    "nostalgic":{
+        "private":"A mood that reflects longing for the past, with vintage colors and sentimental imagery."
+    },
+    "awe-struck":{
+        "private":"A mood that inspires wonder and amazement, often through grand or stunning visuals."
+    },
+    "exuberant":{
+        "private":"A mood that is full of energy and excitement, with vibrant colors and dynamic compositions."
+    },
+    "suspenseful":{
+        "private":"A mood that builds anticipation and uncertainty, using dark tones and dramatic lighting."
+    },
+    "ominous":{
+        "private":"A mood that suggests something bad is going to happen, often with dark, foreboding elements."
+    },
+    "hopeful":{
+        "private":"A mood that conveys optimism and positivity, with uplifting colors and inspiring imagery."
+    }
 }

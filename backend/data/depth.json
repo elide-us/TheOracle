@@ -2,15 +2,37 @@
     "desc":{
         "layer":2
     },
-    "strong-foreground-blurred-background": "A composition that highlights the foreground subject sharply while the background is softly blurred, creating depth.",
-    "balanced-layers": "A well-structured composition where all three spatial planes are clearly defined, enhancing dimensionality.",
-    "dominant-background-subtle-foreground": "A scene where the background takes prominence, with the foreground elements being understated.",
-    "minimalist-flat-depth": "A composition with little to no variation in depth, emphasizing flatness and simplicity.",
-    "overlapping-elements": "A technique where objects overlap each other, creating multiple layers and a sense of complexity.",
-    "atmospheric-perspective": "A method where distant objects appear lighter and less detailed, enhancing the perception of depth.",
-    "deep-shadows": "Using strong shadows to define the shape and form of objects, adding a three-dimensional feel.",
-    "negative-space-midground": "A composition that incorporates vast empty areas in the middle layer, drawing attention to foreground and background.",
-    "tight-foreground-distant-background": "A scene where the foreground is closely framed, and the background appears distant, enhancing spatial separation.",
-    "blurred-midground-for-transitions": "A technique where the middle layer is softly blurred, providing a gentle transition between foreground and background.",
-    "gfb":"Strong depth of field effect with the subject in sharp focus and the background rendered with a strong bokeh blur ensuring the focus remains on the subject and creating a clear separation from the environment."
+    "strong-foreground-blurred-background":{
+        "private":"A composition that highlights the foreground subject sharply while the background is softly blurred, creating depth."
+    },
+    "balanced-layers":{
+        "private":"A well-structured composition where all three spatial planes are clearly defined, enhancing dimensionality."
+    },
+    "dominant-background-subtle-foreground":{
+        "private":"A scene where the background takes prominence, with the foreground elements being understated."
+    },
+    "minimalist-flat-depth":{
+        "private":"A composition with little to no variation in depth, emphasizing flatness and simplicity."
+    },
+    "overlapping-elements":{
+        "private":"A technique where objects overlap each other, creating multiple layers and a sense of complexity."
+    },
+    "atmospheric-perspective":{
+        "private":"A method where distant objects appear lighter and less detailed, enhancing the perception of depth."
+    },
+    "deep-shadows":{
+        "private":"Using strong shadows to define the shape and form of objects, adding a three-dimensional feel."
+    },
+    "negative-space-midground":{
+        "private":"A composition that incorporates vast empty areas in the middle layer, drawing attention to foreground and background."
+    },
+    "tight-foreground-distant-background":{
+        "private":"A scene where the foreground is closely framed, and the background appears distant, enhancing spatial separation."
+    },
+    "blurred-midground-for-transitions":{
+        "private":"A technique where the middle layer is softly blurred, providing a gentle transition between foreground and background."
+    },
+    "gfb":{
+        "private":"Strong depth of field effect with the subject in sharp focus and the background rendered with a strong bokeh blur ensuring the focus remains on the subject and creating a clear separation from the environment."
+    }
 }

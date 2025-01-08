@@ -1,16 +1,39 @@
 {
     "desc":{
-        "layer":3
+        "layer":3,
+        "keytext":"palette-outdoor"
     },
-    "golden-hour": "Radiant and smooth, with long shadows that create a sense of fleeting beauty.",
-    "blue-hour": "Soft and moody, with a tranquil haze that captures the quiet of twilight.",
-    "winter-chill": "Frosty and smooth, with a crystalline quality that feels sharp yet serene.",
-    "desert-sun": "Grainy and dry, evoking the textures of sand dunes and sun-scorched landscapes.",
-    "tropical-vibrance": "Lush and textured, evoking vibrant plant life and sunlit waters.",
-    "stormy-dusk": "Dramatic and dynamic, capturing the interplay of clouds, light, and impending rain.",
-    "golden-plains": "Soft and dry, evoking the textures of grasses and wind-swept plains.",
-    "overcast-blues": "Smooth and diffuse, evoking the dampness and calm of overcast days.",
-    "spring-bloom": "Delicate and floral, evoking the freshness of petals and newly sprouted leaves.",
-    "autumn-glow": "Layered and textured, evoking the softness of leaves and the crispness of autumn air.",
-    "twilight-magic": "Luminous and soft, with velvety shadows and low, magical light."
+    "golden-hour":{
+        "private":"Radiant and smooth, with long shadows that create a sense of fleeting beauty."
+    },
+    "blue-hour":{
+        "private":"Soft and moody, with a tranquil haze that captures the quiet of twilight."
+    },
+    "winter-chill":{
+        "private":"Frosty and smooth, with a crystalline quality that feels sharp yet serene."
+    },
+    "desert-sun":{
+        "private":"Grainy and dry, evoking the textures of sand dunes and sun-scorched landscapes."
+    },
+    "tropical-vibrance":{
+        "private":"Lush and textured, evoking vibrant plant life and sunlit waters."
+    },
+    "stormy-dusk":{
+        "private":"Dramatic and dynamic, capturing the interplay of clouds, light, and impending rain."
+    },
+    "golden-plains":{
+        "private":"Soft and dry, evoking the textures of grasses and wind-swept plains."
+    },
+    "overcast-blues":{
+        "private":"Smooth and diffuse, evoking the dampness and calm of overcast days."
+    },
+    "spring-bloom":{
+        "private":"Delicate and floral, evoking the freshness of petals and newly sprouted leaves."
+    },
+    "autumn-glow":{
+        "private":"Layered and textured, evoking the softness of leaves and the crispness of autumn air."
+    },
+    "twilight-magic":{
+        "private":"Luminous and soft, with velvety shadows and low, magical light."
+    }
 }

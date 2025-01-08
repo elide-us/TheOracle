@@ -2,19 +2,49 @@
     "desc":{
         "layer":2
     },
-    "over-shoulder":"Frame the scene from behind a character`s shoulder to create intimacy or context.",
-    "birds-eye-view":"Shoot from high above to create a sense of detachment or to highlight spatial relationships.",
-    "worms-eye-view":"Shoot from below to emphasize scale, power, or vulnerability.",
-    "dutch-angle":"Tilt the camera to create unease, tension, or disorientation.",
-    "eye-level-composition":"Frame the subject at eye level for neutrality and connection with the viewer.",
-    "close-up":"Focus tightly on a subject`s face or detail to emphasize emotion or texture.",
-    "medium-shot": "A balanced framing that captures the subject from the waist up, providing context while maintaining focus on the subject.",
-    "long-shot": "A wide framing that includes the full subject and significant portions of the surrounding environment, establishing context and scale.",
-    "extreme-close-up":"Magnify a small detail for symbolic or narrative significance.",
-    "wide-angle":"Show the environment to establish context or scale.",
-    "tilt-shift":"Use selective focus and blurred edges to create the illusion of miniaturization, mimicking the shallow depth of field seen in macro photography.",
-    "wide-panoramic": "A broad, sweeping view that captures expansive landscapes or large groups, emphasizing breadth and grandeur.",
-    "intimate-cropped-frame": "A tightly focused framing that isolates specific parts of the subject, enhancing emotional connection.",
-    "expansive-wide-angle": "A wide-field perspective that captures a large area, often with a sense of depth and space.",
-    "gfb":"A professional portrait of a head-and-shoulders bust, with the camera positioned at eye level for a natural, direct eyeline that conveys presence and confidence."
+    "over-shoulder":{
+        "private":"Frame the scene from behind a character`s shoulder to create intimacy or context."
+    },
+    "birds-eye-view":{
+        "private":"Shoot from high above to create a sense of detachment or to highlight spatial relationships."
+    },
+    "worms-eye-view":{
+        "private":"Shoot from below to emphasize scale, power, or vulnerability."
+    },
+    "dutch-angle":{
+        "private":"Tilt the camera to create unease, tension, or disorientation."
+    },
+    "eye-level-composition":{
+        "private":"Frame the subject at eye level for neutrality and connection with the viewer."
+    },
+    "close-up":{
+        "private":"Focus tightly on a subject`s face or detail to emphasize emotion or texture."
+    },
+    "medium-shot":{
+        "private":"A balanced framing that captures the subject from the waist up, providing context while maintaining focus on the subject."
+    },
+    "long-shot":{
+        "private":"A wide framing that includes the full subject and significant portions of the surrounding environment, establishing context and scale."
+    },
+    "extreme-close-up":{
+        "private":"Magnify a small detail for symbolic or narrative significance."
+    },
+    "wide-angle":{
+        "private":"Show the environment to establish context or scale."
+    },
+    "tilt-shift":{
+        "private":"Use selective focus and blurred edges to create the illusion of miniaturization, mimicking the shallow depth of field seen in macro photography."
+    },
+    "wide-panoramic":{
+        "private":"A broad, sweeping view that captures expansive landscapes or large groups, emphasizing breadth and grandeur."
+    },
+    "intimate-cropped-frame":{
+        "private":"A tightly focused framing that isolates specific parts of the subject, enhancing emotional connection."
+    },
+    "expansive-wide-angle":{
+        "private":"A wide-field perspective that captures a large area, often with a sense of depth and space."
+    },
+    "gfb":{
+        "private":"A professional portrait of a head-and-shoulders bust, with the camera positioned at eye level for a natural, direct eyeline that conveys presence and confidence."
+    }
 }

@@ -2,14 +2,34 @@
     "desc":{
         "layer":4
     },
-    "lush-vegetation": "Rich, abundant plant life in the front layer, adding depth and a sense of vitality.",
-    "weathered-rocks": "A collection of aged and textured rocks, providing a rugged and natural element.",
-    "flowing-water": "Streams, rivers, or waterfalls moving gracefully in the foreground, enhancing dynamism.",
-    "focal-object-or-character": "A prominent object or figure that draws immediate attention, serving as the scene's centerpiece.",
-    "jagged-branches": "Sharp and uneven tree branches that add texture and an untamed feel.",
-    "blurred-passerby": "Indistinct figures in motion, creating a sense of activity without detracting from the main subject.",
-    "piles-of-books": "Stacks of books that convey knowledge, clutter, or a scholarly atmosphere.",
-    "candle-lit-table": "A table illuminated by candlelight, evoking warmth, intimacy, or a historical setting.",
-    "draped-fabrics": "Fabrics hanging or flowing in the foreground, adding softness and movement.",
-    "angular-architecture": "Sharp and geometric architectural elements that introduce structure and modernity."
+    "lush-vegetation":{
+        "private":"Rich, abundant plant life in the front layer, adding depth and a sense of vitality."
+    },
+    "weathered-rocks":{
+        "private":"A collection of aged and textured rocks, providing a rugged and natural element."
+    },
+    "flowing-water":{
+        "private":"Streams, rivers, or waterfalls moving gracefully in the foreground, enhancing dynamism."
+    },
+    "focal-object-or-character":{
+        "private":"A prominent object or figure that draws immediate attention, serving as the scene's centerpiece."
+    },
+    "jagged-branches":{
+        "private":"Sharp and uneven tree branches that add texture and an untamed feel."
+    },
+    "blurred-passerby":{
+        "private":"Indistinct figures in motion, creating a sense of activity without detracting from the main subject."
+    },
+    "piles-of-books":{
+        "private":"Stacks of books that convey knowledge, clutter, or a scholarly atmosphere."
+    },
+    "candle-lit-table":{
+        "private":"A table illuminated by candlelight, evoking warmth, intimacy, or a historical setting."
+    },
+    "draped-fabrics":{
+        "private":"Fabrics hanging or flowing in the foreground, adding softness and movement."
+    },
+    "angular-architecture":{
+        "private":"Sharp and geometric architectural elements that introduce structure and modernity."
+    }
 }

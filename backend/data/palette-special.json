@@ -2,24 +2,64 @@
     "desc":{
         "layer":3
     },
-    "cyberpunk-glow": "Reflective and glossy, evoking the sleek surfaces of neon-lit urban environments.",
-    "teal-and-orange": "Crisp and high contrast, with sharp, cinematic highlights and rich shadows.",
-    "modern-neon": "Glowing and electric, with a lively, high-energy aesthetic.",
-    "painters-palette": "Textured and raw, with visible brushstrokes and a dynamic sense of movement.",
-    "surreal-dreamscape": "Soft and glowing, with diffuse edges that suggest a surreal, magical atmosphere.",
-    "apocalyptic-dust": "Grainy and dry, evoking abandonment and the textures of ash or sand.",
-    "ethereal-light": "Luminous and airy, with a diaphanous quality that evokes an angelic or heavenly feel.",
-    "night-carnival": "Bold and shimmering, with reflective surfaces that suggest lights against a night sky.",
-    "aurora-glow": "Shimmering and luminous, mimicking the movement of polar lights across a dark canvas.",
-    "neon-noir": "Dark and glossy, with glowing edges and gritty, retro-futuristic undertones.",
-    "chromatic-blur": "Diffuse and hazy, with a flowing, abstract softness that suggests motion.",
-    "iridescent-pearl": "Smooth and lustrous, with a polished surface that shimmers like a pearl.",
-    "prismatic-pulse": "Glowing and sharp, with distinct lines that resemble beams of refracted light.",
-    "electric-pastel": "Smooth and matte, with a retro-inspired, slightly faded aesthetic.",
-    "cosmic-nebula": "Wispy and glowing, with soft edges that mimic cosmic gas clouds.",
-    "glass-prism": "Smooth and polished, with sharp light refractions that evoke clarity and precision.",
-    "molten-metal": "Fluid and glossy, with a molten, almost otherworldly shine.",
-    "radiant-sunset": "Smooth and gradient, with seamless transitions between warm and cool tones.",
-    "galactic-glow": "Luminous and scattered, with sharp contrasts resembling starry skies.",
-    "fragmented-light": "Sharp and angular, evoking shattered glass or fragmented prisms."
+    "cyberpunk-glow":{
+        "private":"Reflective and glossy, evoking the sleek surfaces of neon-lit urban environments."
+    },
+    "teal-and-orange":{
+        "private":"Crisp and high contrast, with sharp, cinematic highlights and rich shadows."
+    },
+    "modern-neon":{
+        "private":"Glowing and electric, with a lively, high-energy aesthetic."
+    },
+    "painters-palette":{
+        "private":"Textured and raw, with visible brushstrokes and a dynamic sense of movement."
+    },
+    "surreal-dreamscape":{
+        "private":"Soft and glowing, with diffuse edges that suggest a surreal, magical atmosphere."
+    },
+    "apocalyptic-dust":{
+        "private":"Grainy and dry, evoking abandonment and the textures of ash or sand."
+    },
+    "ethereal-light":{
+        "private":"Luminous and airy, with a diaphanous quality that evokes an angelic or heavenly feel."
+    },
+    "night-carnival":{
+        "private":"Bold and shimmering, with reflective surfaces that suggest lights against a night sky."
+    },
+    "aurora-glow":{
+        "private":"Shimmering and luminous, mimicking the movement of polar lights across a dark canvas."
+    },
+    "neon-noir":{
+        "private":"Dark and glossy, with glowing edges and gritty, retro-futuristic undertones."
+    },
+    "chromatic-blur":{
+        "private":"Diffuse and hazy, with a flowing, abstract softness that suggests motion."
+    },
+    "iridescent-pearl":{
+        "private":"Smooth and lustrous, with a polished surface that shimmers like a pearl."
+    },
+    "prismatic-pulse":{
+        "private":"Glowing and sharp, with distinct lines that resemble beams of refracted light."
+    },
+    "electric-pastel":{
+        "private":"Smooth and matte, with a retro-inspired, slightly faded aesthetic."
+    },
+    "cosmic-nebula":{
+        "private":"Wispy and glowing, with soft edges that mimic cosmic gas clouds."
+    },
+    "glass-prism":{
+        "private":"Smooth and polished, with sharp light refractions that evoke clarity and precision."
+    },
+    "molten-metal":{
+        "private":"Fluid and glossy, with a molten, almost otherworldly shine."
+    },
+    "radiant-sunset":{
+        "private":"Smooth and gradient, with seamless transitions between warm and cool tones."
+    },
+    "galactic-glow":{
+        "private":"Luminous and scattered, with sharp contrasts resembling starry skies."
+    },
+    "fragmented-light":{
+        "private":"Sharp and angular, evoking shattered glass or fragmented prisms."
+    }
 }

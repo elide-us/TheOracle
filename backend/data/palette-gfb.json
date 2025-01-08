@@ -1,12 +1,27 @@
 {
     "desc":{
-        "layer":3
+        "layer":3,
+        "keytext":"palette-gfb"
     },
-    "white":"Primary Color - White. Secondary Color - Gold. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette.",
-    "yellow":"Primary Color - Yellow. Secondary Color - White. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette.",
-    "red":"Primary Color - Blood red. Secondary Color - Flame red. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette.",
-    "orange":"Primary Color - Orange. Secondary Color - Black, red, and yellow. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette.",
-    "black":"Primary Color - Black. Secondary Color - Purple. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette.",
-    "blue":"Primary Color: Blue. Secondary Color: Aqua. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette.",
-    "green":"Primary Color: Green. Secondary Color: Brown. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    "white":{
+        "private":"Primary Color - White. Secondary Color - Gold. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    },
+    "yellow":{
+        "private":"Primary Color - Yellow. Secondary Color - White. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    },
+    "red":{
+        "private":"Primary Color - Blood red. Secondary Color - Flame red. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    },
+    "orange":{
+        "private":"Primary Color - Orange. Secondary Color - Black, red, and yellow. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    },
+    "black":{
+        "private":"Primary Color - Black. Secondary Color - Purple. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    },
+    "blue":{
+        "private":"Primary Color: Blue. Secondary Color: Aqua. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    },
+    "green":{
+        "private":"Primary Color: Green. Secondary Color: Brown. The primary color with secondary color accents should create a bold, dynamic, and ethereal aesthetic. The primary color is the dominant color for the outfit, while secondary highlights add contrast and energy to the look. No other colors should be prominent to maintain cohesion in the vibrant palette."
+    }
 }
