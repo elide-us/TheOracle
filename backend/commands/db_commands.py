@@ -1,8 +1,7 @@
 import json
-from services.pg_backend import get_db_client
+from services.pg_backend import get_db_pool
 
-async def db_get_public():
-  conn = get_db_client()
+async def db_get_public(conn):
   query = """
     WITH template_data AS (
       SELECT 
@@ -33,9 +32,10 @@ async def db_get_public():
   return result_dict
 
 
-async def get_public_template(id):
-  match id:
-    case [0]:
-      return db_get_public()
-    case _:
-      return None
+async def get_public_template(id, pool):
+  async with pool.acquire() as conn:
+    match id:
+      case [0]:
+        return db_get_public(conn)
+      case _:
+        return None
