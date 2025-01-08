@@ -52,6 +52,13 @@ async def serve_template(template_id: int, request: Request):
     json = await get_public_template(template_id, pool)
     return json
 
+@router.get("/test-db")
+async def test_db(request: Request):
+    pool = request.app.state.db_pool
+    async with pool.acquire() as conn:
+        result = await conn.fetchval("SELECT COUNT(*) FROM templates;")
+    return {"templates_count": result}
+
 # @router.get("/lumagen")
 # async def video_generation(request: Request):
 #     incoming_data = await request.json()
