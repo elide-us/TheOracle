@@ -1,5 +1,4 @@
 import json
-from services.pg_backend import get_db_pool
 
 async def db_get_public(conn):
   query = """
