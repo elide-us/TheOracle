@@ -23,3 +23,6 @@ def get_blob_connection_string():
 
 def get_blob_container():
     return get_env_var("AZURE_BLOB_CONTAINER_NAME")
+
+def get_db_password():
+    return get_env_var("PG_DB_PASSWORD")

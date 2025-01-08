@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Request
 from commands.image_commands import generate_and_upload_image
+from commands.db_commands import get_public_template
 
 router = APIRouter()
 
@@ -30,7 +31,6 @@ async def list_files(request: Request):
 
 @router.post("/imagen")
 async def image_generation(request: Request):
-    print("image_generation")
     incoming_data = await request.json()
 
     app = request.app
@@ -46,4 +46,16 @@ async def image_generation(request: Request):
     except Exception as e:
         return {"error": str(e)}
 
+@router.get("/imagen/{template_id}")
+async def serve_template(template_id: int, request: Request):
+    json = await get_public_template(template_id)
+    return json
 
+# @router.get("/lumagen")
+# async def video_generation(request: Request):
+#     incoming_data = await request.json()
+
+#     app = request.app
+#     bot = app.state.discord_bot
+
+#     return None
