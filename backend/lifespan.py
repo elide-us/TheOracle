@@ -6,6 +6,7 @@ from services.discord_bot import init_discord_bot, start_discord_bot, get_discor
 from services.openai_client import init_openai_client
 from services.lumaai_client import init_lumaai_client
 from services.blob_storage import get_container_client
+from services.pg_backend import get_db_client
 from routes.bot import setup_bot_routes
 
 @asynccontextmanager
@@ -24,6 +25,10 @@ async def lifespan(app: FastAPI):
   
   container = await get_container_client()
   app.state.container_client = container
+
+  db_client = await get_db_client()
+  app.state.db_pool = db_client
+
   setup_bot_routes(bot)
 
   loop = asyncio.get_event_loop()
