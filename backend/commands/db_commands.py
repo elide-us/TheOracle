@@ -1,6 +1,6 @@
 import json
 
-async def db_get_public(conn):
+async def db_get_public(pool):
   query = """
     WITH template_data AS (
       SELECT 
@@ -24,17 +24,15 @@ async def db_get_public(conn):
     SELECT json_object_agg(category, templates) AS result
     FROM template_data;
   """
-  result = await conn.fetchval(query)
-  return {"dbout": result}
-  # if result is None:
-  #   result = {}
-  # result_dict = json.loads(result)
-  # return result_dict
+  async with pool.acquire() as conn:
+    result = await conn.fetchval(query)
+  return result
+  #result_dict = json.loads(result)
+  #return result_dict
 
-
-async def get_public_template(id, conn):
+async def get_public_template(id, pool):
   match id:
     case 0:
-      return db_get_public(conn)
+      return db_get_public(pool)
     case _:
-      return None
+      return {}
