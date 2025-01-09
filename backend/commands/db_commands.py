@@ -25,10 +25,11 @@ async def db_get_public(conn):
     FROM template_data;
   """
   result = await conn.fetchval(query)
-  if result is None:
-    result = {}
-  result_dict = json.loads(result)
-  return result_dict
+  return {"dbout": result}
+  # if result is None:
+  #   result = {}
+  # result_dict = json.loads(result)
+  # return result_dict
 
 
 async def get_public_template(id, conn):
