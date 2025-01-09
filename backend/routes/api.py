@@ -48,9 +48,7 @@ async def image_generation(request: Request):
 
 @router.get("/imagen/{template_id}")
 async def serve_template(template_id: int, request: Request):
-    pool = request.app.state.db_pool
-    async with pool.acquire() as conn:
-        result = await get_public_template(template_id, conn)
+    result = await get_public_template(template_id, request.app.state.db_pool)
     return result
 
 @router.get("/test-db")
