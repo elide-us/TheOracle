@@ -8,6 +8,11 @@ import dataLayer2 from './data_layer2.json';
 import dataLayer3 from './data_layer3.json';
 import dataLayer4 from './data_layer4.json';
 
+// const dataLayer1 = await (await fetch('/api/imagen/1')).json()
+// const dataLayer2 = await (await fetch('/api/imagen/2')).json()
+// const dataLayer3 = await (await fetch('/api/imagen/3')).json()
+// const dataLayer4 = await (await fetch('/api/imagen/4')).json()
+
 const SubmitButton = ({ onClick }) => {
 	return (
 		<Box sx={{ display:'flex', justifyContent:'flex-end', marginTop:2 }}>

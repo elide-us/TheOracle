@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 import json
 from commands.image_commands import generate_and_upload_image
-from commands.db_commands import get_public_template, get_layer1_template
+from commands.db_commands import get_public_template, get_layer1_template, get_layer2_template, get_layer3_template, get_layer4_template
 
 router = APIRouter()
 
@@ -54,6 +54,12 @@ async def get_template(template_id: int, request: Request):
       return await get_public_template(request.app.state.db_pool)
     case 1:
       return await get_layer1_template(request.app.state.db_pool)
+    case 2:
+      return await get_layer2_template(request.app.state.db_pool)
+    case 3:
+      return await get_layer3_template(request.app.state.db_pool)
+    case 4:
+      return await get_layer4_template(request.app.state.db_pool)
     case _:
       return {}
 
