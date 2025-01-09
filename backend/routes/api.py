@@ -31,32 +31,65 @@ async def list_files(request: Request):
 
 @router.post("/imagen")
 async def image_generation(request: Request):
-    incoming_data = await request.json()
+  incoming_data = await request.json()
 
-    app = request.app
-    bot = app.state.discord_bot
+  app = request.app
+  bot = app.state.discord_bot
 
-    template_key = incoming_data.get("template", "default")
-    user_input = incoming_data.get("userinput", "")
-    selected_keys = incoming_data.get("keys", {})
+  template_key = incoming_data.get("template", "default")
+  user_input = incoming_data.get("userinput", "")
+  selected_keys = incoming_data.get("keys", {})
 
-    try:
-        azure_image_url = await generate_and_upload_image(app, bot, template_key, selected_keys, user_input)
-        return { "imageUrl": azure_image_url }
-    except Exception as e:
-        return {"error": str(e)}
+  try:
+    azure_image_url = await generate_and_upload_image(app, bot, template_key, selected_keys, user_input)
+    return { "imageUrl": azure_image_url }
+  except Exception as e:
+    return {"error": str(e)}
 
 @router.get("/imagen/{template_id}")
-async def serve_template(template_id: int, request: Request):
-    result = await get_public_template(template_id, request.app.state.db_pool)
-    return result
+async def get_template(template_id: int, request: Request):
+  match template_id:
+    case 0:
+      return None
+    case _:
+      return None
+  
+  result = await get_public_template(template_id, request.app.state.db_pool)
+  return result
 
 @router.get("/test-db")
 async def test_db(request: Request):
-    pool = request.app.state.db_pool
-    async with pool.acquire() as conn:
-        result = await conn.fetchval("SELECT COUNT(*) FROM templates;")
-    return {"templates_count": result}
+  pool = request.app.state.db_pool
+  async with pool.acquire() as conn:
+    query1 = """
+      SELECT COUNT(*)
+      FROM templates;
+    """
+    query = """
+      WITH template_data AS (
+        SELECT 
+          c.name AS category,
+          json_agg(
+            json_build_object(
+              'title', t.title,
+              'description', t.description,
+              'imageUrl', t.image_url,
+              'layer1', t.layer1,
+              'layer2', t.layer2,
+              'layer3', t.layer3,
+              'layer4', t.layer4,
+              'input', t.input
+            )
+          ) AS templates
+        FROM templates t
+        JOIN categories c ON t.category_id = c.id
+        GROUP BY c.name
+      )
+      SELECT json_object_agg(category, templates) AS result
+      FROM template_data;
+    """
+    result = await conn.fetchval(query)
+  return {"queryResult": result}
 
 # @router.get("/lumagen")
 # async def video_generation(request: Request):
