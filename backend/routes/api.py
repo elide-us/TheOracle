@@ -61,11 +61,7 @@ async def get_template(template_id: int, request: Request):
 async def test_db(request: Request):
   pool = request.app.state.db_pool
   async with pool.acquire() as conn:
-    query1 = """
-      SELECT COUNT(*)
-      FROM templates;
-    """
-    query2 = """
+    queryX = """
       WITH template_data AS (
         SELECT 
           c.name AS category,
@@ -88,12 +84,12 @@ async def test_db(request: Request):
       SELECT json_object_agg(category, templates) AS result
       FROM template_data;
     """
-    query3 = """
+    query = """
       SELECT json_build_object(
         'key', 'value'
       ) AS result;
     """
-    result = await conn.fetchval("SELECT COUNT(*) FROM templates")
+    result = await conn.fetchval(query)
   return {"queryResult": result}
 
 # @router.get("/lumagen")
@@ -109,6 +105,11 @@ async def test_db(request: Request):
 async def test_db(request: Request):
   pool = request.app.state.db_pool
   async with pool.acquire() as conn:
-
-    result = await conn.fetchval("SELECT COUNT(*) FROM templates;")
-  return {"templates_count": result}
+    query = """
+      SELECT json_agg(
+        json_build_object('title', t.title)
+      ) AS result
+      FROM templates t;
+    """
+    result = await conn.fetchval(query)
+  return {"queryResult": result}
