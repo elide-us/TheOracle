@@ -17,6 +17,7 @@ function TheOracleGPT() {
             .then(setTemplates)
             .catch(console.error)
     }, []);
+    // const templates = await (await fetch('/api/imagen/0')).json();
 
     return (
         <Box>
