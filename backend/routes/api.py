@@ -93,7 +93,7 @@ async def test_db(request: Request):
         'key', 'value'
       ) AS result;
     """
-    result = await conn.fetchval(query1)
+    result = await conn.fetchval("SELECT COUNT(*) FROM templates")
   return {"queryResult": result}
 
 # @router.get("/lumagen")
@@ -104,3 +104,11 @@ async def test_db(request: Request):
 #     bot = app.state.discord_bot
 
 #     return None
+
+@router.get("/test-db2")
+async def test_db(request: Request):
+  pool = request.app.state.db_pool
+  async with pool.acquire() as conn:
+
+    result = await conn.fetchval("SELECT COUNT(*) FROM templates;")
+  return {"templates_count": result}
