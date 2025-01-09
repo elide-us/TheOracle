@@ -88,12 +88,12 @@ async def test_db(request: Request):
       SELECT json_object_agg(category, templates) AS result
       FROM template_data;
     """
-    query = """
+    query3 = """
       SELECT json_build_object(
         'key', 'value'
       ) AS result;
     """
-    result = await conn.fetchval(query)
+    result = await conn.fetchval(query1)
   return {"queryResult": result}
 
 # @router.get("/lumagen")
