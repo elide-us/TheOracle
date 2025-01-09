@@ -76,9 +76,9 @@ async def get_template(template_id: int, request: Request):
           FROM template_data;
         """
         result = await conn.fetchval(query)
-      return result
+      return {"queryResult": result}
     case _:
-      return None
+      return {}
   
   # result = await get_public_template(template_id, request.app.state.db_pool)
   # return result
@@ -93,16 +93,7 @@ async def test_db(request: Request):
       ) AS result;
     """
     result = await conn.fetchval(query)
-  return result
-
-# @router.get("/lumagen")
-# async def video_generation(request: Request):
-#     incoming_data = await request.json()
-
-#     app = request.app
-#     bot = app.state.discord_bot
-
-#     return None
+  return {"queryResult": result}
 
 @router.get("/test-db2")
 async def test_db(request: Request):
@@ -115,4 +106,24 @@ async def test_db(request: Request):
       FROM templates t;
     """
     result = await conn.fetchval(query)
-  return result
+  return {"queryResult": result}
+
+@router.get("/test-db3")
+async def test_db(request: Request):
+  pool = request.app.state.db_pool
+  async with pool.acquire() as conn:
+    query = """
+      SELECT json_object_agg(key, value) AS result
+      FROM (VALUES ('key1', 'value1'), ('key2', 'value2')) AS data(key, value);
+    """
+    result = await conn.fetchval(query)
+  return {"queryResult": result}
+
+# @router.get("/lumagen")
+# async def video_generation(request: Request):
+#     incoming_data = await request.json()
+
+#     app = request.app
+#     bot = app.state.discord_bot
+
+#     return None
