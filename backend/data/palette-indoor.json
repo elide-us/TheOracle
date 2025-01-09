@@ -1,7 +1,6 @@
 {
     "desc":{
-        "layer":3,
-        "keytext":"palette-indoor"
+        "layer":3
     },
     "gothic-noir":{
         "private":"Velvety and heavy, with stark contrasts between darkness and highlights."

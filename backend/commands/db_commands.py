@@ -32,13 +32,38 @@ async def get_public_template(pool):
   return result
 
 async def get_layer1_template(pool):
-  return {}
+  result = {}
+  async with pool.acquire() as conn:
+    # SELECT * FROM templates WHERE title ILIKE 'Magic Elf Portrait'
+    query = """
+      SELECT *
+      FROM keys;
+    """
+  return result
 
 async def get_layer2_template(pool):
-  return {}
+  result = {}
+  async with pool.acquire() as conn:
+    query = """
+      SELECT *
+      FROM keys;
+    """
+  return result
 
 async def get_layer3_template(pool):
-  return {}
+  result = {}
+  async with pool.acquire() as conn:
+    query = """
+      SELECT *
+      FROM keys;
+    """
+  return result
 
 async def get_layer4_template(pool):
-  return {}
+  result = {}
+  async with pool.acquire() as conn:
+    query = """
+      SELECT *
+      FROM keys;
+    """
+  return result
