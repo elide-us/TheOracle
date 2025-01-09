@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request
 import json
 from commands.image_commands import generate_and_upload_image
-from commands.db_commands import get_public_template
+from commands.db_commands import get_public_template, get_layer1_template
 
 router = APIRouter()
 
@@ -51,35 +51,9 @@ async def image_generation(request: Request):
 async def get_template(template_id: int, request: Request):
   match template_id:
     case 0:
-      pool = request.app.state.db_pool
-      async with pool.acquire() as conn:
-        query = """
-          WITH template_data AS (
-            SELECT 
-              c.name AS category,
-              json_agg(
-                json_build_object(
-                  'title', t.title,
-                  'description', t.description,
-                  'imageUrl', t.image_url,
-                  'layer1', t.layer1,
-                  'layer2', t.layer2,
-                  'layer3', t.layer3,
-                  'layer4', t.layer4,
-                  'input', t.input
-                )
-              ) AS templates
-            FROM templates t
-            JOIN categories c ON t.category_id = c.id
-            GROUP BY c.name
-          )
-          SELECT json_object_agg(category, templates) AS result
-          FROM template_data;
-        """
-        result = await conn.fetchval(query)
-        if isinstance(result, str):
-          result = json.loads(result)
-      return result
+      return await get_public_template(request.app.state.db_pool)
+    case 1:
+      return await get_layer1_template(request.app.state.db_pool)
     case _:
       return {}
 
