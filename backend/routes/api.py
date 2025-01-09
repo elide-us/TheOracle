@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Request
+import json
 from commands.image_commands import generate_and_upload_image
 from commands.db_commands import get_public_template
 
@@ -76,6 +77,8 @@ async def get_template(template_id: int, request: Request):
           FROM template_data;
         """
         result = await conn.fetchval(query)
+        if isinstance(result, str):
+          result = json.loads(result)
       return {"queryResult": result}
     case _:
       return {}
@@ -93,6 +96,9 @@ async def test_db(request: Request):
       ) AS result;
     """
     result = await conn.fetchval(query)
+    if isinstance(result, str):
+      result = json.loads(result)
+
   return {"queryResult": result}
 
 @router.get("/test-db2")
@@ -106,6 +112,9 @@ async def test_db(request: Request):
       FROM templates t;
     """
     result = await conn.fetchval(query)
+    if isinstance(result, str):
+      result = json.loads(result)
+
   return {"queryResult": result}
 
 @router.get("/test-db3")
@@ -117,6 +126,9 @@ async def test_db(request: Request):
       FROM (VALUES ('key1', 'value1'), ('key2', 'value2')) AS data(key, value);
     """
     result = await conn.fetchval(query)
+    if isinstance(result, str):
+      result = json.loads(result)
+  
   return {"queryResult": result}
 
 # @router.get("/lumagen")
