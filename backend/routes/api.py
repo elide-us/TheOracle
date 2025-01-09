@@ -93,7 +93,7 @@ async def test_db(request: Request):
         'key', 'value'
       ) AS result;
     """
-    result = await conn.fetchval(query1)
+    result = await conn.fetchval("SELECT COUNT(*) FROM templates")
   return {"queryResult": result}
 
 # @router.get("/lumagen")
