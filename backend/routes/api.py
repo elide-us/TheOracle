@@ -50,47 +50,50 @@ async def image_generation(request: Request):
 async def get_template(template_id: int, request: Request):
   match template_id:
     case 0:
-      return None
+      pool = request.app.state.db_pool
+      async with pool.acquire() as conn:
+        query = """
+          WITH template_data AS (
+            SELECT 
+              c.name AS category,
+              json_agg(
+                json_build_object(
+                  'title', t.title,
+                  'description', t.description,
+                  'imageUrl', t.image_url,
+                  'layer1', t.layer1,
+                  'layer2', t.layer2,
+                  'layer3', t.layer3,
+                  'layer4', t.layer4,
+                  'input', t.input
+                )
+              ) AS templates
+            FROM templates t
+            JOIN categories c ON t.category_id = c.id
+            GROUP BY c.name
+          )
+          SELECT json_object_agg(category, templates) AS result
+          FROM template_data;
+        """
+        result = await conn.fetchval(query)
+      return result
     case _:
       return None
   
-  result = await get_public_template(template_id, request.app.state.db_pool)
-  return result
+  # result = await get_public_template(template_id, request.app.state.db_pool)
+  # return result
 
-@router.get("/test-db")
+@router.get("/test-db1")
 async def test_db(request: Request):
   pool = request.app.state.db_pool
   async with pool.acquire() as conn:
-    queryX = """
-      WITH template_data AS (
-        SELECT 
-          c.name AS category,
-          json_agg(
-            json_build_object(
-              'title', t.title,
-              'description', t.description,
-              'imageUrl', t.image_url,
-              'layer1', t.layer1,
-              'layer2', t.layer2,
-              'layer3', t.layer3,
-              'layer4', t.layer4,
-              'input', t.input
-            )
-          ) AS templates
-        FROM templates t
-        JOIN categories c ON t.category_id = c.id
-        GROUP BY c.name
-      )
-      SELECT json_object_agg(category, templates) AS result
-      FROM template_data;
-    """
     query = """
       SELECT json_build_object(
         'key', 'value'
       ) AS result;
     """
     result = await conn.fetchval(query)
-  return {"queryResult": result}
+  return result
 
 # @router.get("/lumagen")
 # async def video_generation(request: Request):
@@ -112,4 +115,4 @@ async def test_db(request: Request):
       FROM templates t;
     """
     result = await conn.fetchval(query)
-  return {"queryResult": result}
+  return result
