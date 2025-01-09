@@ -79,57 +79,9 @@ async def get_template(template_id: int, request: Request):
         result = await conn.fetchval(query)
         if isinstance(result, str):
           result = json.loads(result)
-      return {"queryResult": result}
+      return result
     case _:
       return {}
-  
-  # result = await get_public_template(template_id, request.app.state.db_pool)
-  # return result
-
-@router.get("/test-db1")
-async def test_db(request: Request):
-  pool = request.app.state.db_pool
-  async with pool.acquire() as conn:
-    query = """
-      SELECT json_build_object(
-        'key', 'value'
-      ) AS result;
-    """
-    result = await conn.fetchval(query)
-    if isinstance(result, str):
-      result = json.loads(result)
-
-  return {"queryResult": result}
-
-@router.get("/test-db2")
-async def test_db(request: Request):
-  pool = request.app.state.db_pool
-  async with pool.acquire() as conn:
-    query = """
-      SELECT json_agg(
-        json_build_object('title', t.title)
-      ) AS result
-      FROM templates t;
-    """
-    result = await conn.fetchval(query)
-    if isinstance(result, str):
-      result = json.loads(result)
-
-  return {"queryResult": result}
-
-@router.get("/test-db3")
-async def test_db(request: Request):
-  pool = request.app.state.db_pool
-  async with pool.acquire() as conn:
-    query = """
-      SELECT json_object_agg(key, value) AS result
-      FROM (VALUES ('key1', 'value1'), ('key2', 'value2')) AS data(key, value);
-    """
-    result = await conn.fetchval(query)
-    if isinstance(result, str):
-      result = json.loads(result)
-  
-  return {"queryResult": result}
 
 # @router.get("/lumagen")
 # async def video_generation(request: Request):
