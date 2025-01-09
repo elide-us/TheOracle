@@ -4,6 +4,7 @@
 
 ## Configuration:
 - Azure Web App (Python/Linux) B1+
+- Azure Database for PostgresSQL - Flexible Server
 - GitHub Actions CI/CD Integration
 - Direct Code-to-Production Pipeline
 - Web App Configuration:
@@ -16,7 +17,7 @@
 
 ## Costs:
 - B1 Azure App Service Plan (1 CPU, Always On), ~ $15/mo
-- PostgreSQL (Coming Soon)
+- Dev/Test PostgresSQL plan, ~$5/mo
 - OpenAI API: Cost per call varies
 - LumaAI APi: ~$0.30 per 5 seconds of video generation
 
@@ -35,6 +36,7 @@
   - DISCORD_SECRET=
   - LUMAAI_SECRET=
   - OPENAI_SECRET=
+  - PG_DB_PASSWORD=
 
 ## Roadmap:
 - (Current) Working Prompt Builder POC with Frontend/Backend interactions - 80%
