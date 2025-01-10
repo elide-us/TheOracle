@@ -3,10 +3,10 @@ import { Box, Button, Select, Typography, MenuItem, CircularProgress } from '@mu
 
 import Notification from './shared/Notification';
 
-import dataLayer1 from './data_layer1.json';
-import dataLayer2 from './data_layer2.json';
-import dataLayer3 from './data_layer3.json';
-import dataLayer4 from './data_layer4.json';
+// import dataLayer1 from './data_layer1.json';
+// import dataLayer2 from './data_layer2.json';
+// import dataLayer3 from './data_layer3.json';
+// import dataLayer4 from './data_layer4.json';
 
 const SubmitButton = ({ onClick }) => {
 	return (
@@ -105,7 +105,28 @@ const PromptBuilderInputBar = ({ selectedTemplate, inputText, setInputText }) =>
 };
 
 const PromptBuilderOptionSelector = ({ selectedTemplate, selections, setSelections }) => {
-    const parseTemplate = (text) => {
+    const [dataLayer1, setDataLayer1] = useState({})
+    const [dataLayer2, setDataLayer2] = useState({})
+    const [dataLayer3, setDataLayer3] = useState({})
+    const [dataLayer4, setDataLayer4] = useState({})
+
+	useEffect(() => {
+		Promise.all([
+			fetch('/api/layer1').then((res) => res.json()),
+			fetch('/api/layer2').then((res) => res.json()),
+			fetch('/api/layer3').then((res) => res.json()),
+			fetch('/api/layer4').then((res) => res.json()),
+		])
+			.then(([layer1Data, layer2Data, layer3Data, layer4Data]) => {
+				setDataLayer1(layer1Data);
+				setDataLayer2(layer2Data);
+				setDataLayer3(layer3Data);
+				setDataLayer4(layer4Data);
+			})
+			.catch(console.error);
+	}, []);
+
+	const parseTemplate = (text) => {
         const pattern = /{([^}]+)}/g;
         const parts = [];
     

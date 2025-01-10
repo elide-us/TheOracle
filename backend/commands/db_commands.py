@@ -31,14 +31,20 @@ async def get_public_template(pool):
       result = json.loads(result)
   return result
 
-async def get_layer1_template(pool):
-  return {}
-
-async def get_layer2_template(pool):
-  return {}
-
-async def get_layer3_template(pool):
-  return {}
-
-async def get_layer4_template(pool):
-  return {}
+async def get_layer_template(pool, layer_id):
+  result = {}
+  id = int(layer_id)
+  async with pool.acquire() as conn:
+    query = """
+      SELECT jsonb_object_agg(key_value, subkeys) AS layer_data
+      FROM (
+        SELECT key_value, jsonb_object_agg(subkey_value, public_value) AS subkeys
+        FROM keys
+        WHERE layer = $1
+        GROUP BY key_Value
+      ) AS grouped;
+    """
+    result = await conn.fetchval(query, id)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result

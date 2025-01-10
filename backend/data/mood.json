@@ -1,7 +1,6 @@
 {
     "desc":{
-        "layer":1,
-        "keytext":"mood"
+        "layer":1
     },
     "tranquil":{
         "private":"A mood that conveys peace and calmness, often with serene landscapes and gentle colors."

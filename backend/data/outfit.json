@@ -1,7 +1,6 @@
 {
     "desc":{
-        "layer":4,
-        "keytext":"outfit"
+        "layer":4
     },
     "flowing-robes":{
         "private":"Clothing characterized by long, graceful fabrics that move fluidly, suggesting elegance or mysticism."
