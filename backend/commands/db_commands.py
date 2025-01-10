@@ -22,7 +22,6 @@ async def get_public_template(pool):
         FROM templates t
         JOIN categories c ON t.category_id = c.id
         GROUP BY c.name
-        ORDER BY t.id
       )
       SELECT json_object_agg(category, templates) AS result
       FROM template_data;
