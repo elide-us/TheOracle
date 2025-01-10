@@ -31,39 +31,20 @@ async def get_public_template(pool):
       result = json.loads(result)
   return result
 
-async def get_layer1_template(pool):
+async def get_layer_template(pool, layer_id):
   result = {}
-  async with pool.acquire() as conn:
-    # SELECT * FROM templates WHERE title ILIKE 'Magic Elf Portrait'
-    query = """
-      SELECT *
-      FROM keys;
-    """
-  return result
-
-async def get_layer2_template(pool):
-  result = {}
+  id = int(layer_id)
   async with pool.acquire() as conn:
     query = """
-      SELECT *
-      FROM keys;
+      SELECT jsonb_object_agg(key_value, subkeys) AS layer_data
+      FROM (
+        SELECT key_value, jsonb_object_agg(subkey_value, public_value) AS subkeys
+        FROM keys
+        WHERE layer = $1
+        GROUP BY key_Value
+      ) AS grouped;
     """
-  return result
-
-async def get_layer3_template(pool):
-  result = {}
-  async with pool.acquire() as conn:
-    query = """
-      SELECT *
-      FROM keys;
-    """
-  return result
-
-async def get_layer4_template(pool):
-  result = {}
-  async with pool.acquire() as conn:
-    query = """
-      SELECT *
-      FROM keys;
-    """
-  return result
+    result = await conn.fetchval(query, id)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result
