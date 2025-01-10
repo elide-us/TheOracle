@@ -17,13 +17,13 @@ async def get_public_template(pool):
               'layer3', t.layer3,
               'layer4', t.layer4,
               'input', t.input
-            ) ORDER BY t.id
+            )
           ) AS templates
         FROM templates t
         JOIN categories c ON t.category_id = c.id
         GROUP BY c.name
       )
-      SELECT json_object_agg(category, templates ORDER BY c.id) AS result
+      SELECT json_object_agg(category, templates) AS result
       FROM template_data;
     """
     result = await conn.fetchval(query)
