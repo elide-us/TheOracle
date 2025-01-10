@@ -3,11 +3,6 @@ import { Box, Button, Select, Typography, MenuItem, CircularProgress } from '@mu
 
 import Notification from './shared/Notification';
 
-// import dataLayer1 from './data_layer1.json';
-// import dataLayer2 from './data_layer2.json';
-// import dataLayer3 from './data_layer3.json';
-// import dataLayer4 from './data_layer4.json';
-
 const SubmitButton = ({ onClick }) => {
 	return (
 		<Box sx={{ display:'flex', justifyContent:'flex-end', marginTop:2 }}>
