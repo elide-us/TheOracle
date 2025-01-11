@@ -105,25 +105,7 @@ const PromptBuilderOptionSelector = ({ selectedTemplate, selections, setSelectio
     const [dataLayer3, setDataLayer3] = useState({})
     const [dataLayer4, setDataLayer4] = useState({})
 
-	useEffect(() => {
-		fetch('/api/imagen/1')
-			.then((res) => res.json())
-			.then((layerData) => setDataLayer1(layerData))
-			.catch(console.error);
-		fetch('/api/imagen/2')
-			.then((res) => res.json())
-			.then((layerData) => setDataLayer2(layerData))
-			.catch(console.error);
-		fetch('/api/imagen/3')
-			.then((res) => res.json())
-			.then((layerData) => setDataLayer3(layerData))
-			.catch(console.error);
-		fetch('/api/imagen/4')
-			.then((res) => res.json())
-			.then((layerData) => setDataLayer4(layerData))
-			.catch(console.error);
-	}, []);
-
+	// Helper function to parse data for template layout
 	const parseTemplate = (text) => {
         const pattern = /{([^}]+)}/g;
         const parts = [];
@@ -145,7 +127,28 @@ const PromptBuilderOptionSelector = ({ selectedTemplate, selections, setSelectio
       
         return parts;
     };
+
+	// Load the API data
+	useEffect(() => {
+		fetch('/api/imagen/1')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer1(layerData))
+			.catch(console.error);
+		fetch('/api/imagen/2')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer2(layerData))
+			.catch(console.error);
+		fetch('/api/imagen/3')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer3(layerData))
+			.catch(console.error);
+		fetch('/api/imagen/4')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer4(layerData))
+			.catch(console.error);
+	}, []);
   
+	// Create the layout data for the four layers
     const layers = [
         { label: 'Foundational Layers', parts: parseTemplate(selectedTemplate.layer1 || ''), data: dataLayer1 },
         { label: 'Structural Layers', parts: parseTemplate(selectedTemplate.layer2 || ''), data: dataLayer2 },
@@ -153,6 +156,7 @@ const PromptBuilderOptionSelector = ({ selectedTemplate, selections, setSelectio
         { label: 'Narrative Layers', parts: parseTemplate(selectedTemplate.layer4 || ''), data: dataLayer4 }
     ];
   
+	// Create a layerbox for each layer inside a flex box
     return (
         <Box sx={{ flexGrow: 1 }}>
             {layers.map((layer, index) => (
