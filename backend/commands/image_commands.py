@@ -91,12 +91,8 @@ async def post_request(client, prompt):
       size="1792x1024",
       n=1
     )
-  except Exception as e:
-    raise ValueError(f"Error during OpenAI image generation: {str(e)}")
-
-  if completion.error:
-    error_message = completion.error.get('message', 'Unknown error')
-    raise ValueError(f"OpenAI API error: {error_message}")
+  except OpenAIError as e:
+      raise
 
   if not completion.data:
     raise ValueError("No image returned from OpenAI.")
