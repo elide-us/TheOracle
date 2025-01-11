@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request
 import json
-from commands.image_commands import generate_and_upload_image
+from commands.image_commands import generate_image
 from commands.db_commands import get_public_template, get_layer_template
 
 router = APIRouter()
@@ -42,7 +42,7 @@ async def image_generation(request: Request):
   selected_keys = incoming_data.get("keys", {})
 
   try:
-    azure_image_url = await generate_and_upload_image(app, bot, template_key, selected_keys, user_input)
+    azure_image_url = await generate_image(app, bot, template_key, selected_keys, user_input)
     return { "imageUrl": azure_image_url }
   except Exception as e:
     return {"error": str(e)}
