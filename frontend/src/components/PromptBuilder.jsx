@@ -106,18 +106,21 @@ const PromptBuilderOptionSelector = ({ selectedTemplate, selections, setSelectio
     const [dataLayer4, setDataLayer4] = useState({})
 
 	useEffect(() => {
-		Promise.all([
-			fetch('/api/layer1').then((res) => res.json()),
-			fetch('/api/layer2').then((res) => res.json()),
-			fetch('/api/layer3').then((res) => res.json()),
-			fetch('/api/layer4').then((res) => res.json()),
-		])
-			.then(([layer1Data, layer2Data, layer3Data, layer4Data]) => {
-				setDataLayer1(layer1Data);
-				setDataLayer2(layer2Data);
-				setDataLayer3(layer3Data);
-				setDataLayer4(layer4Data);
-			})
+		fetch('/api/layer1')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer1(layerData))
+			.catch(console.error);
+		fetch('/api/layer2')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer2(layerData))
+			.catch(console.error);
+		fetch('/api/layer3')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer3(layerData))
+			.catch(console.error);
+		fetch('/api/layer4')
+			.then((res) => res.json())
+			.then((layerData) => setDataLayer4(layerData))
 			.catch(console.error);
 	}, []);
 
