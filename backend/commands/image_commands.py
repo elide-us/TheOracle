@@ -82,7 +82,7 @@ async def format_prompt(template_key: str, selected_keys: dict, user_input: str)
     return await format_template(template, elements) + "*Main Subject Prompt*: " + user_input
 
 # Send the image create request to OpenAI
-async def post_request(client, prompt, bot):
+async def post_request(client, prompt):
   try:
     completion = await client.images.generate(
       model="dall-e-3",
@@ -156,10 +156,11 @@ async def process_image(image_url: str, template_key: str, bot) -> str:
 async def generate_image(app, bot, template_key: str, selected_keys: dict, user_input: str):
   try:
     prompt_text = await format_prompt(template_key, selected_keys, user_input)
-    generated_image_url = await post_request(app.state.openai_client, prompt_text, bot)
+    generated_image_url = await post_request(app.state.openai_client, prompt_text)
 
     return await process_image(generated_image_url, template_key, bot)
   
   except Exception as e:
-    await bot.get_channel(bot.sys_channel).send(f"Error generating image: {str(e)}")
+    channel = bot.get_channel(bot.sys_channel)
+    await channel.send(f"Error generating image: {str(e)}")
     return None
