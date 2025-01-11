@@ -156,7 +156,7 @@ async def process_image(image_url: str, template_key: str, bot) -> str:
 async def generate_image(app, bot, template_key: str, selected_keys: dict, user_input: str):
   try:
     prompt_text = await format_prompt(template_key, selected_keys, user_input)
-    generated_image_url = await post_request(app.state.openai_client, prompt_text)
+    generated_image_url = await post_request(app.state.openai_client, prompt_text, bot)
 
     return await process_image(generated_image_url, template_key, bot)
   
