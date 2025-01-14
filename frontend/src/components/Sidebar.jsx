@@ -1,4 +1,4 @@
-import { Drawer, Box, IconButton, Tooltip, List, ListItem, ListItemText, ListItemButton } from '@mui/material';
+import { Drawer, Box, IconButton, Tooltip, List, ListItemText, ListItemButton } from '@mui/material';
 import { Menu as MenuIcon, Login as LoginIcon } from '@mui/icons-material';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { Link } from 'react-router-dom';
@@ -13,7 +13,8 @@ function Login({open}) {
 			await pca.initialize();
 
             const loginResponse = await pca.loginPopup(loginRequest);
-            const { idToken, account } = loginResponse;
+            //const { idToken, account } = loginResponse;
+            const { idToken } = loginResponse;
 
             // Send the ID token to your FastAPI backend
             const response = await fetch("/api/auth/login", {
