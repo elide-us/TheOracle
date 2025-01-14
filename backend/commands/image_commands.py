@@ -13,6 +13,9 @@ def generate_filename(identifier: str, extension: str = ".png") -> str:
     timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
     return f"{timestamp}_{identifier}{extension}"
 
+def generate_filename_url(filename: str):
+   return f"https://theoraclesa.blob.core.windows.net/theoraclegpt/{filename}"
+
 class SafeDict(dict):
     def __missing__(self, key):
         return ''
@@ -23,10 +26,9 @@ class SafeDict(dict):
 
 async def get_template(template_key: str) -> str:
     templates_data = await load_json("data_templates.json")
-    if not templates_data:
-        raise ValueError("Error loading data_templates.json")
+
     if template_key not in templates_data:
-        raise ValueError(f"Key '{template_key}' not found in data_templates.json")
+        raise ValueError(f"Key '{template_key}' not found in data.")
     return templates_data[template_key]
 
 async def get_elements(selected_keys: Dict[str, str]) -> Dict[str, str]:
@@ -134,7 +136,7 @@ class AsyncBufferWriter():
     if self.buffer:
       self.buffer.close()
 
-
+# Handles downloading and storing the resultant image
 async def process_image(image_url: str, template_key: str, bot) -> str:
   filename = generate_filename(template_key)
 
@@ -142,8 +144,7 @@ async def process_image(image_url: str, template_key: str, bot) -> str:
     await write_discord(buffer, bot, filename)
     await write_cdn(buffer, filename)
 
-  azure_image_url = f"https://theoraclesa.blob.core.windows.net/theoraclegpt/{filename}"
-  return azure_image_url
+  return generate_filename_url(filename)
 
 ###############################################################################
 ## Public Functions

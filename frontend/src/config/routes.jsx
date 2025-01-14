@@ -1,4 +1,4 @@
-import { Home as HomeIcon, Folder as FolderIcon, SmartToy as SmartToyIcon, Diamond as DiamondIcon, PhotoLibrary as PhotoLibraryIcon } from '@mui/icons-material';
+import { Home as HomeIcon, Folder as FolderIcon, SmartToy as SmartToyIcon, Diamond as DiamondIcon, PhotoLibrary as PhotoLibraryIcon, Pets as PetsIcon, Key as KeyIcon } from '@mui/icons-material';
 
 const Routes = [
   {
@@ -25,6 +25,16 @@ const Routes = [
     path: '/prism',
     name: 'Prism',
     icon: DiamondIcon
+  },
+  {
+    path: '/cat-edit',
+    name: 'Category Editor',
+    icon: PetsIcon
+  },
+  {
+    path: 'key-edit',
+    name: 'Keys Editor',
+    icon: KeyIcon
   }
 ];
 
