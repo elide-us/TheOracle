@@ -1,6 +1,7 @@
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from httpx import AsyncClient
 
 from services.discord_bot import init_discord_bot, start_discord_bot, get_discord_channel_id
 from services.openai_client import init_openai_client
@@ -17,6 +18,8 @@ async def lifespan(app: FastAPI):
   bot.app = app
   app.state.discord_bot = bot
 
+  app.state.http_cient = AsyncClient()
+
   openai = await init_openai_client()
   app.state.openai_client = openai
 
@@ -28,6 +31,7 @@ async def lifespan(app: FastAPI):
 
   db_client = await get_db_client()
   app.state.db_pool = db_client
+  app.state.conn = await db_client.acquire()
 
   setup_bot_routes(bot)
 

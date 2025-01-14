@@ -79,7 +79,9 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
 const CategoryList = ({ categories, onTileClick }) => {
 	return (
 		<Box>
-			<Typography variant="h5" gutterBottom>Select Persona:</Typography>
+			<Box sx={{ padding: 1 }}>
+				<Typography variant="h5" gutterBottom>Select Persona:</Typography>
+			</Box>
 			{Object.entries(categories).map(([categoryName, templates]) => (
 				<CategoryBox
 					key={categoryName}

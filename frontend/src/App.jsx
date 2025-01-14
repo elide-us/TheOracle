@@ -10,6 +10,8 @@ import FileManager from './components/FileManager';
 import Gallery from './components/Gallery';
 import TheOracleGPT from './components/TheOracleGPT';
 import Prism from './components/Prism';
+import CategoryEditor from './components/CategoryEditor';
+import KeyEditor from './components/KeyEditor';
 
 function App() {
 	const [open, setOpen] = useState(false);
@@ -24,9 +26,11 @@ function App() {
 						<Routes>
 							<Route path='/' element={<Home />} />
 							<Route path='/file-manager' element={<FileManager />} />
-							<Route path='gallery' element={ <Gallery /> } />
-							<Route path='the-oracle-gpt' element={ <TheOracleGPT /> } />
-							<Route path='prism' element={ <Prism /> } />
+							<Route path='/gallery' element={ <Gallery /> } />
+							<Route path='/the-oracle-gpt' element={ <TheOracleGPT /> } />
+							<Route path='/prism' element={ <Prism /> } />
+							<Route path='/cat-edit' element={ <CategoryEditor /> } />
+							<Route path='/key-edit' element={ <KeyEditor /> } />
 						</Routes>
 					</Box>
 				</Container>

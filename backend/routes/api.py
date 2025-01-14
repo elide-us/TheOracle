@@ -63,7 +63,7 @@ async def get_template(template_id: int, request: Request):
     case _:
       return {}
 
-# @router.get("/lumagen")
+# @router.post("/lumagen")
 # async def video_generation(request: Request):
 #     incoming_data = await request.json()
 
