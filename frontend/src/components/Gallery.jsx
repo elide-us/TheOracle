@@ -3,6 +3,7 @@ import { IconButton, Tooltip, Box, Typography } from '@mui/material';
 import { FileCopy as FileCopyIcon } from '@mui/icons-material';
 import axios from 'axios';
 import PaginationControls from './shared/PaginationControls';
+import { PageTitle } from './shared/PageTitle';
 
 function Gallery() {
     const [page, setPage] = useState(0);
@@ -34,6 +35,7 @@ function Gallery() {
 
     return (
         <Box>
+            <PageTitle title='Image Gallery' />
             {paginatedImages.map((image, index) => (
                 <Box key={index} style={{ display: 'flex', alignItems: 'center' }}>
                     <Box style={{ flex: '0 0 19%', aspectRatio: '19 / 6', overflow: 'hidden' }}>
