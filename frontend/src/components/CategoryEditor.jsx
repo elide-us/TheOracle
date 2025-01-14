@@ -1,8 +1,8 @@
 import { Box, Typography } from '@mui/material';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
 const LayerEditor = ({layer}) => {
-    const [selectedLayer, setSelectedLayer] = useState(layer);
+    const [selectedLayer] = useState(layer);
 
     return (
         <Box sx={{ padding:1, border: '2px solid #ccc', borderRadius: 2, margin: 2, background: '#333'}}>
@@ -85,8 +85,8 @@ const PromptEditBox = () => {
 
 
 const CategoryEditor = () => {
-    const [selectedCategory, setSelectedCategory] = useState({});
-    const [selectedTemplate, setSelectedTemplate] = useState({});
+    //const [selectedCategory, setSelectedCategory] = useState({});
+    //const [selectedTemplate, setSelectedTemplate] = useState({});
 
     return (
         <Box sx={{ width: '100%', padding: 1 }}> {/* Outer Abstract Box flex/stack... */}
