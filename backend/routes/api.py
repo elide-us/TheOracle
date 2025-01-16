@@ -69,15 +69,26 @@ async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
   except Exception:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token validation failed.")
 
+async def fetch_user_profile(access_token: str):
+  async with aiohttp.ClientSession() as session:
+    headers = {"Authorization": f"Bearer {access_token}"}
+    async with session.get("https://graph.microsoft.com/v1.0/me") as response:
+      if response.status != 200:
+        raise HTTPException(status_code=500, detail="Failed to fetch user profile.")
+      user = await response.json()
+    async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value") as response:
+      picture = await response.read() if response.status == 200 else None
+    return {"email": user.get("mail"), "username": user.get("displayName"), "picture": picture}
+
 @router.post("/auth/login")
 async def handle_login(request: Request):
-  print("API-AUTH-LOGIN")
   app = request.app
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
 
   data = await request.json()
   id_token = data.get("idToken")
+  access_token = data.get("accessToken")
 
   if not id_token:
     raise HTTPException(status_code=400, detail="ID Token is required.")
@@ -91,14 +102,30 @@ async def handle_login(request: Request):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
   await channel.send(f"Message: {microsoft_id}")
 
-  # user = await get_user_from_database(microsoft_id)
-  # if not user:
-  #   raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
+  access_token = payload.get("access_token")
+  user_profile = await fetch_user_profile(access_token)
+
+  user = await get_user_from_database(app, microsoft_id)
+  if not user:
+    async with app.state.db_pool.acquire() as conn:
+      await conn.execute(
+        """
+          INSERT INTO users (guid, auth_info, email, username)
+          VALUES ($1, $2, $3, $4)
+          RETURNING id
+        """,
+        microsoft_id,
+        payload,
+        user_profile["email"],
+        user_profile["username"]
+      )
+    user = {"email": user_profile["email"], "username": user_profile["username"]}
+    # raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
 
   token_data = {"sub": microsoft_id}
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
 
-  return JSONResponse(content={"token": token})
+  return JSONResponse(content={"token": token, "profilePicture": user_profile["picture"], "username": user["username"]})
 
 @router.get("/files")
 async def list_files(request: Request):
