@@ -1,9 +1,104 @@
-from fastapi import APIRouter, Request
-import json
+from fastapi import APIRouter, Request, HTTPException, status
+from fastapi.responses import JSONResponse
+from jose import jwt
+from typing import Dict
 from commands.image_commands import generate_image
-from commands.db_commands import get_public_template, get_layer_template
+from commands.db_commands import get_public_template, get_layer_template, get_user_from_database
+import aiohttp
 
 router = APIRouter()
+
+async def fetch_openid_config(app):
+  async with aiohttp.ClientSession() as session:
+    async with session.get("https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration") as response:
+      if response.status != 200:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
+      openid_config = await response.json()
+      app.state.jwks_url = openid_config["jwks_uri"]
+
+async def fetch_jwks(app):
+  async with aiohttp.ClientSession() as session:
+    async with session.get(app.state.jwks_url) as response:
+      if response.status != 200:
+        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,detail="Failed to fetch JWKS.")
+      app.state.jwks = await response.json()
+
+async def get_jwks(app):
+  if not hasattr(app.state, "jwks") or not app.state.jwks:
+    if not hasattr(app.state, "jwks_uri"):
+      await fetch_openid_config(app)
+    await fetch_jwks(app)
+  return app.state.jwks
+
+async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
+  jwks = await get_jwks(app)
+  unverified_header = jwt.get_unverified_header(id_token)
+
+  rsa_key = next(
+    (
+      {
+        "kty": key["kty"],
+        "kid": key["kid"],
+        "use": key["use"],
+        "n": key["n"],
+        "e": key["e"],
+      }
+      for key in jwks["keys"]
+      if key["kid"] == unverified_header["kid"]
+    ),
+    None,
+  )
+  
+  if not rsa_key:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token header.")
+  
+  try:
+    payload = jwt.decode(
+      id_token,
+      rsa_key,
+      algorithms=["RS256"],
+      audience=client_id,
+      issuer="https://login.microsoftonline.com/common/v2.0"
+    )
+    return payload
+  
+  except jwt.ExpiredSignatureError:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired.")
+  except jwt.JWTClaimsError:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect claims. Please check the audience and issuer.")
+  except Exception:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token validation failed.")
+
+@router.post("/auth/login")
+async def handle_login(request: Request):
+  print("API-AUTH-LOGIN")
+  app = request.app
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
+
+  data = await request.json()
+  id_token = data.get("idToken")
+
+  if not id_token:
+    raise HTTPException(status_code=400, detail="ID Token is required.")
+  await channel.send(f"Message: {id_token}")
+
+  client_id = app.state.microsoft_client_id
+  payload = await verify_id_token(app, id_token, client_id)
+
+  microsoft_id = payload.get("sub")
+  if not microsoft_id:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
+  await channel.send(f"Message: {microsoft_id}")
+
+  # user = await get_user_from_database(microsoft_id)
+  # if not user:
+  #   raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
+
+  token_data = {"sub": microsoft_id}
+  token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
+
+  return JSONResponse(content={"token": token})
 
 @router.get("/files")
 async def list_files(request: Request):

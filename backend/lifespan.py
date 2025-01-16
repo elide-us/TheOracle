@@ -1,8 +1,8 @@
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from httpx import AsyncClient
 
+from config import get_jwt_secret
 from services.discord_bot import init_discord_bot, start_discord_bot, get_discord_channel_id
 from services.openai_client import init_openai_client
 from services.lumaai_client import init_lumaai_client
@@ -18,7 +18,8 @@ async def lifespan(app: FastAPI):
   bot.app = app
   app.state.discord_bot = bot
 
-  app.state.http_cient = AsyncClient()
+  app.state.jwt_secret = get_jwt_secret()
+  app.state.jwt_algorithm = "HS256"
 
   openai = await init_openai_client()
   app.state.openai_client = openai

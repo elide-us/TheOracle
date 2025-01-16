@@ -26,3 +26,9 @@ def get_blob_container():
 
 def get_db_password():
     return get_env_var("PG_DB_PASSWORD")
+
+def get_jwt_secret():
+    return get_env_var("JWT_SECRET")
+
+def get_microsoft_client_id():
+    return get_env_var("APPREG_ID")
