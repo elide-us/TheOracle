@@ -3,6 +3,7 @@ import axios from 'axios';
 import { Link as LinkIcon } from '@mui/icons-material';
 import { List, ListItem, Typography, Link, Box } from '@mui/material';
 import PaginationControls from './shared/PaginationControls';
+import { PageTitle } from './shared/PageTitle';
 
 function FileManager() {
 	const [page, setPage] = useState(0);
@@ -29,6 +30,7 @@ function FileManager() {
 
 	return (
 		<Box>
+			<PageTitle title='File Manager' />
 			<List>
 				{paginatedFiles.map((file, index) => (
 					<ListItem key={index} sx={{ padding: '12px', }}>

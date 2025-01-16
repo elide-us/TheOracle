@@ -48,3 +48,6 @@ async def get_layer_template(pool, layer_id):
     if isinstance(result, str):
       result = json.loads(result)
     return result
+
+async def get_user_from_database(conn, id):
+  return None

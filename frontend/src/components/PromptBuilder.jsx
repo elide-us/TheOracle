@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Box, Button, Select, Typography, MenuItem, CircularProgress } from '@mui/material';
-
+import { PageTitle } from './shared/PageTitle';
 import Notification from './shared/Notification';
 
 const SubmitButton = ({ onClick }) => {
@@ -349,50 +349,57 @@ const PromptBuilder = ({ selectedTemplate }) => {
   	}, [selectedTemplate]);
 
   	return selectedTemplate ? (
-    	<Box sx={{ padding: 2, backgroundColor: '#333' }}>
-      		<Box sx={{
-          		padding: 2,
-          		border: '2px solid #000',
-          		borderRadius: '6px',
-          		backgroundColor: '#212121',
-          		display: 'flex',
-          		flexDirection: 'column',
-          		minHeight: 'calc(100vh - 24px)',
-        	}}>
-				<PromptBuilderHeader
-					selectedTemplate={selectedTemplate}
-					currentImageUrl={currentImageUrl}
-					isLoading={isLoading}
-				/>
-				<PromptBuilderOptionSelector
-					selectedTemplate={selectedTemplate}
-					selections={selections}
-					setSelections={setSelections}
-				/>
-				<Box>
-					<PromptBuilderComplexityBar percentage="70%" />
-					<PromptBuilderInputBar
+		<Box>
+			<PageTitle title='Prompt Builder' />
+			<Box sx={{ padding: 2, backgroundColor: '#333' }}>
+				<Box sx={{
+					padding: 2,
+					border: '2px solid #000',
+					borderRadius: '6px',
+					backgroundColor: '#212121',
+					display: 'flex',
+					flexDirection: 'column',
+					minHeight: 'calc(100vh - 24px)',
+				}}>
+					<PromptBuilderHeader
 						selectedTemplate={selectedTemplate}
-						inputText={inputText}
-						setInputText={setInputText}
+						currentImageUrl={currentImageUrl}
+						isLoading={isLoading}
 					/>
-					<SubmitButton onClick={handleSubmit} />
+					<PromptBuilderOptionSelector
+						selectedTemplate={selectedTemplate}
+						selections={selections}
+						setSelections={setSelections}
+					/>
+					<Box>
+						<PromptBuilderComplexityBar percentage="70%" />
+						<PromptBuilderInputBar
+							selectedTemplate={selectedTemplate}
+							inputText={inputText}
+							setInputText={setInputText}
+						/>
+						<SubmitButton onClick={handleSubmit} />
+					</Box>
 				</Box>
-			</Box>
 
-			<Notification
-				open={notification.open}
-				onClose={handleCloseNotification}
-				message={notification.message}
-				severity={notification.severity}
-			/>
+				<Notification
+					open={notification.open}
+					onClose={handleCloseNotification}
+					message={notification.message}
+					severity={notification.severity}
+				/>
+			</Box>
 		</Box>
+
 	) : (
-    	<Box sx={{ padding: 4, textAlign: 'center' }}>
-      		<Typography variant="h6" color="textSecondary">
-        		Please select a template to get started.
-      		</Typography>
-    	</Box>
+		<Box>
+			<PageTitle title='Prompt Builder' />
+			<Box sx={{ padding: 4, textAlign: 'center' }}>
+				<Typography variant="h6" color="textSecondary">
+					Please select a template to get started.
+				</Typography>
+			</Box>
+		</Box>
   	);
 };
 

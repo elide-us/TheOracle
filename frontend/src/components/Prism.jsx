@@ -1,6 +1,8 @@
+import { PageTitle } from './shared/PageTitle';
+
 function Prism() {
     return (
-        <p>Prism</p>
+        <PageTitle title='Prism' />
     )
 }
 

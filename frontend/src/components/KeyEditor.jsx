@@ -1,12 +1,11 @@
 import { Box, Typography } from '@mui/material';
 //import { useState } from 'react';
+import { PageTitle } from './shared/PageTitle';
 
 const KeyEditor = () => {
     //const [selectedTemplate, setSelectedTemplate] = useState({});
     return (
-        <Box sx={{ padding:1 }}>
-            <Typography variant='h3'>KeyEditor</Typography>
-        </Box>
+        <PageTitle title='Key Editor' />
     )
 }
 

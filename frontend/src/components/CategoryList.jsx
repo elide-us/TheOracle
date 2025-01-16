@@ -1,4 +1,5 @@
 import { Box, Tooltip, Typography } from "@mui/material";
+import { PageTitle } from './shared/PageTitle';
 
 const Tile = ({ template, onTileClick }) => {
 	return (
@@ -79,9 +80,7 @@ const CategoryBox = ({ categoryName, templates, onTileClick }) => {
 const CategoryList = ({ categories, onTileClick }) => {
 	return (
 		<Box>
-			<Box sx={{ padding: 1 }}>
-				<Typography variant="h5" gutterBottom>Select Persona:</Typography>
-			</Box>
+            <PageTitle title='Template Selector' />
 			{Object.entries(categories).map(([categoryName, templates]) => (
 				<CategoryBox
 					key={categoryName}
