@@ -5,11 +5,13 @@ import { Link } from 'react-router-dom';
 import Routes from '../config/routes';
 import { msalConfig, loginRequest } from '../config/msal';
 import Notification from './shared/Notification';
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { UserContet } from "../context/UserContext";
 
 const pca = new PublicClientApplication(msalConfig);
 
 function Login({open}) {
+	const { user, setUser, logoutUser } = useContext(UserContext);
 	const [notification, setNotification] = useState({
 		open: false,
 		severity: "info",
@@ -23,31 +25,29 @@ function Login({open}) {
     const handleLogin = async () => {
         try {
 			await pca.initialize();
-
             const loginResponse = await pca.loginPopup(loginRequest);
-            //const { idToken, account } = loginResponse;
-            const { idToken } = loginResponse;
-			console.log("ID Token:", idToken);
+            const { idToken, accessToken } = loginResponse;
 
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ idToken }),
+                body: JSON.stringify({ idToken, accessToken }),
             });
 
 			if (!response.ok) {
 				throw new Error("Login failed");
 			}
 
-            const data = await response.json();
-			localStorage.setItem("accessToken", data.token);
+            // const data = await response.json();
+			// localStorage.setItem("accessToken", data.token);
 
+			setUser({ profilePicture: data.profilePciture, username: data.username });
 			setNotification({
 				open: true,
 				severity: "success",
-				message: "Login successful! Token stored.",
+				message: "Login successful!",
 			});
 		} catch (error) {
 			setNotification({
@@ -58,15 +58,37 @@ function Login({open}) {
 		}
     };
 
+	const handleLogout = () => {
+		logoutUser();
+		setNotification({
+			open: true,
+			severity: "info",
+			message: "Logged out successfully."
+		});
+	}
+
 	return (
 		<Box>
-			<Tooltip title='Login with Microsoft'>
-				<IconButton onClick={handleLogin}>
-					<LoginIcon />
-				</IconButton>
-			</Tooltip>
-			{open && <ListItemText primary='Login' sx={{ marginLeft: '8px', }} />}
-			<Notification open={notification.open}
+			{user ? (
+				<Tooltip title="Logout">
+					<IconButton onClick={handleLogout}>
+						<img src={user.profilePicture} alt={user.username} style={{ width: "32px", height: "32px", borderRadius: "50%" }} />
+					</IconButton>
+				</Tooltip>
+			) : (
+				<Tooltip title="Login with Microsoft">
+					<IconButton onClick={handleLogin}>
+						<LoginIcon />
+					</IconButton>
+				</Tooltip>
+			)}
+
+			{open && (
+				<ListItemText primary={user ? "Logout" : "Login"} sx={{ marginLeft: "8px" }} />
+			)}
+
+			<Notification
+				open={notification.open}
 				handleClose={handleNotificationClose}
 				severity={notification.severity}
 				message={notification.message}

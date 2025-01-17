@@ -49,5 +49,7 @@ async def get_layer_template(pool, layer_id):
       result = json.loads(result)
     return result
 
-async def get_user_from_database(conn, id):
-  return None
+async def get_user_from_database(app, microsoft_id):
+  async with app.state.db_pool.acquire() as conn:
+    row = await conn.fetchrow("SELECT * FROM users WHERE guid = $1", microsoft_id)
+    return dict(row) if row else None
