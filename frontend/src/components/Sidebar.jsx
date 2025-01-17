@@ -5,8 +5,8 @@ import { Link } from 'react-router-dom';
 import Routes from '../config/routes';
 import { msalConfig, loginRequest } from '../config/msal';
 import Notification from './shared/Notification';
-import { useState, useContext, useEffect } from 'react';
-import { UserContet } from "../context/UserContext";
+import { useState, useContext } from 'react';
+import { UserContext } from "../context/UserContext";
 
 const pca = new PublicClientApplication(msalConfig);
 
@@ -40,10 +40,10 @@ function Login({open}) {
 				throw new Error("Login failed");
 			}
 
-            // const data = await response.json();
-			// localStorage.setItem("accessToken", data.token);
+            const data = await response.json();
+			localStorage.setItem("accessToken", data.token);
 
-			setUser({ profilePicture: data.profilePciture, username: data.username });
+			setUser({ profilePicture: data.profilePicture, username: data.username });
 			setNotification({
 				open: true,
 				severity: "success",
