@@ -1,6 +1,11 @@
 import { createContext, useState } from 'react';
 
-const UserContext = createContext(null); // Create the context
+// Initialize context with default values to avoid destructuring errors
+const UserContext = createContext({
+    user: null,          // Default user value
+    logIn: () => {},     // No-op function
+    logOut: () => {},    // No-op function
+});
 
 export const UserContextProvider = ({ children }) => {
     const [user, setUser] = useState(null); // State to hold user data
@@ -27,4 +32,4 @@ export const UserContextProvider = ({ children }) => {
     );
 };
 
-export default UserContextProvider;
+export default UserContext;
