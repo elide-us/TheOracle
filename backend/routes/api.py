@@ -88,11 +88,14 @@ async def handle_login(request: Request):
 
   data = await request.json()
   id_token = data.get("idToken")
-  access_token = data.get("accessToken")
-
   if not id_token:
     raise HTTPException(status_code=400, detail="ID Token is required.")
-  await channel.send(f"Message: {id_token}")
+  await channel.send("DEBUG: Retrieved idToken")
+
+  access_token = data.get("accessToken")
+  if not access_token:
+    raise HTTPException(status_code=400, detail="Access Token is required.")
+  await channel.send("DEBUG: Retrieved accessToken")
 
   client_id = app.state.microsoft_client_id
   payload = await verify_id_token(app, id_token, client_id)
@@ -100,7 +103,7 @@ async def handle_login(request: Request):
   microsoft_id = payload.get("sub")
   if not microsoft_id:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
-  await channel.send(f"Message: {microsoft_id}")
+  await channel.send(f"Microsoft ID: {microsoft_id}")
 
   access_token = payload.get("access_token")
   user_profile = await fetch_user_profile(access_token)
