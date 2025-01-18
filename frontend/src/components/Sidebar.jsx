@@ -6,12 +6,12 @@ import { PublicClientApplication } from '@azure/msal-browser';
 import Routes from '../config/routes';
 import { msalConfig, loginRequest } from '../config/msal';
 import Notification from './shared/Notification';
-import { UserContext } from "./shared/UserContext";
+import { UserContextProvider } from "./shared/UserContextProvider";
 
 const pca = new PublicClientApplication(msalConfig);
 
 function Login({open}) {
-	const { user, setUser, logoutUser } = useContext(UserContext);
+	const { user, setUser, logoutUser } = useContext(UserContextProvider);
 	const [notification, setNotification] = useState({
 		open: false,
 		severity: "info",
