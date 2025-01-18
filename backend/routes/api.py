@@ -97,6 +97,7 @@ async def handle_login(request: Request):
   app = request.app
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
+  await channel.send("Auth Login processing...")
 
   data = await request.json()
   id_token = data.get("idToken")
@@ -110,6 +111,7 @@ async def handle_login(request: Request):
   client_id = app.state.microsoft_client_id
   payload = await verify_id_token(app, id_token, client_id)
 
+  await channel.send("Process payload...")
   microsoft_id = payload.get("sub")
   if not microsoft_id:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
