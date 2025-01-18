@@ -9,20 +9,14 @@ import aiohttp
 router = APIRouter()
 
 async def fetch_openid_config(app):
-  bot = app.state.discord_bot
-  channel = bot.get_channel(bot.sys_channel)
-  await channel.send("fetch_openid_config()")
   async with aiohttp.ClientSession() as session:
-    async with session.get("https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration") as response:
+    async with session.get("https://login.microsoftonline.com/consumer/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
       openid_config = await response.json()
       app.state.jwks_url = openid_config["jwks_uri"]
 
-async def fetch_jwks(app):
-  bot = app.state.discord_bot
-  channel = bot.get_channel(bot.sys_channel)
-  await channel.send("fetch_jwks()")  
+async def fetch_jwks(app): 
   async with aiohttp.ClientSession() as session:
     async with session.get(app.state.jwks_url) as response:
       if response.status != 200:
@@ -30,9 +24,6 @@ async def fetch_jwks(app):
       app.state.jwks = await response.json()
 
 async def get_jwks(app):
-  bot = app.state.discord_bot
-  channel = bot.get_channel(bot.sys_channel)
-  await channel.send("get_jwks()")  
   if not hasattr(app.state, "jwks") or not app.state.jwks:
     if not hasattr(app.state, "jwks_uri"):
       await fetch_openid_config(app)
@@ -42,13 +33,13 @@ async def get_jwks(app):
 async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
-  await channel.send("verify_id_token()")
-
+  
   jwks = await get_jwks(app)
-  await channel.send("Got JWKS")
 
-  # Next place to start troubleshooting...
+  await channel.send(f"ID Token: {id_token}")
   unverified_header = jwt.get_unverified_header(id_token)
+  await channel.send(f"Unverified Header: {unverified_header}")
+
 
   rsa_key = next(
     (
@@ -66,23 +57,28 @@ async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
   )
   
   if not rsa_key:
+    await channel.send("DEBUG: Invalid token header.")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token header.")
   
   try:
+    await channel.send("DEBUG: Attempting jwt.decode()")
     payload = jwt.decode(
       id_token,
       rsa_key,
       algorithms=["RS256"],
       audience=client_id,
-      issuer="https://login.microsoftonline.com/common/v2.0"
+      issuer="https://login.microsoftonline.com/consumer/v2.0"
     )
     return payload
   
   except jwt.ExpiredSignatureError:
+    await channel.send("DEBUG: Token has expired.")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired.")
   except jwt.JWTClaimsError:
+    await channel.send("DEBUG: Incorrect claims.")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect claims. Please check the audience and issuer.")
   except Exception:
+    await channel.send("DEBUG: Token validation failed.")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token validation failed.")
 
 async def fetch_user_profile(access_token: str):
@@ -106,12 +102,10 @@ async def handle_login(request: Request):
   id_token = data.get("idToken")
   if not id_token:
     raise HTTPException(status_code=400, detail="ID Token is required.")
-  await channel.send("DEBUG: Retrieved idToken")
 
   access_token = data.get("accessToken")
   if not access_token:
     raise HTTPException(status_code=400, detail="Access Token is required.")
-  await channel.send("DEBUG: Retrieved accessToken")
 
   client_id = app.state.microsoft_client_id
   payload = await verify_id_token(app, id_token, client_id)
@@ -119,7 +113,6 @@ async def handle_login(request: Request):
   microsoft_id = payload.get("sub")
   if not microsoft_id:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
-  await channel.send(f"Microsoft ID: {microsoft_id}")
 
   access_token = payload.get("access_token")
   user_profile = await fetch_user_profile(access_token)
