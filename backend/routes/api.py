@@ -78,6 +78,7 @@ async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
   if not rsa_key:
     await channel.send(f"No matching key for kid: {unverified_header['kid']}")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token header.")
+  await channel.send("Valid token header.")
   
   try:
     await channel.send("DEBUG: Attempting jwt.decode()")
@@ -86,7 +87,7 @@ async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
       rsa_key,
       algorithms=["RS256"],
       audience=client_id,
-      issuer="https://login.microsoftonline.com/consumers/v2.0"
+      issuer="https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0"
     )
     return payload
   
