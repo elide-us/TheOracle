@@ -12,7 +12,7 @@ async def fetch_openid_config(app):
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
   async with aiohttp.ClientSession() as session:
-    async with session.get("https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration") as response:
+    async with session.get("https://login.microsoftonline.com/consumer/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
       openid_config = await response.json()
