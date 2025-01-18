@@ -9,12 +9,15 @@ import aiohttp
 router = APIRouter()
 
 async def fetch_openid_config(app):
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
   async with aiohttp.ClientSession() as session:
     async with session.get("https://login.microsoftonline.com/consumer/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
       openid_config = await response.json()
       app.state.jwks_url = openid_config["jwks_uri"]
+      await channel.send(f"jwks_uri: {app.state.jwks_url}")
 
 async def fetch_jwks(app): 
   async with aiohttp.ClientSession() as session:
@@ -24,10 +27,16 @@ async def fetch_jwks(app):
       app.state.jwks = await response.json()
 
 async def get_jwks(app):
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
+  await channel.send("get_jwks")
+
   if not hasattr(app.state, "jwks") or not app.state.jwks:
     if not hasattr(app.state, "jwks_uri"):
       await fetch_openid_config(app)
     await fetch_jwks(app)
+  if not app.state.jwks:
+    await channel.send("JWKS = None")
   return app.state.jwks
 
 async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
