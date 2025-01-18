@@ -28,6 +28,7 @@ function Login({open}) {
             const loginResponse = await pca.loginPopup(loginRequest);
             const { idToken, accessToken } = loginResponse;
 
+			console.log("Accessing API");
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
@@ -39,10 +40,12 @@ function Login({open}) {
 			if (!response.ok) {
 				throw new Error("API Response failure.");
 			}
+			console.log("Response ok");
 
             const data = await response.json();
 			localStorage.setItem("accessToken", data.token);
 
+			console.log("Setting user context data")
 			setUser({ profilePicture: data.profilePicture, username: data.username });
 			setNotification({
 				open: true,
