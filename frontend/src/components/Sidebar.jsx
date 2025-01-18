@@ -6,7 +6,7 @@ import { PublicClientApplication } from '@azure/msal-browser';
 import Routes from '../config/routes';
 import { msalConfig, loginRequest } from '../config/msal';
 import Notification from './shared/Notification';
-import { UserContext } from "./shared/UserContextProvider";
+import UserContext from "./shared/UserContextProvider";
 
 const pca = new PublicClientApplication(msalConfig);
 
