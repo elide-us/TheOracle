@@ -1,12 +1,12 @@
+import { useState, useContext } from 'react';
+import { Link } from 'react-router-dom';
 import { Drawer, Box, IconButton, Tooltip, List, ListItemText, ListItemButton } from '@mui/material';
 import { Menu as MenuIcon, Login as LoginIcon } from '@mui/icons-material';
 import { PublicClientApplication } from '@azure/msal-browser';
-import { Link } from 'react-router-dom';
 import Routes from '../config/routes';
 import { msalConfig, loginRequest } from '../config/msal';
 import Notification from './shared/Notification';
-import { useState, useContext } from 'react';
-import { UserContext } from "../context/UserContext";
+import { UserContext } from "./shared/UserContext";
 
 const pca = new PublicClientApplication(msalConfig);
 
@@ -37,7 +37,7 @@ function Login({open}) {
             });
 
 			if (!response.ok) {
-				throw new Error("Login failed");
+				throw new Error("API Response failure.");
 			}
 
             const data = await response.json();
