@@ -9,6 +9,9 @@ import aiohttp
 router = APIRouter()
 
 async def fetch_openid_config(app):
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
+  await channel.send("fetch_openid_config()")
   async with aiohttp.ClientSession() as session:
     async with session.get("https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
@@ -17,6 +20,9 @@ async def fetch_openid_config(app):
       app.state.jwks_url = openid_config["jwks_uri"]
 
 async def fetch_jwks(app):
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
+  await channel.send("fetch_jwks()")  
   async with aiohttp.ClientSession() as session:
     async with session.get(app.state.jwks_url) as response:
       if response.status != 200:
@@ -24,6 +30,9 @@ async def fetch_jwks(app):
       app.state.jwks = await response.json()
 
 async def get_jwks(app):
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
+  await channel.send("get_jwks()")  
   if not hasattr(app.state, "jwks") or not app.state.jwks:
     if not hasattr(app.state, "jwks_uri"):
       await fetch_openid_config(app)
@@ -31,7 +40,14 @@ async def get_jwks(app):
   return app.state.jwks
 
 async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
+  await channel.send("verify_id_token()")
+
   jwks = await get_jwks(app)
+  await channel.send("Got JWKS")
+
+  # Next place to start troubleshooting...
   unverified_header = jwt.get_unverified_header(id_token)
 
   rsa_key = next(
