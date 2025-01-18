@@ -12,7 +12,7 @@ async def fetch_openid_config(app):
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
   async with aiohttp.ClientSession() as session:
-    async with session.get("https://login.microsoftonline.com/consumer/v2.0/.well-known/openid-configuration") as response:
+    async with session.get("https://login.microsoftonline.com/common/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
       openid_config = await response.json()
@@ -39,16 +39,26 @@ async def get_jwks(app):
     await channel.send("JWKS = None")
   return app.state.jwks
 
+
+async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
+    bot = app.state.discord_bot
+    channel = bot.get_channel(bot.sys_channel)
+
+
 async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
   
   jwks = await get_jwks(app)
 
-  await channel.send(f"ID Token: {id_token}")
-  unverified_header = jwt.get_unverified_header(id_token)
-  await channel.send(f"Unverified Header: {unverified_header}")
+  await channel.send(f"ID Token before header extraction: {id_token}")
+  try:
+    unverified_header = jwt.get_unverified_header(id_token)
+  except Exception as e:
+    await channel.send(f"Error extracting header: {str(e)}")
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid ID token.")
 
+  await channel.send(f"Unverified Header: {unverified_header}")
 
   rsa_key = next(
     (
@@ -66,7 +76,7 @@ async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
   )
   
   if not rsa_key:
-    await channel.send("DEBUG: Invalid token header.")
+    await channel.send(f"No matching key for kid: {unverified_header['kid']}")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token header.")
   
   try:
