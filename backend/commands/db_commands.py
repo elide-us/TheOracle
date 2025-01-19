@@ -49,13 +49,16 @@ async def get_layer_template(pool, layer_id):
       result = json.loads(result)
     return result
 
-async def get_user_from_database(app, microsoft_id):
+async def get_user_from_database(app, pool, microsoft_id):
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
-
-  async with app.state.db_pool.acquire() as conn:
-    result = await conn.fetchrow(
-      "SELECT * FROM users WHERE microsoft_id = $1", microsoft_id
-    )
+  await channel.send("get_user_from_db()")
+  async with pool.acquire() as conn:
+    query = """
+      SELECT * FROM users WHERE microsoft_id = $1
+    """
+    result = await conn.fetchrow(query, microsoft_id)
+    if isinstance(result, str):
+      result = json.loads(result)
     await channel.send(f"Query result: {result}")
     return result
