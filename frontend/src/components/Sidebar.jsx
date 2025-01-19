@@ -45,9 +45,7 @@ function Login({open}) {
             const data = await response.json();
 			localStorage.setItem("internalToken", data.bearer_token);
 
-			const profilePictureBase64 = `data:image/jpeg;base64,${btoa(
-				new Uint8Array(data.profilePicture).reduce((data, byte) => data + String.fromCharCode(byte), "")
-			)}`;
+			const profilePictureBase64 = `data:image/jpeg;base64,${data.profilePicture}`;
 
 			setUser({ email: data.email, username: data.username, profilePicture: profilePictureBase64 });
 			setNotification({
