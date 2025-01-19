@@ -4,7 +4,7 @@ from jose import jwt
 from typing import Dict
 from commands.image_commands import generate_image
 from commands.db_commands import get_public_template, get_layer_template, get_user_from_database
-import aiohttp
+import aiohttp, uuid
 
 router = APIRouter()
 
@@ -100,7 +100,7 @@ async def handle_login(request: Request):
   app = request.app
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
-  await channel.send("Auth Login processing...")
+  await channel.send("Processing login...")
 
   data = await request.json()
   id_token = data.get("idToken")
@@ -116,22 +116,25 @@ async def handle_login(request: Request):
 
   await channel.send("Process payload...")
   microsoft_id = payload.get("sub")
-  await channel.send(f"Microsoft ID: {microsoft_id}")
   if not microsoft_id:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
   user_profile = await fetch_user_profile(access_token)
-  await channel.send(f"{user_profile['email']}, {user_profile["username"]}")
+  await channel.send(f"{user_profile["username"]}, {user_profile['email']}")
 
   user = await get_user_from_database(app, microsoft_id)
   if not user:
+    new_guid = str(uuid.uuid4())
+    await channel.send(f"No user found for Microsoft ID: {microsoft_id}")
+    await channel.send(f"Creating new user with GUID: {new_guid}")
     async with app.state.db_pool.acquire() as conn:
       await conn.execute(
         """
-          INSERT INTO users (guid, auth_info, email, username)
+          INSERT INTO users (guid, microsoft_id, auth_info, email, username)
           VALUES ($1, $2, $3, $4)
           RETURNING id
         """,
+        new_guid,
         microsoft_id,
         payload,
         user_profile["email"],
