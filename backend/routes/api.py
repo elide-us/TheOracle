@@ -82,17 +82,17 @@ async def fetch_user_profile(access_token: str):
         raise HTTPException(status_code=500, detail=f"Failed to fetch user profile. Status: {response.status}, Error: {error_message}")
       user = await response.json()
     
-    # Fetch profile picture URL (binary data replaced with URL)
-    profile_picture_url = None
+    # Fetch profile picture data
+    profile_picture = None
     async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value", headers=headers) as response:
       if response.status == 200:
-        profile_picture_url = f"https://graph.microsoft.com/v1.0/me/photo/$value"  # Public URL for picture
+        profile_picture = await response.read()
 
     # Return structured user data
     return {
       "email": user.get("mail") or user.get("userPrincipalName"),  # Handle fallback for email
       "username": user.get("displayName"),  # Friendly name
-      "profilePicture": profile_picture_url  # URL for profile picture
+      "profilePicture": profile_picture  # URL for profile picture
     }
 
 @router.post("/auth/login")
@@ -120,11 +120,8 @@ async def handle_login(request: Request):
   if not microsoft_id:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
-  # I think the below is the internal bearer token, the access_token is the one from Microsoft for accessing the Graph API
   user_profile = await fetch_user_profile(access_token)
-  await channel.send(f"{user_profile['email']}, {user_profile["username"]}, {user_profile["profilePicture"]}")
-
-  # access_token = payload.get("access_token")
+  await channel.send(f"{user_profile['email']}, {user_profile["username"]}")
 
   user = await get_user_from_database(app, microsoft_id)
   if not user:
@@ -140,13 +137,16 @@ async def handle_login(request: Request):
         user_profile["email"],
         user_profile["username"]
       )
-    user = {"email": user_profile["email"], "username": user_profile["username"]}
+      await channel.send("Added user")
+    await channel.send("Found user")
+    # user = {"email": user_profile["email"], "username": user_profile["username"]}
     # raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
 
   token_data = {"sub": microsoft_id}
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
-
-  return JSONResponse(content={"token": token, "profilePicture": user_profile["picture"], "username": user["username"]})
+  await channel.send(f"{user_profile["username"]} bearer token created")
+  
+  return JSONResponse(content={"bearer_token": token, "email": user_profile["email"], "username": user_profile["username"], "profilePicture": user_profile["profilePicture"]})
 
 @router.get("/files")
 async def list_files(request: Request):
