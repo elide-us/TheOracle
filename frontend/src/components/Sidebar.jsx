@@ -44,7 +44,6 @@ function Login({open}) {
 
             const data = await response.json();
 			console.log(data);
-
 			const profilePictureBase64 = `data:image/png;base64,${data.profilePicture}`;
 
 			setUser({
@@ -81,7 +80,7 @@ function Login({open}) {
 			{user ? (
 				<Tooltip title="Logout">
 					<IconButton onClick={handleLogout}>
-						<img src={user.profilePicture} alt={user.username} style={{ width: "32px", height: "32px", borderRadius: "50%" }} />
+						<img src={profilePictureBase64} alt={user.username} style={{ width: "32px", height: "32px", borderRadius: "50%" }} />
 					</IconButton>
 				</Tooltip>
 			) : (
