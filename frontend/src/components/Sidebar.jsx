@@ -26,9 +26,10 @@ function Login({open}) {
         try {
 			await pca.initialize();
             const loginResponse = await pca.loginPopup(loginRequest);
-            const { idToken, accessToken } = loginResponse;
 
-			console.log("Accessing API");
+            const { idToken, accessToken } = loginResponse;
+			localStorage.setItem("accessToken", accessToken);
+
             const response = await fetch("/api/auth/login", {
                 method: "POST",
                 headers: {
@@ -40,13 +41,15 @@ function Login({open}) {
 			if (!response.ok) {
 				throw new Error("API Response failure.");
 			}
-			console.log("Response ok");
 
             const data = await response.json();
-			localStorage.setItem("accessToken", data.token);
+			localStorage.setItem("internalToken", data.bearer_token);
 
-			console.log("Setting user context data")
-			setUser({ profilePicture: data.profilePicture, username: data.username });
+			const profilePictureBase64 = `data:image/jpeg;base64,${btoa(
+				new Uint8Array(data.profilePicture).reduce((data, byte) => data + String.fromCharCode(byte), "")
+			)}`;
+
+			setUser({ email: data.email, username: data.username, profilePicture: profilePictureBase64 });
 			setNotification({
 				open: true,
 				severity: "success",
