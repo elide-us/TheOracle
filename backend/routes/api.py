@@ -9,15 +9,12 @@ import aiohttp
 router = APIRouter()
 
 async def fetch_openid_config(app):
-  bot = app.state.discord_bot
-  channel = bot.get_channel(bot.sys_channel)
   async with aiohttp.ClientSession() as session:
     async with session.get("https://login.microsoftonline.com/consumers/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
       openid_config = await response.json()
       app.state.jwks_url = openid_config["jwks_uri"]
-      await channel.send(f"jwks_uri: {app.state.jwks_url}")
 
 async def fetch_jwks(app): 
   async with aiohttp.ClientSession() as session:
@@ -27,38 +24,19 @@ async def fetch_jwks(app):
       app.state.jwks = await response.json()
 
 async def get_jwks(app):
-  bot = app.state.discord_bot
-  channel = bot.get_channel(bot.sys_channel)
-  await channel.send("get_jwks")
-
   if not hasattr(app.state, "jwks") or not app.state.jwks:
     if not hasattr(app.state, "jwks_uri"):
       await fetch_openid_config(app)
     await fetch_jwks(app)
-  if not app.state.jwks:
-    await channel.send("JWKS = None")
   return app.state.jwks
 
-
 async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
-    bot = app.state.discord_bot
-    channel = bot.get_channel(bot.sys_channel)
-
-
-async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
-  bot = app.state.discord_bot
-  channel = bot.get_channel(bot.sys_channel)
-  
   jwks = await get_jwks(app)
 
-  await channel.send(f"ID Token before header extraction: {id_token}")
   try:
     unverified_header = jwt.get_unverified_header(id_token)
   except Exception as e:
-    await channel.send(f"Error extracting header: {str(e)}")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid ID token.")
-
-  await channel.send(f"Unverified Header: {unverified_header}")
 
   rsa_key = next(
     (
@@ -74,14 +52,10 @@ async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
     ),
     None,
   )
-  
   if not rsa_key:
-    await channel.send(f"No matching key for kid: {unverified_header['kid']}")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token header.")
-  await channel.send("Valid token header.")
   
   try:
-    await channel.send("DEBUG: Attempting jwt.decode()")
     payload = jwt.decode(
       id_token,
       rsa_key,
@@ -92,25 +66,34 @@ async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
     return payload
   
   except jwt.ExpiredSignatureError:
-    await channel.send("DEBUG: Token has expired.")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired.")
   except jwt.JWTClaimsError:
-    await channel.send("DEBUG: Incorrect claims.")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect claims. Please check the audience and issuer.")
   except Exception:
-    await channel.send("DEBUG: Token validation failed.")
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token validation failed.")
 
 async def fetch_user_profile(access_token: str):
   async with aiohttp.ClientSession() as session:
     headers = {"Authorization": f"Bearer {access_token}"}
-    async with session.get("https://graph.microsoft.com/v1.0/me") as response:
+
+    async with session.get("https://graph.microsoft.com/v1.0/me", headers=headers) as response:
       if response.status != 200:
-        raise HTTPException(status_code=500, detail="Failed to fetch user profile.")
+        error_message = await response.text()
+        raise HTTPException(status_code=500, detail=f"Failed to fetch user profile. Status: {response.status}, Error: {error_message}")
       user = await response.json()
-    async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value") as response:
-      picture = await response.read() if response.status == 200 else None
-    return {"email": user.get("mail"), "username": user.get("displayName"), "picture": picture}
+    
+    # Fetch profile picture URL (binary data replaced with URL)
+    profile_picture_url = None
+    async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value", headers=headers) as response:
+      if response.status == 200:
+        profile_picture_url = f"https://graph.microsoft.com/v1.0/me/photo/$value"  # Public URL for picture
+
+    # Return structured user data
+    return {
+      "email": user.get("mail") or user.get("userPrincipalName"),  # Handle fallback for email
+      "username": user.get("displayName"),  # Friendly name
+      "profilePicture": profile_picture_url  # URL for profile picture
+    }
 
 @router.post("/auth/login")
 async def handle_login(request: Request):
@@ -133,11 +116,15 @@ async def handle_login(request: Request):
 
   await channel.send("Process payload...")
   microsoft_id = payload.get("sub")
+  await channel.send(f"Microsoft ID: {microsoft_id}")
   if not microsoft_id:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
-  access_token = payload.get("access_token")
+  # I think the below is the internal bearer token, the access_token is the one from Microsoft for accessing the Graph API
   user_profile = await fetch_user_profile(access_token)
+  await channel.send(f"{user_profile['email']}, {user_profile["username"]}, {user_profile["profilePicture"]}")
+
+  # access_token = payload.get("access_token")
 
   user = await get_user_from_database(app, microsoft_id)
   if not user:
