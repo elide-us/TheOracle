@@ -115,7 +115,6 @@ async def handle_login(request: Request):
   client_id = app.state.microsoft_client_id
   payload = await verify_id_token(app, id_token, client_id)
 
-  await channel.send("Process payload...")
   microsoft_id = payload.get("sub")
   if not microsoft_id:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
@@ -130,14 +129,13 @@ async def handle_login(request: Request):
     user = await make_new_user_for_database(app, pool, microsoft_id, email, username)
     await channel.send(f"Added user for {username}")
   await channel.send(f"Found user for {username}")
-    # user = {"email": user_profile["email"], "username": user_profile["username"]}
-    # raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
 
   token_data = {"sub": microsoft_id}
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
-  await channel.send(f"{user_profile["username"]} bearer token created")
 
-  return JSONResponse(content={"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]})
+  response = JSONResponse(status_code=status.HTTP_200_OK, detail="User logged in", content={"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]})
+  await channel.send(f"Response from API: {response}")
+  return response
 
 @router.get("/files")
 async def list_files(request: Request):
