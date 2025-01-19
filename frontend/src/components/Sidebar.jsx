@@ -43,7 +43,6 @@ function Login({open}) {
 			}
 
             const data = await response.json();
-			console.log(data);
 			const profilePictureBase64 = `data:image/png;base64,${data.profilePicture}`;
 
 			setUser({
