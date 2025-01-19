@@ -90,9 +90,9 @@ function Login({open}) {
 					</IconButton>
 				</Tooltip>
 			)}
-
+/
 			{open && (
-				<ListItemText primary={user ? "Logout" : "Login"} sx={{ marginLeft: "8px" }} />
+				<ListItemText primary={user ? user.username : "Login"} sx={{ marginLeft: "8px" }} />
 			)}
 
 			<Notification
