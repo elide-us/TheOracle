@@ -83,17 +83,17 @@ async def fetch_user_profile(access_token: str):
       user = await response.json()
     
     # Fetch profile picture data
-    # profile_picture_bytes = None
-    # async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value", headers=headers) as response:
-    #   if response.status == 200:
-    #     profile_picture_bytes = await response.read()
-    #     profile_picture_base64 = base64.b64encode(profile_picture_bytes).decode("utf-8")
+    profile_picture_bytes = None
+    async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value", headers=headers) as response:
+      if response.status == 200:
+        profile_picture_bytes = await response.read()
+        profile_picture_base64 = base64.b64encode(profile_picture_bytes).decode("utf-8")
 
     # Return structured user data
     return {
       "email": user.get("mail") or user.get("userPrincipalName"),  # Handle fallback for email
-      "username": user.get("displayName")
-      # ,"profilePicture": profile_picture_base64
+      "username": user.get("displayName"),
+      "profilePicture": profile_picture_base64
     }
 
 @router.post("/auth/login")
@@ -135,12 +135,10 @@ async def handle_login(request: Request):
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
   if not token:
     await channel.send("No token generated.")
+  await channel.send("Sending response JSON.")
 
-  response_data = {"bearer_token": token, "email": email, "username": username}
-
-  await channel.send(f"Returning {response_data["email"]}")
-
-  return JSONResponse(status_code=status.HTTP_200_OK, content=response_data)
+  response_data = {"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]}
+  return response_data
 
 @router.get("/files")
 async def list_files(request: Request):
