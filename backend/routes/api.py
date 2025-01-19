@@ -121,10 +121,9 @@ async def handle_login(request: Request):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
   user_profile = await fetch_user_profile(access_token)
-  guid = user_profile["guid"]
   username = user_profile["username"]
   email = user_profile["email"]
-  await channel.send(f"{username}, {email}, {guid}")
+  await channel.send(f"{username}, {email}")
 
   user = await get_user_from_database(app, pool, microsoft_id)
   if not user:
@@ -136,10 +135,10 @@ async def handle_login(request: Request):
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
   if not token:
     await channel.send("No token generated.")
-  await channel.send("Token generated, sending response_data as JSON")
 
   response_data = {"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]}
 
+  await channel.send(f"Returning response_data JSON")
 
   return JSONResponse(status_code=status.HTTP_200_OK, content=response_data)
 
