@@ -4,7 +4,7 @@ from jose import jwt
 from typing import Dict
 from commands.image_commands import generate_image
 from commands.db_commands import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database
-import aiohttp
+import aiohttp, base64
 
 router = APIRouter()
 
@@ -83,16 +83,17 @@ async def fetch_user_profile(access_token: str):
       user = await response.json()
     
     # Fetch profile picture data
-    profile_picture = None
+    profile_picture_bytes = None
     async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value", headers=headers) as response:
       if response.status == 200:
-        profile_picture = await response.read()
+        profile_picture_bytes = await response.read()
+        profile_picture_base64 = base64.b64encode(profile_picture_bytes).decode("utf-8")
 
     # Return structured user data
     return {
       "email": user.get("mail") or user.get("userPrincipalName"),  # Handle fallback for email
-      "username": user.get("displayName"),  # Friendly name
-      "profilePicture": profile_picture  # URL for profile picture
+      "username": user.get("displayName"),
+      "profilePicture": profile_picture_base64
     }
 
 @router.post("/auth/login")
