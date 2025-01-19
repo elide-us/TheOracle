@@ -121,21 +121,23 @@ async def handle_login(request: Request):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
   user_profile = await fetch_user_profile(access_token)
-  await channel.send(f"{user_profile["username"]}, {user_profile['email']}")
+  username = user_profile["username"]
+  email = user_profile["email"]
+  await channel.send(f"{username}, {email}")
 
   user = await get_user_from_database(app, pool, microsoft_id)
   if not user:
-    new_id, new_guid = await make_new_user_for_database(app, pool, microsoft_id)
-    await channel.send(f"Added user {new_id} with GUID: {new_guid}")
-  await channel.send("Found user")
+    user = await make_new_user_for_database(app, pool, microsoft_id, email, username)
+    await channel.send(f"Added user for {username}")
+  await channel.send(f"Found user for {username}")
     # user = {"email": user_profile["email"], "username": user_profile["username"]}
     # raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
 
   token_data = {"sub": microsoft_id}
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
   await channel.send(f"{user_profile["username"]} bearer token created")
-  
-  return JSONResponse(content={"bearer_token": token, "email": user_profile["email"], "username": user_profile["username"], "profilePicture": user_profile["profilePicture"]})
+
+  return JSONResponse(content={"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]})
 
 @router.get("/files")
 async def list_files(request: Request):
