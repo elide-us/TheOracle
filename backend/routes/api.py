@@ -100,6 +100,7 @@ async def handle_login(request: Request):
   app = request.app
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
+  pool = app.state.db_pool
   await channel.send("Processing login...")
 
   data = await request.json()
@@ -122,16 +123,16 @@ async def handle_login(request: Request):
   user_profile = await fetch_user_profile(access_token)
   await channel.send(f"{user_profile["username"]}, {user_profile['email']}")
 
-  user = await get_user_from_database(app, microsoft_id)
+  user = await get_user_from_database(app, pool, microsoft_id)
   if not user:
     new_guid = str(uuid.uuid4())
     await channel.send(f"No user found for Microsoft ID: {microsoft_id}")
     await channel.send(f"Creating new user with GUID: {new_guid}")
-    async with app.state.db_pool.acquire() as conn:
+    async with pool.acquire() as conn:
       await conn.execute(
         """
           INSERT INTO users (guid, microsoft_id, auth_info, email, username)
-          VALUES ($1, $2, $3, $4)
+          VALUES ($1, $2, $3, $4, $5)
           RETURNING id
         """,
         new_guid,
