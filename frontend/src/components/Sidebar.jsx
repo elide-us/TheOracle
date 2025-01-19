@@ -80,7 +80,7 @@ function Login({open}) {
 			{user ? (
 				<Tooltip title="Logout">
 					<IconButton onClick={handleLogout}>
-						<img src={profilePictureBase64} alt={user.username} style={{ width: "32px", height: "32px", borderRadius: "50%" }} />
+						<img src={user.profilePicture} alt={user.username} style={{ width: "32px", height: "32px", borderRadius: "50%" }} />
 					</IconButton>
 				</Tooltip>
 			) : (
