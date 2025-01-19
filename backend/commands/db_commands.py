@@ -50,8 +50,12 @@ async def get_layer_template(pool, layer_id):
     return result
 
 async def get_user_from_database(app, microsoft_id):
+  bot = app.state.discord_bot
+  channel = bot.get_channel(bot.sys_channel)
+
   async with app.state.db_pool.acquire() as conn:
     result = await conn.fetchrow(
       "SELECT * FROM users WHERE guid = $1", microsoft_id
     )
+    await channel.send(f"Query result: {result}")
     return result
