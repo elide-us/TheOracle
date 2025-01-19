@@ -43,6 +43,7 @@ function Login({open}) {
 			}
 
             const data = await response.json();
+			console.log(data);
 			localStorage.setItem("internalToken", data.bearer_token);
 
 			const profilePictureBase64 = `data:image/jpeg;base64,${data.profilePicture}`;
