@@ -53,6 +53,7 @@ async def get_user_from_database(app, pool, microsoft_id):
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
   await channel.send("get_user_from_database()")
+
   async with pool.acquire() as conn:
     query = """
       SELECT guid, microsoft_id, email, username FROM users WHERE microsoft_id = $1
@@ -69,8 +70,10 @@ async def make_new_user_for_database(app, pool, microsoft_id, email, username):
   await channel.send("make_new_user_for_database()")
 
   new_guid = str(uuid.uuid4())
+
   await channel.send(f"No user found for Microsoft ID: {microsoft_id}")
   await channel.send(f"Creating new user with GUID: {new_guid}")
+  
   async with pool.acquire() as conn:
     query = """
         INSERT INTO users (guid, microsoft_id, email, username)
@@ -78,11 +81,6 @@ async def make_new_user_for_database(app, pool, microsoft_id, email, username):
     """
     await conn.execute(query, new_guid, microsoft_id, email, username)
     await channel.send("Executed INSERT query")
-    query = """
-      SELECT guid, microsoft_id, email, username FROM users WHERE microsoft_id = $1
-    """
-    result = await conn.fetchrow(query, microsoft_id)
-    if isinstance(result, str):
-      result = json.loads(result)
-    await channel.send(f"Result from insert-select: {result}")
+
+    result = await get_user_from_database(app, pool, microsoft_id)
     return result
