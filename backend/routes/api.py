@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from jose import jwt
 from typing import Dict
 from commands.image_commands import generate_image
-from commands.db_commands import get_public_template, get_layer_template, get_user_from_database
+from commands.db_commands import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database
 import aiohttp, uuid
 
 router = APIRouter()
@@ -125,24 +125,9 @@ async def handle_login(request: Request):
 
   user = await get_user_from_database(app, pool, microsoft_id)
   if not user:
-    new_guid = str(uuid.uuid4())
-    await channel.send(f"No user found for Microsoft ID: {microsoft_id}")
-    await channel.send(f"Creating new user with GUID: {new_guid}")
-    async with pool.acquire() as conn:
-      new_id = await conn.fetchval(
-        """
-          INSERT INTO users (guid, microsoft_id, auth_info, email, username)
-          VALUES ($1, $2, $3, $4, $5)
-          RETURNING id
-        """,
-        new_guid,
-        microsoft_id,
-        payload,
-        user_profile["email"],
-        user_profile["username"]
-      )
-      await channel.send(f"Added user {new_id} with GUID: {new_guid}")
-    await channel.send("Found user")
+    new_id, new_guid = await make_new_user_for_database(app, pool, microsoft_id)
+    await channel.send(f"Added user {new_id} with GUID: {new_guid}")
+  await channel.send("Found user")
     # user = {"email": user_profile["email"], "username": user_profile["username"]}
     # raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
 
