@@ -13,9 +13,10 @@ export const UserContextProvider = ({ children }) => {
     // Function to log in the user and set their data
     const logIn = (userData) => {
         setUser({
-            profileUrl: userData.profileUrl,
+            internalToken: userData.token, // Bearer token
             username: userData.username,
-            token: userData.token, // Bearer token
+            email: userData.email,
+            profilePicture: userData.profilePicture
         });
     };
 
