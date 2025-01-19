@@ -4,7 +4,7 @@ from jose import jwt
 from typing import Dict
 from commands.image_commands import generate_image
 from commands.db_commands import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database
-import aiohttp, uuid
+import aiohttp
 
 router = APIRouter()
 
