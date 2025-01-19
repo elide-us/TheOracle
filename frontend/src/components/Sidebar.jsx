@@ -46,9 +46,13 @@ function Login({open}) {
 			console.log(data);
 			localStorage.setItem("internalToken", data.bearer_token);
 
-			const profilePictureBase64 = `data:image/jpeg;base64,${data.profilePicture}`;
+			const profilePictureBase64 = `data:image/png;base64,${data.profilePicture}`;
 
-			setUser({ email: data.email, username: data.username, profilePicture: profilePictureBase64 });
+			setUser({
+				email: data.email,
+				username: data.username,
+				profilePicture: profilePictureBase64,
+			});
 			setNotification({
 				open: true,
 				severity: "success",
