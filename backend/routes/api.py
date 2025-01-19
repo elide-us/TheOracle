@@ -129,7 +129,7 @@ async def handle_login(request: Request):
     await channel.send(f"No user found for Microsoft ID: {microsoft_id}")
     await channel.send(f"Creating new user with GUID: {new_guid}")
     async with pool.acquire() as conn:
-      await conn.execute(
+      new_id = await conn.fetchval(
         """
           INSERT INTO users (guid, microsoft_id, auth_info, email, username)
           VALUES ($1, $2, $3, $4, $5)
@@ -141,7 +141,7 @@ async def handle_login(request: Request):
         user_profile["email"],
         user_profile["username"]
       )
-      await channel.send("Added user")
+      await channel.send(f"Added user {new_id} with GUID: {new_guid}")
     await channel.send("Found user")
     # user = {"email": user_profile["email"], "username": user_profile["username"]}
     # raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="User not found.")
