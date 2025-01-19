@@ -75,11 +75,11 @@ function Login({open}) {
 	}
 
 	return (
-		<Box>
+		<Box sx={{ display: 'flex' }} >
 			{user ? (
 				<Tooltip title="Logout">
 					<IconButton onClick={handleLogout}>
-						<img src={user.profilePicture} alt={user.username} style={{ width: "32px", height: "32px", borderRadius: "50%" }} />
+						<img src={user.profilePicture} alt={user.username} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1px solid #000" }} />
 					</IconButton>
 				</Tooltip>
 			) : (
