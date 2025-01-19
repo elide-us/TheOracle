@@ -44,13 +44,13 @@ function Login({open}) {
 
             const data = await response.json();
 			console.log(data);
-			localStorage.setItem("internalToken", data.bearer_token);
 
 			const profilePictureBase64 = `data:image/png;base64,${data.profilePicture}`;
 
 			setUser({
-				email: data.email,
+				token: data.bearer_token,
 				username: data.username,
+				email: data.email,
 				profilePicture: profilePictureBase64,
 			});
 			setNotification({
