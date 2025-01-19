@@ -38,7 +38,7 @@ function Login({open}) {
                 body: JSON.stringify({ idToken, accessToken }),
             });
 
-			if (!response.ok) {
+			if (response.status != 200) {
 				throw new Error("API Response failure.");
 			}
 
