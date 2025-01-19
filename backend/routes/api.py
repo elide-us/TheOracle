@@ -1,5 +1,4 @@
 from fastapi import APIRouter, Request, HTTPException, status
-from fastapi.responses import JSONResponse
 from jose import jwt
 from typing import Dict
 from commands.image_commands import generate_image
@@ -102,7 +101,6 @@ async def handle_login(request: Request):
   bot = app.state.discord_bot
   channel = bot.get_channel(bot.sys_channel)
   pool = app.state.db_pool
-  await channel.send("Processing login...")
 
   data = await request.json()
   id_token = data.get("idToken")
@@ -123,7 +121,7 @@ async def handle_login(request: Request):
   user_profile = await fetch_user_profile(access_token)
   username = user_profile["username"]
   email = user_profile["email"]
-  await channel.send(f"{username}, {email}")
+  await channel.send(f"Processing login for: {username}, {email}")
 
   user = await get_user_from_database(app, pool, microsoft_id)
   if not user:
@@ -133,9 +131,6 @@ async def handle_login(request: Request):
 
   token_data = {"sub": microsoft_id}
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
-  if not token:
-    await channel.send("No token generated.")
-  await channel.send("Sending response JSON.")
 
   response_data = {"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]}
   return response_data
