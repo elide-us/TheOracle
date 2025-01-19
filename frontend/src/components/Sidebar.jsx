@@ -90,7 +90,6 @@ function Login({open}) {
 					</IconButton>
 				</Tooltip>
 			)}
-/
 			{open && (
 				<ListItemText primary={user ? user.username : "Login"} sx={{ marginLeft: "8px" }} />
 			)}
