@@ -133,10 +133,10 @@ async def handle_login(request: Request):
 
   token_data = {"sub": microsoft_id}
   token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
-
-  response = JSONResponse(status_code=status.HTTP_200_OK, content={"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]})
-  await channel.send(f"Response from API: {response}")
-  return response
+  
+  response_data = {"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]}
+  await channel.send(f"Response from API: {response_data}")
+  return JSONResponse(status_code=status.HTTP_200_OK, content=response_data)
 
 @router.get("/files")
 async def list_files(request: Request):
