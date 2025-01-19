@@ -55,7 +55,7 @@ async def get_user_from_database(app, microsoft_id):
 
   async with app.state.db_pool.acquire() as conn:
     result = await conn.fetchrow(
-      "SELECT * FROM users WHERE guid = $1", microsoft_id
+      "SELECT * FROM users WHERE microsoft_id = $1", microsoft_id
     )
     await channel.send(f"Query result: {result}")
     return result
