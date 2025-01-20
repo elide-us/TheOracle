@@ -1,6 +1,6 @@
 import { useState, useContext } from 'react';
 import { Link } from 'react-router-dom';
-import { Drawer, Box, IconButton, Tooltip, List, ListItemText, ListItemButton } from '@mui/material';
+import { Typography, Drawer, Box, IconButton, Tooltip, List, ListItemText, ListItemButton } from '@mui/material';
 import { Menu as MenuIcon, Login as LoginIcon } from '@mui/icons-material';
 import { PublicClientApplication } from '@azure/msal-browser';
 import Routes from '../config/routes';
