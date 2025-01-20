@@ -23,7 +23,6 @@ function Login({open}) {
 			await pca.initialize();
             const loginResponse = await pca.loginPopup(loginRequest);
             const { idToken, accessToken } = loginResponse;
-			//localStorage.setItem("accessToken", accessToken);
 
             const response = await fetch("/api/auth/login", {
                 method: "POST",
@@ -33,16 +32,13 @@ function Login({open}) {
                 body: JSON.stringify({ idToken, accessToken }),
             });
 
-			if (!response.ok) {
-				throw new Error("API Response failure.");
-			}
+			if (!response.ok) { throw new Error("API Response failure."); }
 
             const data = await response.json();
 			const profilePictureBase64 = `data:image/png;base64,${data.profilePicture}`;
 
 			setUserData({
-				access_token: accessToken,
-				bearer_token: data.bearer_token,
+				token: data.bearer_token,
 				username: data.username,
 				email: data.email,
 				profilePicture: profilePictureBase64,
@@ -57,11 +53,7 @@ function Login({open}) {
 		await pca.logoutPopup();
 		clearUserData();
 		localStorage.removeItem("accessToken");
-		setNotification({
-			open: true,
-			severity: "info",
-			message: "Logged out successfully."
-		});
+		setNotification({ open: true, severity: "info", message: "Logged out successfully."	});
 	}
 
 	return (
@@ -80,7 +72,14 @@ function Login({open}) {
 				</Tooltip>
 			)}
 			{open && (
-				<ListItemText primary={userData ? userData.username : "Login"} sx={{ marginLeft: "8px" }} />
+				<ListItemText primary={userData ? (<Box>
+					<Typography component="span" variant="body1" sx={{ fontWeight: "bold", color: "gray" }}>
+						{userData.username}
+					</Typography>
+					<Typography component="span" variant="body2" sx={{ display: "block", fontSize: "0.9em", color: "gray" }}>
+					  {userData.email}
+					</Typography>
+				  </Box>) : "Login"} sx={{ marginLeft: "8px" }} />
 			)}
 
 			<Notification open={notification.open} handleClose={handleNotificationClose} severity={notification.severity} message={notification.message} />
