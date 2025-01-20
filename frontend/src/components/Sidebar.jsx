@@ -65,10 +65,10 @@ function Login({open}) {
 		}
     };
 
-	const handleLogout = () => {
+	const handleLogout = async () => {
 		logoutUser();
 		await pca.logoutPopup();
-		localStorage.setItem("accessToken");
+		localStorage.removeItem("accessToken");
 		setNotification({
 			open: true,
 			severity: "info",
