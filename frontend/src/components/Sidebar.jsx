@@ -72,7 +72,12 @@ function Login({open}) {
 				</Tooltip>
 			)}
 			{open && (
-				<ListItemText primary={userData ? userData.username : "Login"} sx={{ marginLeft: "8px" }} />
+				<ListItemText primary={userData ? (<span>
+					{userData.username}
+					<Typography component="span" variant="body2" sx={{ fontSize: "0.8em", marginLeft: "8px", color: "gray" }}>
+					  {userData.email}
+					</Typography>
+				  </span>) : "Login"} sx={{ marginLeft: "8px" }} />
 			)}
 
 			<Notification open={notification.open} handleClose={handleNotificationClose} severity={notification.severity} message={notification.message} />
