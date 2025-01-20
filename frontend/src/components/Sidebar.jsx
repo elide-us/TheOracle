@@ -11,12 +11,8 @@ import UserContext from "./shared/UserContextProvider";
 const pca = new PublicClientApplication(msalConfig);
 
 function Login({open}) {
-	const { user, setUser, logoutUser } = useContext(UserContext);
-	const [notification, setNotification] = useState({
-		open: false,
-		severity: "info",
-		message: "",
-	});
+	const { userData, setUserData, clearUserData } = useContext(UserContext);
+	const [notification, setNotification] = useState({ open: false, severity: "info", message: "" });
 
 	const handleNotificationClose = () => {
 		setNotification((prev) => ({ ...prev, open: false }));
@@ -26,9 +22,8 @@ function Login({open}) {
         try {
 			await pca.initialize();
             const loginResponse = await pca.loginPopup(loginRequest);
-
             const { idToken, accessToken } = loginResponse;
-			localStorage.setItem("accessToken", accessToken);
+			//localStorage.setItem("accessToken", accessToken);
 
             const response = await fetch("/api/auth/login", {
                 method: "POST",
@@ -45,29 +40,22 @@ function Login({open}) {
             const data = await response.json();
 			const profilePictureBase64 = `data:image/png;base64,${data.profilePicture}`;
 
-			setUser({
-				token: data.bearer_token,
+			setUserData({
+				access_token: accessToken,
+				bearer_token: data.bearer_token,
 				username: data.username,
 				email: data.email,
 				profilePicture: profilePictureBase64,
 			});
-			setNotification({
-				open: true,
-				severity: "success",
-				message: "Login successful!",
-			});
+			setNotification({ open: true, severity: "success", message: "Login successful!" });
 		} catch (error) {
-			setNotification({
-				open: true,
-				severity: "error",
-				message: `Login failed: ${error.message}`,
-			})
+			setNotification({ open: true, severity: "error", message: `Login failed: ${error.message}` });
 		}
     };
 
 	const handleLogout = async () => {
-		logoutUser();
 		await pca.logoutPopup();
+		clearUserData();
 		localStorage.removeItem("accessToken");
 		setNotification({
 			open: true,
@@ -78,10 +66,10 @@ function Login({open}) {
 
 	return (
 		<Box sx={{ display: 'flex' }} >
-			{user ? (
+			{userData ? (
 				<Tooltip title="Logout">
 					<IconButton onClick={handleLogout}>
-						<img src={user.profilePicture} alt={user.username} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1px solid #000" }} />
+						<img src={userData.profilePicture} alt={userData.username} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1px solid #000" }} />
 					</IconButton>
 				</Tooltip>
 			) : (
@@ -92,15 +80,10 @@ function Login({open}) {
 				</Tooltip>
 			)}
 			{open && (
-				<ListItemText primary={user ? user.username : "Login"} sx={{ marginLeft: "8px" }} />
+				<ListItemText primary={userData ? userData.username : "Login"} sx={{ marginLeft: "8px" }} />
 			)}
 
-			<Notification
-				open={notification.open}
-				handleClose={handleNotificationClose}
-				severity={notification.severity}
-				message={notification.message}
-			/>
+			<Notification open={notification.open} handleClose={handleNotificationClose} severity={notification.severity} message={notification.message} />
 		</Box>
 	);		
 }
