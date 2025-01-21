@@ -2,9 +2,8 @@ from fastapi import APIRouter, Request, HTTPException, status
 from jose import jwt
 from commands.image_commands import generate_image
 from commands.db_commands import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database# It makes sense to create services modules that wrap these database functions in a more abstract manner
-from services.auth import fetch_user_profile, verify_id_token
-from typing import Any
-
+from services.auth import fetch_user_profile, verify_id_token, get_subject
+from utils.helpers import StateHelper, TokenHelper
 
 router = APIRouter()
 
@@ -12,79 +11,20 @@ router = APIRouter()
 # async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
 #   return status.HTTP_200_OK
 
-class StateHelper:
-  def __init__(self, request: Request):
-    self.request = request
-  #   self.__state = request.app.state
-  # def __getattr__(self, name):
-  #   getattr(self.__state, name)
-  @property
-  def app(self) -> Any:
-    return self.request.app
-  @property
-  def bot(self) -> Any:
-    return self.request.app.state.discord_bot
-  @property
-  def channel(self) -> Any:
-    return self.bot.get_channel(self.bot.sys_channel)
-  @property
-  def pool(self) -> Any:
-    return self.request.app.state.db_pool
-  @property
-  def ms_api_id(self) -> Any:
-    return self.request.app.state.microsoft_client_id
-  @property
-  def jwt_secret(self) -> Any:
-    return self.request.app.state.jwt_secret
-  @property
-  def jwt_algorithm(self) -> Any:
-    return self.request.app.state.jwt_algorithm
-  @property
-  def ms_jwks(self):
-    return self.request.app.state.jwks # impl lazy loader
-  @property
-  def storage(self):
-    return self.request.app.state.container_client
-
 @router.post("/auth/login")
 async def handle_login(request: Request):
   state = StateHelper(request)
-
-  ################################################################################
-  ## Auth Phase 1: Extract Data
-  ################################################################################
-
-  # Get the JSON data from the POST
-  request_data = await request.json()
-
-  # Extract the idToken to perform RSA validation
-  id_token = request_data.get("idToken")
-  if not id_token:
-    raise HTTPException(status_code=400, detail="ID Token is required.")
-
-  # Extract the accessToken to perform Microsoft Graph API lookup
-  access_token = request_data.get("accessToken")
-  if not access_token:
-    raise HTTPException(status_code=400, detail="Access Token is required.")
-
-  ################################################################################
-  ## Auth Phase 2: Validate and Get Details
-  ################################################################################
-
-  # Validate idToken
-  auth_payload = await verify_id_token(state, id_token)
+  tokens = TokenHelper(request)
 
   # Extract verified subject
-  unique_identifier = auth_payload.get("sub")
-  if not unique_identifier:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
+  unique_identifier = await get_subject(await verify_id_token(state, tokens.id_token))
 
   # Get Microsoft Graph API user details
-  ms_profile = await fetch_user_profile(access_token)
+  ms_profile = await fetch_user_profile(tokens.access_token)
   await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
 
   ################################################################################
-  ## Auth Phase 3: Lookup Internal User
+  ## This section will change with additional auth improvements
   ################################################################################
 
   # Look up user in DB, create new user if none found
@@ -94,8 +34,6 @@ async def handle_login(request: Request):
     await state.channel.send(f"Added user for {user["guid"]}: {user["username"]}, {user["email"]}")
   await state.channel.send(f"Found user for {user["guid"]}: {user["username"]}, {user["email"]}")
 
-  ################################################################################
-  ## Auth Phase 4: Return Internal Bearer Token
   ################################################################################
 
   # Encode a token for the subject using their Unique Identifier
@@ -130,17 +68,19 @@ async def list_files(request: Request):
 
 @router.post("/imagen")
 async def image_generation(request: Request):
-  incoming_data = await request.json()
+  state = StateHelper(request)
+
+  request_data = await request.json()
 
   app = request.app
   bot = app.state.discord_bot
 
-  template_key = incoming_data.get("template", "default")
-  user_input = incoming_data.get("userinput", "")
-  selected_keys = incoming_data.get("keys", {})
+  template_key = request_data.get("template", "default")
+  user_input = request_data.get("userinput", "")
+  selected_keys = request_data.get("keys", {})
 
   try:
-    azure_image_url = await generate_image(app, bot, template_key, selected_keys, user_input)
+    azure_image_url = await generate_image(state, template_key, selected_keys, user_input)
     return { "imageUrl": azure_image_url }
   except Exception as e:
     return {"error": str(e)}

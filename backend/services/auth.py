@@ -29,6 +29,12 @@ async def get_jwks(app):
 ## Public API
 ################################################################################
 
+async def get_subject(payload):
+  sub = payload.get("sub")
+  if not sub:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
+  return sub
+
 async def verify_id_token(state, ms_id_token: str) -> Dict:
   jwks = await get_jwks(state.app)
 

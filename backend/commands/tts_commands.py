@@ -1,4 +1,4 @@
-from services.blob_storage import get_container_client
+from backend.services.storage import get_container_client
 import io, discord
 
 async def handle_tts(ctx, command_str):
