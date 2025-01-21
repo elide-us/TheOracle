@@ -1,6 +1,6 @@
 import discord
 from discord.ext import commands
-from config import get_discord_token
+from conf.env import get_discord_token
 from commands.tts_commands import handle_tts
 #from commands.text_commands import handle_chat
 #from services.local_json import load_json

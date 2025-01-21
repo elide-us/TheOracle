@@ -1,5 +1,5 @@
 import asyncpg
-from config import get_db_password
+from conf.env import get_db_password
 
 async def init_database_pool():
   pw = get_db_password()

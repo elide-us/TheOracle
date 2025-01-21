@@ -1,5 +1,4 @@
-import aiofiles
-import json
+import aiofiles, json
 from typing import Any
 
 async def load_json(file_path: str) -> Any:
