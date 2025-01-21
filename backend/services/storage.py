@@ -1,5 +1,5 @@
 from azure.storage.blob.aio import BlobServiceClient
-from conf.env import cdn_connection_string, cdn_container_name
+from config.env import cdn_connection_string, cdn_container_name
 
 async def init_container_client():
   container = cdn_container_name()
