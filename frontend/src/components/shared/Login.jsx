@@ -21,6 +21,7 @@ function Login({open}) {
 			await pca.initialize();
             const loginResponse = await pca.loginPopup(loginRequest);
             const { idToken, accessToken } = loginResponse;
+			localStorage.removeItem("accessToken"); // Remove after mobile clear
 
             const response = await fetch("/api/auth/login", {
                 method: "POST",
