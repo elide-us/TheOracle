@@ -3,7 +3,6 @@ from openai import OpenAIError
 from typing import Dict
 from datetime import datetime, timezone
 from services.local_json import load_json
-from backend.services.storage import get_container_client
 
 ###############################################################################
 ## Basic Helper Functions
@@ -107,10 +106,10 @@ async def write_discord(buffer, state, filename):
   await state.channel.send(file=discord.File(fp=buffer, filename=filename))
 
 # Write buffer out to CDN
-async def write_cdn(buffer, filename):
+async def write_cdn(buffer, state, filename):
   buffer.seek(0)
-  container_client = await get_container_client()
-  await container_client.upload_blob(data=buffer, name=filename, overwrite=True)
+  client = state.storage
+  await client.upload_blob(data=buffer, name=filename, overwrite=True)
 
 # Async Context Manager for buffer
 class AsyncBufferWriter():
@@ -141,7 +140,7 @@ async def process_image(image_url: str, template_key: str, state) -> str:
 
   async with AsyncBufferWriter(image_url) as buffer:
     await write_discord(buffer, state, filename)
-    await write_cdn(buffer, filename)
+    await write_cdn(buffer, state, filename)
 
   return generate_filename_url(filename)
 

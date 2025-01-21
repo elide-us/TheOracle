@@ -1,12 +1,11 @@
 from azure.storage.blob.aio import BlobServiceClient
-from config import get_blob_connection_string, get_blob_container
+from config import cdn_connection_string, cdn_container_name
 
 async def init_container_client():
-  conn_str = get_blob_connection_string()
-  container_name = get_blob_container()
-  blob_service_client = BlobServiceClient.from_connection_string(conn_str)
-  container_client = blob_service_client.get_container_client(container_name)
-  container_client.container_name = container_name
-  return container_client
+  container = cdn_container_name()
+  bsc = BlobServiceClient.from_connection_string(cdn_connection_string())
+  client = bsc.get_container_client(container)
+  client.container_name = container
+  return client
 
 #Provision new blob storage container

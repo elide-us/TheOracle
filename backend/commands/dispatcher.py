@@ -1,4 +1,4 @@
-from commands.text_commands import handle_text_generate
+from commands.discord import handle_text_generate
 
 async def get_dispatcher():
     return {

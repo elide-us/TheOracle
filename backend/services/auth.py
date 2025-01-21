@@ -3,27 +3,27 @@ from jose import jwt
 from fastapi import HTTPException, status
 from typing import Dict
 
-async def fetch_openid_config(app):
+async def fetch_ms_openid_config(app):
   async with aiohttp.ClientSession() as session:
     async with session.get("https://login.microsoftonline.com/consumers/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
       openid_config = await response.json()
-      app.state.jwks_url = openid_config["jwks_uri"]
+      app.state.ms_jwks_uri = openid_config["jwks_uri"]
 
-async def fetch_jwks(app): 
+async def fetch_ms_jwks(app): 
   async with aiohttp.ClientSession() as session:
     async with session.get(app.state.jwks_url) as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,detail="Failed to fetch JWKS.")
-      app.state.jwks = await response.json()
+      app.state.ms_jwks = await response.json()
 
-async def get_jwks(app):
-  if not hasattr(app.state, "jwks") or not app.state.jwks:
-    if not hasattr(app.state, "jwks_uri"):
-      await fetch_openid_config(app)
-    await fetch_jwks(app)
-  return app.state.jwks
+async def get_ms_jwks(app):
+  if not hasattr(app.state, "ms_jwks") or not app.state.ms_jwks:
+    if not hasattr(app.state, "ms_jwks_uri"):
+      await fetch_ms_openid_config(app)
+    await fetch_ms_jwks(app)
+  return app.state.ms_jwks
 
 ################################################################################
 ## Public API
@@ -36,7 +36,7 @@ async def get_subject(payload):
   return sub
 
 async def verify_id_token(state, ms_id_token: str) -> Dict:
-  jwks = await get_jwks(state.app)
+  jwks = await get_ms_jwks(state.app)
 
   try:
     unverified_header = jwt.get_unverified_header(ms_id_token)
