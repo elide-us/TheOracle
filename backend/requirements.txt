@@ -9,4 +9,3 @@ aiofiles
 python-dotenv
 asyncpg
 python-jose
-jwt

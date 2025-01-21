@@ -1,4 +1,5 @@
-import aiohttp, base64, jwt
+import aiohttp, base64
+from jose import jwt
 from fastapi import HTTPException, status
 from typing import Dict
 
