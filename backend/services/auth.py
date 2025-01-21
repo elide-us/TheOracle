@@ -13,7 +13,7 @@ async def fetch_ms_openid_config(app):
 
 async def fetch_ms_jwks(app): 
   async with aiohttp.ClientSession() as session:
-    async with session.get(app.state.jwks_url) as response:
+    async with session.get(app.state.ms_jwks_uri) as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,detail="Failed to fetch JWKS.")
       app.state.ms_jwks = await response.json()

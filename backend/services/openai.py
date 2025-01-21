@@ -1,5 +1,5 @@
 from openai import AsyncOpenAI
-from conf.env import get_openai_token
+from config.env import get_openai_token
 
 async def init_openai_client():
     token = get_openai_token()
