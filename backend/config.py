@@ -6,26 +6,46 @@ def get_env_var(var_name: str) -> str:
         raise RuntimeError(f"ERROR: {var_name} missing.")
     return value
 
+################################################################################
+## API Bearer Tokens
+################################################################################
+
 def get_openai_token():
     return get_env_var("OPENAI_SECRET")
 
 def get_discord_token():
     return get_env_var("DISCORD_SECRET")
 
-def get_discord_channel() -> int:
-    return int(get_env_var("DISCORD_CHANNEL"))
-
 def get_lumaai_token():
     return get_env_var("LUMAAI_SECRET")
 
-def get_blob_connection_string():
+################################################################################
+## Discord Channel ID Numbers 
+################################################################################
+
+def get_discord_channel() -> int:
+    return int(get_env_var("DISCORD_CHANNEL"))
+
+################################################################################
+## Azure Storage Account Configuration
+################################################################################
+
+def cdn_connection_string():
     return get_env_var("AZURE_BLOB_CONNECTION_STRING")
 
-def get_blob_container():
+def cdn_container_name():
     return get_env_var("AZURE_BLOB_CONTAINER_NAME")
+
+################################################################################
+## Postgres SQL on Azure Configuration
+################################################################################
 
 def get_db_password():
     return get_env_var("PG_DB_PASSWORD")
+
+################################################################################
+## Microsoft Auth Service Configuration
+################################################################################
 
 def get_jwt_secret():
     return get_env_var("JWT_SECRET")

@@ -1,4 +1,4 @@
-from backend.services.storage import get_container_client
+from services.storage import get_container_client
 import io, discord
 
 async def handle_tts(ctx, command_str):
@@ -6,6 +6,7 @@ async def handle_tts(ctx, command_str):
   bot = ctx.bot
   channel = ctx.channel
   client = app.state.openai_client
+  container = app.state.container_client
   
   split = command_str.split(" ")
 
@@ -17,7 +18,6 @@ async def handle_tts(ctx, command_str):
   blob_name = f"{session}_{voice}_{text}.mp3"
 
   try:
-    container_client = await get_container_client()
     buffer = io.BytesIO()
     async with client.audio.speech.with_streaming_response.create(
       model='tts-1',
@@ -30,7 +30,7 @@ async def handle_tts(ctx, command_str):
       buffer.seek(0)  # Reset buffer position to the start
 
       # Upload the buffer to Azure Blob Storage
-      await container_client.upload_blob(data=buffer, name=blob_name, overwrite=True)
+      await container.upload_blob(data=buffer, name=blob_name, overwrite=True)
 
       # Send the file to Discord
       buffer.seek(0)  # Reset buffer position again

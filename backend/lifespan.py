@@ -31,17 +31,11 @@ async def lifespan(app: FastAPI):
   app.state.jwt_algorithm = "HS256"
   app.state.microsoft_client_id = get_microsoft_client_id()
 
-  openai = await init_openai_client()
-  app.state.openai_client = openai
+  app.state.openai_client = await init_openai_client()
+  app.state.lumaai_client = await init_lumaai_client()
+  app.state.container_client = await init_container_client()
 
-  lumaai = await init_lumaai_client()
-  app.state.lumaai_client = lumaai
-  
-  container = await init_container_client()
-  app.state.container_client = container
-
-  db_client = await init_database_pool()
-  app.state.db_pool = db_client
+  app.state.db_pool = await init_database_pool()
   #app.state.conn = await db_client.acquire()
 
   setup_bot_routes(bot)
