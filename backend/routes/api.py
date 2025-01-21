@@ -26,7 +26,7 @@ class StateHelper:
     return self.request.app.state.discord_bot
   @property
   def channel(self) -> Any:
-    return self.request.app.state.discord_bot.get_channel(self.discord_bot.sys_channel)
+    return self.bot.get_channel(self.bot.sys_channel)
   @property
   def pool(self) -> Any:
     return self.request.app.state.db_pool
