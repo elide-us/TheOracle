@@ -1,19 +1,28 @@
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
+from config import get_jwt_secret, get_microsoft_client_id, get_discord_channel
+from services.discord import init_discord_bot, setup_bot_routes, start_discord_bot
+from services.storage import init_container_client
+from services.postgres import init_database_pool
+from services.openai import init_openai_client
+from services.lumaai import init_lumaai_client
 
-from config import get_jwt_secret, get_microsoft_client_id
-from services.discord_bot import init_discord_bot, start_discord_bot, get_discord_channel_id
-from services.openai_client import init_openai_client
-from services.lumaai_client import init_lumaai_client
-from services.blob_storage import get_container_client
-from services.pg_backend import get_db_client
-from routes.bot import setup_bot_routes
+# sys_channel <- Discord channel #
+# app <- the app
+# discord_bot <- the discord bot
+# jwt_secret <- my secret for jwt encryption
+# jwt_algorithm <- encryption algo
+# microsoft_client_id <- my app reg for MS authorization
+# openai_client <- for calling API
+# lumaai_client <- for calling API
+# container_client <- for accessing theoraclegpt blob container
+# db_pool <- for pool.acquire()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
   bot = await init_discord_bot()
-  bot.sys_channel = await get_discord_channel_id()
+  bot.sys_channel = get_discord_channel()
   
   bot.app = app
   app.state.discord_bot = bot
@@ -28,15 +37,14 @@ async def lifespan(app: FastAPI):
   lumaai = await init_lumaai_client()
   app.state.lumaai_client = lumaai
   
-  container = await get_container_client()
+  container = await init_container_client()
   app.state.container_client = container
 
-  db_client = await get_db_client()
+  db_client = await init_database_pool()
   app.state.db_pool = db_client
-  app.state.conn = await db_client.acquire()
+  #app.state.conn = await db_client.acquire()
 
   setup_bot_routes(bot)
-
   loop = asyncio.get_event_loop()
   bot_task = loop.create_task(start_discord_bot(bot))
 
