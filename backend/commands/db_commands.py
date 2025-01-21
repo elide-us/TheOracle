@@ -49,8 +49,8 @@ async def get_layer_template(pool, layer_id):
       result = json.loads(result)
     return result
 
-async def get_user_from_database(app, pool, microsoft_id):
-  async with pool.acquire() as conn:
+async def get_user_from_database(state, microsoft_id):
+  async with state.pool.acquire() as conn:
     query = """
       SELECT guid, microsoft_id, email, username FROM users WHERE microsoft_id = $1
     """
@@ -59,14 +59,37 @@ async def get_user_from_database(app, pool, microsoft_id):
       result = json.loads(result)
     return result
   
-async def make_new_user_for_database(app, pool, microsoft_id, email, username):
+async def make_new_user_for_database(state, microsoft_id, email, username):
   new_guid = str(uuid.uuid4())
-  async with pool.acquire() as conn:
+  async with state.pool.acquire() as conn:
     query = """
         INSERT INTO users (guid, microsoft_id, email, username)
         VALUES ($1, $2, $3, $4);
     """
     await conn.execute(query, new_guid, microsoft_id, email, username)
 
-    result = await get_user_from_database(app, pool, microsoft_id)
+    result = await get_user_from_database(state, microsoft_id)
     return result
+
+async def verify_user_token_in_database(state, bearer_token, guid):
+  channel = state.channel
+  await channel.send("Verify User Token in Database")
+
+  async with state.pool.acquire() as conn:
+    query = """
+      SELECT microsoft_id FROM users WHERE guid = $1;
+    """
+    select = await conn.fetch(query, guid)
+    if isinstance(select, str):
+      select = json.loads(select)
+
+    # Extract "sub" and validate against app.store.jwks
+  return select
+
+async def charge_user_for_access(state, bearer_token, guid, charge):
+  channel = state.channel
+  await channel.send("Charge User for Access")
+
+  # if id < 20 = free
+
+  return None

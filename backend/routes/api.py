@@ -1,139 +1,107 @@
 from fastapi import APIRouter, Request, HTTPException, status
 from jose import jwt
-from typing import Dict
 from commands.image_commands import generate_image
-from commands.db_commands import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database
-import aiohttp, base64
+from commands.db_commands import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database# It makes sense to create services modules that wrap these database functions in a more abstract manner
+from services.auth import fetch_user_profile, verify_id_token
+from typing import Any
+
 
 router = APIRouter()
 
-async def fetch_openid_config(app):
-  async with aiohttp.ClientSession() as session:
-    async with session.get("https://login.microsoftonline.com/consumers/v2.0/.well-known/openid-configuration") as response:
-      if response.status != 200:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
-      openid_config = await response.json()
-      app.state.jwks_url = openid_config["jwks_uri"]
+# @router.get("auth/test")
+# async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
+#   return status.HTTP_200_OK
 
-async def fetch_jwks(app): 
-  async with aiohttp.ClientSession() as session:
-    async with session.get(app.state.jwks_url) as response:
-      if response.status != 200:
-        raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,detail="Failed to fetch JWKS.")
-      app.state.jwks = await response.json()
-
-async def get_jwks(app):
-  if not hasattr(app.state, "jwks") or not app.state.jwks:
-    if not hasattr(app.state, "jwks_uri"):
-      await fetch_openid_config(app)
-    await fetch_jwks(app)
-  return app.state.jwks
-
-async def verify_id_token(app, id_token: str, client_id: str) -> Dict:
-  jwks = await get_jwks(app)
-
-  try:
-    unverified_header = jwt.get_unverified_header(id_token)
-  except Exception as e:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid ID token.")
-
-  rsa_key = next(
-    (
-      {
-        "kty": key["kty"],
-        "kid": key["kid"],
-        "use": key["use"],
-        "n": key["n"],
-        "e": key["e"],
-      }
-      for key in jwks["keys"]
-      if key["kid"] == unverified_header["kid"]
-    ),
-    None,
-  )
-  if not rsa_key:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token header.")
-  
-  try:
-    payload = jwt.decode(
-      id_token,
-      rsa_key,
-      algorithms=["RS256"],
-      audience=client_id,
-      issuer="https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0"
-    )
-    return payload
-  
-  except jwt.ExpiredSignatureError:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired.")
-  except jwt.JWTClaimsError:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Incorrect claims. Please check the audience and issuer.")
-  except Exception:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token validation failed.")
-
-async def fetch_user_profile(access_token: str):
-  async with aiohttp.ClientSession() as session:
-    headers = {"Authorization": f"Bearer {access_token}"}
-
-    async with session.get("https://graph.microsoft.com/v1.0/me", headers=headers) as response:
-      if response.status != 200:
-        error_message = await response.text()
-        raise HTTPException(status_code=500, detail=f"Failed to fetch user profile. Status: {response.status}, Error: {error_message}")
-      user = await response.json()
-    
-    # Fetch profile picture data
-    profile_picture_bytes = None
-    async with session.get("https://graph.microsoft.com/v1.0/me/photo/$value", headers=headers) as response:
-      if response.status == 200:
-        profile_picture_bytes = await response.read()
-        profile_picture_base64 = base64.b64encode(profile_picture_bytes).decode("utf-8")
-
-    # Return structured user data
-    return {
-      "email": user.get("mail") or user.get("userPrincipalName"),  # Handle fallback for email
-      "username": user.get("displayName"),
-      "profilePicture": profile_picture_base64
-    }
+class StateHelper:
+  def __init__(self, request: Request):
+    self.request = request
+  #   self.__state = request.app.state
+  # def __getattr__(self, name):
+  #   getattr(self.__state, name)
+  @property
+  def app(self) -> Any:
+    return self.request.app
+  @property
+  def bot(self) -> Any:
+    return self.request.app.state.discord_bot
+  @property
+  def channel(self) -> Any:
+    return self.request.app.state.discord_bot.get_channel(self.discord_bot.sys_channel)
+  @property
+  def pool(self) -> Any:
+    return self.request.app.state.db_pool
+  @property
+  def ms_api_id(self) -> Any:
+    return self.request.app.state.microsoft_client_id
+  @property
+  def jwt_secret(self) -> Any:
+    return self.request.app.state.jwt_secret
+  @property
+  def jwt_algorithm(self) -> Any:
+    return self.request.app.state.jwt_algorithm
+  @property
+  def ms_jwks(self):
+    return self.request.app.state.jwks # impl lazy loader
+  @property
+  def storage(self):
+    return self.request.app.state.container_client
 
 @router.post("/auth/login")
 async def handle_login(request: Request):
-  app = request.app
-  bot = app.state.discord_bot
-  channel = bot.get_channel(bot.sys_channel)
-  pool = app.state.db_pool
+  state = StateHelper(request)
 
-  data = await request.json()
-  id_token = data.get("idToken")
+  ################################################################################
+  ## Auth Phase 1: Extract Data
+  ################################################################################
+
+  # Get the JSON data from the POST
+  request_data = await request.json()
+
+  # Extract the idToken to perform RSA validation
+  id_token = request_data.get("idToken")
   if not id_token:
     raise HTTPException(status_code=400, detail="ID Token is required.")
 
-  access_token = data.get("accessToken")
+  # Extract the accessToken to perform Microsoft Graph API lookup
+  access_token = request_data.get("accessToken")
   if not access_token:
     raise HTTPException(status_code=400, detail="Access Token is required.")
 
-  client_id = app.state.microsoft_client_id
-  payload = await verify_id_token(app, id_token, client_id)
+  ################################################################################
+  ## Auth Phase 2: Validate and Get Details
+  ################################################################################
 
-  microsoft_id = payload.get("sub")
-  if not microsoft_id:
+  # Validate idToken
+  auth_payload = await verify_id_token(state, id_token)
+
+  # Extract verified subject
+  unique_identifier = auth_payload.get("sub")
+  if not unique_identifier:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
-  user_profile = await fetch_user_profile(access_token)
-  username = user_profile["username"]
-  email = user_profile["email"]
-  await channel.send(f"Processing login for: {username}, {email}")
+  # Get Microsoft Graph API user details
+  ms_profile = await fetch_user_profile(access_token)
+  await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
 
-  user = await get_user_from_database(app, pool, microsoft_id)
+  ################################################################################
+  ## Auth Phase 3: Lookup Internal User
+  ################################################################################
+
+  # Look up user in DB, create new user if none found
+  user = await get_user_from_database(state, unique_identifier)
   if not user:
-    user = await make_new_user_for_database(app, pool, microsoft_id, email, username)
-    await channel.send(f"Added user for {username}")
-  await channel.send(f"Found user for {username}")
+    user = await make_new_user_for_database(state, unique_identifier, ms_profile["email"], ms_profile["username"])
+    await state.channel.send(f"Added user for {user["guid"]}: {user["username"]}, {user["email"]}")
+  await state.channel.send(f"Found user for {user["guid"]}: {user["username"]}, {user["email"]}")
 
-  token_data = {"sub": microsoft_id}
-  token = jwt.encode(token_data, app.state.jwt_secret, algorithm=app.state.jwt_algorithm)
+  ################################################################################
+  ## Auth Phase 4: Return Internal Bearer Token
+  ################################################################################
 
-  response_data = {"bearer_token": token, "email": email, "username": username, "profilePicture": user_profile["profilePicture"]}
-  return response_data
+  # Encode a token for the subject using their Unique Identifier
+  token_data = {"sub": unique_identifier}
+  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm)
+  return {"bearer_token": token, "email": ms_profile["email"], "username": ms_profile["username"], "profilePicture": ms_profile["profilePicture"]}
 
 @router.get("/files")
 async def list_files(request: Request):
