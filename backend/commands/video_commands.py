@@ -1,5 +1,4 @@
 import aiohttp, aiofiles, asyncio, re
-from services.lumaai import init_lumaai_client
 
 ## THIS CODE IS UNFINISHED AND MUST NOT BE CALLED ##
 

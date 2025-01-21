@@ -1,4 +1,3 @@
-from services.storage import get_container_client
 import io, discord
 
 async def handle_tts(ctx, command_str):
