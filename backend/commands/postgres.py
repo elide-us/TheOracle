@@ -49,7 +49,7 @@ async def get_layer_template(pool, layer_id):
       result = json.loads(result)
     return result
 
-async def get_user_from_database(state, microsoft_id):
+async def get_database_user(state, microsoft_id):
   async with state.pool.acquire() as conn:
     query = """
       SELECT guid, microsoft_id, email, username FROM users WHERE microsoft_id = $1
@@ -59,7 +59,7 @@ async def get_user_from_database(state, microsoft_id):
       result = json.loads(result)
     return result
   
-async def make_new_user_for_database(state, microsoft_id, email, username):
+async def make_database_user(state, microsoft_id, email, username):
   new_guid = str(uuid.uuid4())
   async with state.pool.acquire() as conn:
     query = """
@@ -68,7 +68,7 @@ async def make_new_user_for_database(state, microsoft_id, email, username):
     """
     await conn.execute(query, new_guid, microsoft_id, email, username)
 
-    result = await get_user_from_database(state, microsoft_id)
+    result = await get_database_user(state, microsoft_id)
     return result
 
 ## New code below
