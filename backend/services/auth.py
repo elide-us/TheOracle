@@ -2,28 +2,30 @@ import aiohttp, base64
 from jose import jwt
 from fastapi import HTTPException, status
 from typing import Dict
+from utils.helpers import StateHelper
 
-async def fetch_ms_openid_config(app):
+async def fetch_ms_jwks_uri():
   async with aiohttp.ClientSession() as session:
     async with session.get("https://login.microsoftonline.com/consumers/v2.0/.well-known/openid-configuration") as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE, detail="Failed to fetch OpenID configuration.")
-      openid_config = await response.json()
-      app.state.ms_jwks_uri = openid_config["jwks_uri"]
+      response_data = await response.json()
+      return response_data["jwks_uri"]
 
-async def fetch_ms_jwks(app): 
+async def fetch_ms_jwks(jwks_uri):
   async with aiohttp.ClientSession() as session:
-    async with session.get(app.state.ms_jwks_uri) as response:
+    async with session.get(jwks_uri) as response:
       if response.status != 200:
         raise HTTPException(status_code=status.HTTP_503_SERVICE_UNAVAILABLE,detail="Failed to fetch JWKS.")
-      app.state.ms_jwks = await response.json()
+      response_data = await response.json()
+      return response_data
 
-async def get_ms_jwks(app):
-  if not hasattr(app.state, "ms_jwks") or not app.state.ms_jwks:
-    if not hasattr(app.state, "ms_jwks_uri"):
-      await fetch_ms_openid_config(app)
-    await fetch_ms_jwks(app)
-  return app.state.ms_jwks
+# async def get_ms_jwks(app):
+#   if not hasattr(app.state.msal, "jwks") or not app.state.msal.jwks:
+#     if not hasattr(app.state.msal, "jwks_uri"):
+#       await fetch_ms_openid_config(app)
+#     await fetch_ms_jwks(app)
+#   return app.state.msal.jwks
 
 ################################################################################
 ## Public API
@@ -35,11 +37,11 @@ async def get_subject(payload):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
   return sub
 
-async def verify_id_token(state, ms_id_token: str) -> Dict:
-  jwks = await get_ms_jwks(state.app)
+async def verify_id_token(state: StateHelper, id_token: str) -> Dict:
+  await state.channel.send("Hi")
 
   try:
-    unverified_header = jwt.get_unverified_header(ms_id_token)
+    unverified_header = jwt.get_unverified_header(id_token)
   except Exception as e:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid ID token.")
 
@@ -52,7 +54,7 @@ async def verify_id_token(state, ms_id_token: str) -> Dict:
         "n": key["n"],
         "e": key["e"],
       }
-      for key in jwks["keys"]
+      for key in state.ms_jwks["keys"]
       if key["kid"] == unverified_header["kid"]
     ),
     None,
@@ -62,7 +64,7 @@ async def verify_id_token(state, ms_id_token: str) -> Dict:
   
   try:
     payload = jwt.decode(
-      ms_id_token,
+      id_token,
       rsa_key,
       algorithms=["RS256"],
       audience=state.ms_api_id,

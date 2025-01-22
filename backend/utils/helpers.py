@@ -49,7 +49,7 @@ class StateHelper:
     return self.request.app.state.jwt_algorithm
   @property
   def ms_jwks(self):
-    return self.request.app.state.ms_jwks # impl lazy loader
+    return self.request.app.state.msal.jwks
   @property
   def storage(self):
     return self.request.app.state.container_client

@@ -50,5 +50,5 @@ def get_db_password():
 def get_jwt_secret():
     return get_env_var("JWT_SECRET")
 
-def get_microsoft_client_id():
+def get_ms_app_id():
     return get_env_var("APPREG_ID")
