@@ -30,9 +30,9 @@ async def lifespan(app: FastAPI):
 
   app.state.jwt_secret = get_jwt_secret()
   app.state.jwt_algorithm = "HS256"
-  app.state.msal.app_id = get_ms_app_id()
-  app.state.msal.jwks_uri = await fetch_ms_jwks_uri()
-  app.state.msal.jwks = await fetch_ms_jwks(app.state.msal.jwks_uri)
+  app.state.ms_app_id = get_ms_app_id()
+  app.state.ms_jwks_uri = await fetch_ms_jwks_uri()
+  app.state.ms_jwks = await fetch_ms_jwks(app.state.ms_jwks_uri)
 
   app.state.openai_client = await init_openai_client()
   app.state.lumaai_client = await init_lumaai_client()

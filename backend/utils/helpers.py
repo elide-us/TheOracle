@@ -40,7 +40,7 @@ class StateHelper:
     return self.request.app.state.db_pool
   @property
   def ms_api_id(self) -> Any:
-    return self.request.app.state.microsoft_client_id
+    return self.request.app.state.ms_app_id
   @property
   def jwt_secret(self) -> Any:
     return self.request.app.state.jwt_secret
@@ -49,7 +49,7 @@ class StateHelper:
     return self.request.app.state.jwt_algorithm
   @property
   def ms_jwks(self):
-    return self.request.app.state.msal.jwks
+    return self.request.app.state.ms_jwks
   @property
   def storage(self):
     return self.request.app.state.container_client
