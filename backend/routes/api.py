@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Request, HTTPException, status
 from jose import jwt
 from commands.images import generate_image
-from commands.postgres import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database
+from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user
 from services.auth import verify_id_token, fetch_user_profile
 from utils.helpers import StateHelper
 
@@ -15,37 +15,29 @@ router = APIRouter()
 async def handle_login(request: Request):
   state = StateHelper(request)
 
-  # Get the JSON data from the POST
   request_data = await request.json()
-
-  # Extract the idToken to perform RSA validation
   id_token = request_data.get("idToken")
   if not id_token:
     raise HTTPException(status_code=400, detail="ID Token is required.")
 
-  # Extract verified subject
   payload = await verify_id_token(state, id_token)
-
   unique_identifier = payload.get("sub")
   if not unique_identifier:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
-  # Extract the accessToken to perform Microsoft Graph API lookup
   access_token = request_data.get("accessToken")
   if not access_token:
     raise HTTPException(status_code=400, detail="Access Token is required.")
 
-  # Get Microsoft Graph API user details
   ms_profile = await fetch_user_profile(access_token)
 
-  # Report login processing
   await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
 
   ################################################################################
   # Look up user in DB, create new user if none found.
-  user = await get_user_from_database(state, unique_identifier)
+  user = await get_database_user(state, unique_identifier)
   if not user:
-    user = await make_new_user_for_database(state, unique_identifier, ms_profile["email"], ms_profile["username"])
+    user = await make_database_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
     await state.channel.send(f"Added user for {user["guid"]}: {user["username"]}, {user["email"]}")
   await state.channel.send(f"Found user for {user["guid"]}: {user["username"]}, {user["email"]}")
   ################################################################################
