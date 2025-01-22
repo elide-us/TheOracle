@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Request
+from fastapi import APIRouter, Request, HTTPException, status
 from jose import jwt
 from commands.images import generate_image
 from commands.postgres import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database# It makes sense to create services modules that wrap these database functions in a more abstract manner
@@ -17,7 +17,11 @@ async def handle_login(request: Request):
   tokens = TokenHelper(request)
 
   # Extract verified subject
-  unique_identifier = await get_subject(await verify_id_token(state, tokens.id_token))
+  payload = await verify_id_token(state, tokens.id_token)
+  
+  unique_identifier = payload.get("sub")
+  if not unique_identifier:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
 
   # Get Microsoft Graph API user details
   ms_profile = await fetch_user_profile(tokens.access_token)

