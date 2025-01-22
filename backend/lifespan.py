@@ -1,12 +1,13 @@
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from config.env import get_jwt_secret, get_microsoft_client_id, get_discord_channel
+from config.env import get_jwt_secret, get_ms_app_id, get_discord_channel
 from services.discord import init_discord_bot, setup_bot_routes, start_discord_bot
 from services.storage import init_container_client
 from services.postgres import init_database_pool
 from services.openai import init_openai_client
 from services.lumaai import init_lumaai_client
+from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
 
 # sys_channel <- Discord channel #
 # app <- the app
@@ -29,7 +30,9 @@ async def lifespan(app: FastAPI):
 
   app.state.jwt_secret = get_jwt_secret()
   app.state.jwt_algorithm = "HS256"
-  app.state.microsoft_client_id = get_microsoft_client_id()
+  app.state.msal.app_id = get_ms_app_id()
+  app.state.msal.jwks_uri = await fetch_ms_jwks_uri()
+  app.state.msal.jwks = await fetch_ms_jwks(app.state.msal.jwks_uri)
 
   app.state.openai_client = await init_openai_client()
   app.state.lumaai_client = await init_lumaai_client()
