@@ -3,7 +3,7 @@ from fastapi.security import HTTPBearer
 from jose import jwt
 from commands.images import generate_image
 from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user
-from services.auth import process_login
+from services.auth import verify_id_token, fetch_user_profile
 from utils.helpers import StateHelper
 
 router = APIRouter()
@@ -19,7 +19,13 @@ async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
 async def handle_login(request: Request):
   state = StateHelper(request)
 
-  unique_identifier, ms_profile = await process_login(request)
+  request_data = await request.json()
+  id_token = request_data.get("idToken")
+  payload = await verify_id_token(state, id_token)
+  unique_identifier = payload.get("sub")
+  access_token = request_data.get("sub")
+  ms_profile = await fetch_user_profile(access_token)
+  await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
 
   user = await get_database_user(state, unique_identifier)
   if not user:
