@@ -73,7 +73,7 @@ async def make_database_user(state, microsoft_id, email, username):
     await state.channel.send(f"Found user for {user["guid"]}: {user["username"]}, {user["email"]}")
     return user
 
-async def verify_user_token_in_database(state, bearer_token, guid):
+async def verify_database_user(state, bearer_token, guid):
   async with state.pool.acquire() as conn:
     query = """
       SELECT microsoft_id FROM users WHERE guid = $1;
