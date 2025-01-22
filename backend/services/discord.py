@@ -6,17 +6,16 @@ from commands.tts_commands import handle_tts
 #from services.local_json import load_json
 
 async def init_discord_bot():
-    intents = discord.Intents.default()
-    intents.messages = True
-    intents.message_content = True
-    return commands.Bot(command_prefix='!', intents=intents)
+  intents = discord.Intents.default()
+  intents.messages = True
+  intents.message_content = True
+  return commands.Bot(command_prefix='!', intents=intents)
 
 def setup_bot_routes(bot):
   @bot.event
   async def on_ready():
     channel = bot.get_channel(bot.sys_channel)
-    if channel:
-      await channel.send("TheOracleGPT Online.")
+    await channel.send("TheOracleGPT Online.")
 
   @bot.command(name="tts")
   async def tts_gen(ctx, *args):
@@ -59,5 +58,5 @@ def setup_bot_routes(bot):
   #     await ctx.send(response)
 
 async def start_discord_bot(bot):
-    token = get_discord_token()
-    await bot.start(token)
+  token = get_discord_token()
+  await bot.start(token)

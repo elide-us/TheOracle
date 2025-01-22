@@ -1,72 +1,48 @@
-from fastapi import APIRouter, Request, HTTPException, status
+from fastapi import APIRouter, Request, Depends, status
+from fastapi.security import HTTPBearer
 from jose import jwt
 from commands.images import generate_image
-from commands.postgres import get_public_template, get_layer_template, get_user_from_database, make_new_user_for_database# It makes sense to create services modules that wrap these database functions in a more abstract manner
-from services.auth import fetch_user_profile, verify_id_token
+from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user
+from services.auth import process_login
 from utils.helpers import StateHelper
 
 router = APIRouter()
 
-# @router.get("auth/test")
-# async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
-#   return status.HTTP_200_OK
+def create_token(state: StateHelper, guid, ms_profile):
+  token_data = {"sub": guid}
+  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm)
+  return_token = {"bearer_token": token, "email": ms_profile["email"], "username": ms_profile["username"], "profilePicture": ms_profile["profilePicture"]}
+  return return_token
+
+@router.get("auth/test")
+async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
+  state = StateHelper(request)
+  await state.channel.send("auth/test")
+  return status.HTTP_200_OK
 
 @router.post("/auth/login")
 async def handle_login(request: Request):
   state = StateHelper(request)
 
-  # Get the JSON data from the POST
-  request_data = await request.json()
-
-  # Extract the idToken to perform RSA validation
-  id_token = request_data.get("idToken")
-  if not id_token:
-    raise HTTPException(status_code=400, detail="ID Token is required.")
-
-  # Extract verified subject
-  payload = await verify_id_token(state, id_token)
-
-  unique_identifier = payload.get("sub")
-  if not unique_identifier:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
-
-  # Extract the accessToken to perform Microsoft Graph API lookup
-  access_token = request_data.get("accessToken")
-  if not access_token:
-    raise HTTPException(status_code=400, detail="Access Token is required.")
-
-  # Get Microsoft Graph API user details
-  ms_profile = await fetch_user_profile(access_token)
-
-  # Report login processing
-  await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
-
-  ################################################################################
-  # Look up user in DB, create new user if none found.
-  user = await get_user_from_database(state, unique_identifier)
+  unique_identifier, ms_profile = await process_login(request)
+  user = await get_database_user(state, unique_identifier)
   if not user:
-    user = await make_new_user_for_database(state, unique_identifier, ms_profile["email"], ms_profile["username"])
-    await state.channel.send(f"Added user for {user["guid"]}: {user["username"]}, {user["email"]}")
-  await state.channel.send(f"Found user for {user["guid"]}: {user["username"]}, {user["email"]}")
-  ################################################################################
+    user = await make_database_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
 
-  # Encode a token for the subject using their Unique Identifier
-  token_data = {"sub": unique_identifier}
-  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm)
-  return {"bearer_token": token, "email": ms_profile["email"], "username": ms_profile["username"], "profilePicture": ms_profile["profilePicture"]}
+  return create_token(state, user.get("guid"), ms_profile)
 
 @router.get("/files")
 async def list_files(request: Request):
-    state = StateHelper(request)
+  state = StateHelper(request)
 
-    base_url = f"https://theoraclesa.blob.core.windows.net/{state.storage.container_name}/"  # Replace with your actual base URL
-    blobs = []
-    async for blob in state.storage.list_blobs():
-        blobs.append({
-            "name": blob.name,
-            "url": f"{base_url}{blob.name}"
-        })
-    return {"files": blobs}
+  base_url = f"https://theoraclesa.blob.core.windows.net/{state.storage.container_name}/"  # Replace with your actual base URL
+  blobs = []
+  async for blob in state.storage.list_blobs():
+    blobs.append({
+      "name": blob.name,
+      "url": f"{base_url}{blob.name}"
+    })
+  return {"files": blobs}
 
 # @router.delete("/files/{filename}")
 # async def delete_file(filename: str, request: Request):
