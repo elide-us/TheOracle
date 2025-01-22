@@ -31,15 +31,7 @@ async def fetch_ms_jwks(jwks_uri):
 ## Public API
 ################################################################################
 
-async def get_subject(payload):
-  sub = payload.get("sub")
-  if not sub:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
-  return sub
-
 async def verify_id_token(state: StateHelper, id_token: str) -> Dict:
-  await state.channel.send("Hi")
-
   try:
     unverified_header = jwt.get_unverified_header(id_token)
   except Exception as e:
