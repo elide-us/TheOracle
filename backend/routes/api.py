@@ -7,20 +7,17 @@ from utils.helpers import StateHelper
 
 router = APIRouter()
 
-# @router.get("auth/test")
-# async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
-#   return status.HTTP_200_OK
-
-@router.post("/auth/login")
-async def handle_login(request: Request):
+async def process_login(request: Request):
   state = StateHelper(request)
 
   request_data = await request.json()
+
   id_token = request_data.get("idToken")
   if not id_token:
     raise HTTPException(status_code=400, detail="ID Token is required.")
 
   payload = await verify_id_token(state, id_token)
+
   unique_identifier = payload.get("sub")
   if not unique_identifier:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
@@ -33,6 +30,18 @@ async def handle_login(request: Request):
 
   await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
 
+  return unique_identifier, ms_profile
+
+# @router.get("auth/test")
+# async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
+#   return status.HTTP_200_OK
+
+@router.post("/auth/login")
+async def handle_login(request: Request):
+  state = StateHelper(request)
+
+  unique_identifier, ms_profile = await process_login(request)
+  
   ################################################################################
   # Look up user in DB, create new user if none found.
   user = await get_database_user(state, unique_identifier)
@@ -49,16 +58,16 @@ async def handle_login(request: Request):
 
 @router.get("/files")
 async def list_files(request: Request):
-    state = StateHelper(request)
+  state = StateHelper(request)
 
-    base_url = f"https://theoraclesa.blob.core.windows.net/{state.storage.container_name}/"  # Replace with your actual base URL
-    blobs = []
-    async for blob in state.storage.list_blobs():
-        blobs.append({
-            "name": blob.name,
-            "url": f"{base_url}{blob.name}"
-        })
-    return {"files": blobs}
+  base_url = f"https://theoraclesa.blob.core.windows.net/{state.storage.container_name}/"  # Replace with your actual base URL
+  blobs = []
+  async for blob in state.storage.list_blobs():
+    blobs.append({
+      "name": blob.name,
+      "url": f"{base_url}{blob.name}"
+    })
+  return {"files": blobs}
 
 # @router.delete("/files/{filename}")
 # async def delete_file(filename: str, request: Request):
