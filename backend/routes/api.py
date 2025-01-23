@@ -7,8 +7,6 @@ from utils.helpers import StateHelper
 
 router = APIRouter()
 
-
-
 # @router.get("auth/test")
 # async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
 #   return status.HTTP_200_OK
@@ -16,21 +14,14 @@ router = APIRouter()
 @router.post("/auth/login")
 async def handle_login(request: Request):
   state = StateHelper(request)
-
+  
   unique_identifier, ms_profile = await process_login(request)
 
-  ################################################################################
-  # Look up user in DB, create new user if none found.
   user = await get_database_user(state, unique_identifier)
   if not user:
     user = await make_database_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
-    await state.channel.send(f"Added user for {user["guid"]}: {user["username"]}, {user["email"]}")
-  await state.channel.send(f"Found user for {user["guid"]}: {user["username"]}, {user["email"]}")
-  ################################################################################
 
-  # Encode a token for the subject using their Unique Identifier
-  bearer_token = make_bearer_token(state, str(user["guid"]))
-  return {"bearerToken": bearer_token, "email": ms_profile["email"], "username": ms_profile["username"], "profilePicture": ms_profile["profilePicture"]}
+  return {"bearerToken": make_bearer_token(state, str(user["guid"])), "email": ms_profile["email"], "username": ms_profile["username"], "profilePicture": ms_profile["profilePicture"]}
 
 @router.get("/files")
 async def list_files(request: Request):
