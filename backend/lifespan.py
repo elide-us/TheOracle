@@ -3,22 +3,23 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from config.env import get_jwt_secret, get_ms_app_id, get_discord_channel
 from services.discord import init_discord_bot, setup_bot_routes, start_discord_bot
-from services.storage import init_container_client
+from services.storage import init_storage_client
 from services.postgres import init_database_pool
 from services.openai import init_openai_client
 from services.lumaai import init_lumaai_client
 from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
 
-# sys_channel <- Discord channel #
+# bot <- Discord bot
+# bot.sys_channel <- Discord channel #
 # app <- the app
-# discord_bot <- the discord bot
+# app.discord_bot <- the discord bot
 # jwt_secret <- my secret for jwt encryption
 # jwt_algorithm <- encryption algo
-# microsoft_client_id <- my app reg for MS authorization
+# ms_app_id <- my app reg for MS authorization
 # openai_client <- for calling API
 # lumaai_client <- for calling API
-# container_client <- for accessing theoraclegpt blob container
-# db_pool <- for pool.acquire()
+# theoraclesa_client <- for accessing theoraclegpt blob container
+# theoraclegp_pool <- for pool.acquire()
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -36,9 +37,9 @@ async def lifespan(app: FastAPI):
 
   app.state.openai_client = await init_openai_client()
   app.state.lumaai_client = await init_lumaai_client()
-  app.state.container_client = await init_container_client()
+  app.state.theoraclesa_client = await init_storage_client()
 
-  app.state.db_pool = await init_database_pool()
+  app.state.theoraclegp_pool = await init_database_pool()
   #app.state.conn = await db_client.acquire()
 
   setup_bot_routes(bot)

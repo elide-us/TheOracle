@@ -2,7 +2,7 @@ import asyncio, aiohttp, io, discord
 from openai import OpenAIError
 from typing import Dict
 from datetime import datetime, timezone
-from services.local_json import load_json
+from services.storage import load_json
 
 ###############################################################################
 ## Basic Helper Functions

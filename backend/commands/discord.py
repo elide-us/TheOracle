@@ -1,5 +1,5 @@
 from utils.messaging import send_to_discord
-from services.local_json import load_json
+from services.storage import load_json
 
 async def handle_text_generate(ctx, command_str):
   app = ctx.bot.app
