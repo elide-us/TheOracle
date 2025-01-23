@@ -71,7 +71,7 @@ async def make_database_user(state, microsoft_id, email, username):
     result = await get_database_user(state, microsoft_id)
     return result
 
-## New code below
+# New code below
 
 async def verify_user_token_in_database(state, bearer_token, guid):
   channel = state.channel
