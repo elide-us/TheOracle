@@ -29,9 +29,10 @@ async def handle_login(request: Request):
   ################################################################################
 
   # Encode a token for the subject using their Unique Identifier
-  internal_identifier = user["guid"]
-  await state.channel.send(f"internal_identifier: {internal_identifier}")
-  token_data = {"sub": unique_identifier}
+  internal_identifier = str(user["guid"])
+  token_data = {"sub": internal_identifier}
+  await state.channel.send(f"Token Data: {token_data}")
+
   token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm)
   return {"bearer_token": token, "email": ms_profile["email"], "username": ms_profile["username"], "profilePicture": ms_profile["profilePicture"]}
 
