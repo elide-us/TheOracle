@@ -60,6 +60,7 @@ async def get_database_user(state: StateHelper, microsoft_id):
     result = await conn.fetchrow(query, microsoft_id)
     if isinstance(result, str):
       result = json.loads(result)
+      await state.channel.send(f"Found user for {result["guid"]}: {result["username"]}, {result["email"]}")
     return result
   
 async def make_database_user(state: StateHelper, microsoft_id, email, username):
@@ -72,4 +73,5 @@ async def make_database_user(state: StateHelper, microsoft_id, email, username):
     await conn.execute(query, new_guid, microsoft_id, email, username)
 
     result = await get_database_user(state, microsoft_id)
+    await state.channel.send(f"Added user for {new_guid}: {username}, {email}")
     return result

@@ -20,17 +20,6 @@ async def fetch_ms_jwks(jwks_uri):
       response_data = await response.json()
       return response_data
 
-# async def get_ms_jwks(app):
-#   if not hasattr(app.state.msal, "jwks") or not app.state.msal.jwks:
-#     if not hasattr(app.state.msal, "jwks_uri"):
-#       await fetch_ms_openid_config(app)
-#     await fetch_ms_jwks(app)
-#   return app.state.msal.jwks
-
-################################################################################
-## Public API
-################################################################################
-
 async def verify_id_token(state: StateHelper, id_token: str) -> Dict:
   try:
     unverified_header = jwt.get_unverified_header(id_token)
@@ -119,3 +108,8 @@ async def process_login(request: Request):
   await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
 
   return unique_identifier, ms_profile
+
+def make_bearer_token(state: StateHelper, guid: str):
+  token_data = {"sub": guid}
+  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm)
+  return token

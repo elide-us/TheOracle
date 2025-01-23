@@ -37,7 +37,7 @@ function Login({open}) {
 			const profilePictureBase64 = `data:image/png;base64,${data.profilePicture}`;
 
 			setUserData({
-				token: data.bearer_token,
+				token: data.bearerToken,
 				username: data.username,
 				email: data.email,
 				profilePicture: profilePictureBase64,
