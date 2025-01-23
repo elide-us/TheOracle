@@ -1,6 +1,7 @@
 import { msalConfig, loginRequest } from '../../config/msal';
 import Notification from './Notification';
 import UserContext from "./UserContextProvider";
+import TestAuthEndpoint from './TestAuthEndpoint';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { useState, useContext } from 'react';
 import { Login as LoginIcon } from '@mui/icons-material';
@@ -21,7 +22,6 @@ function Login({open}) {
 			await pca.initialize();
             const loginResponse = await pca.loginPopup(loginRequest);
             const { idToken, accessToken } = loginResponse;
-			localStorage.removeItem("accessToken"); // Remove after mobile clear
 
             const response = await fetch("/api/auth/login", {
                 method: "POST",
@@ -51,7 +51,6 @@ function Login({open}) {
 	const handleLogout = async () => {
 		await pca.logoutPopup();
 		clearUserData();
-		localStorage.removeItem("accessToken");
 		setNotification({ open: true, severity: "info", message: "Logged out successfully."	});
 	}
 
@@ -59,6 +58,7 @@ function Login({open}) {
 		<Box sx={{ display: 'flex' }} >
 			{userData ? (
 				<Tooltip title="Logout">
+					<TestAuthEndpoint />
 					<IconButton onClick={handleLogout}>
 						<img src={userData.profilePicture} alt={userData.username} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1px solid #000" }} />
 					</IconButton>

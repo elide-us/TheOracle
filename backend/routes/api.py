@@ -1,5 +1,7 @@
-from fastapi import APIRouter, Request
-from jose import jwt
+import datetime
+from fastapi import APIRouter, Request, HTTPException, Depends, status
+from fastapi.security import HTTPBearer
+from jose import JWTError, jwt
 from commands.images import generate_image
 from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user
 from services.auth import process_login, make_bearer_token
@@ -7,21 +9,49 @@ from utils.helpers import StateHelper
 
 router = APIRouter()
 
-# @router.get("auth/test")
-# async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
-#   return status.HTTP_200_OK
+def decode_jwt(state: StateHelper, token: str):
+  try:
+    payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algorithm])
+
+    # Simple expiry validation, will obviously need to validate against the database backend...
+    exp = payload.get("exp")
+    if exp and datetime.utcfromtimestamp(exp) < datetime.utcnow():
+      raise HTTPException(
+        status_code=status.HTTP_401_UNAUTHORIZED,
+        detail="Token has expired",
+        headers={"WWW-Authenticate": "Bearer"}
+      )
+    return payload
+  except JWTError:
+    raise HTTPException(
+      status_code=status.HTTP_401_UNAUTHORIZED,
+      detail="Invalid token",
+      headers={"WWW-Authenticate": "Bearer"}
+    )
+
+@router.get("/auth/test")
+async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
+  state = StateHelper(request)
+
+  auth_token = token.credentials
+  user_payload = decode_jwt(state, auth_token)
+
+  return {
+    "message": "Token is valid",
+    "user": user_payload,  # Return the decoded payload for demonstration purposes
+  }
 
 @router.post("/auth/login")
 async def handle_login(request: Request):
   state = StateHelper(request)
-  
+
   unique_identifier, ms_profile = await process_login(request)
 
   user = await get_database_user(state, unique_identifier)
   if not user:
     user = await make_database_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
 
-  return {"bearerToken": make_bearer_token(state, str(user["guid"])), "email": ms_profile["email"], "username": ms_profile["username"], "profilePicture": ms_profile["profilePicture"]}
+  return {"bearerToken": make_bearer_token(state, str(user["guid"])), "email": user["email"], "username": user["username"], "profilePicture": ms_profile["profilePicture"]}
 
 @router.get("/files")
 async def list_files(request: Request):
