@@ -1,4 +1,5 @@
 import json, uuid
+from utils.helpers import StateHelper
 
 async def get_public_template(pool):
   result = {}
@@ -49,7 +50,7 @@ async def get_layer_template(pool, layer_id):
       result = json.loads(result)
     return result
 
-async def get_database_user(state, microsoft_id):
+async def get_database_user(state: StateHelper, microsoft_id):
   async with state.pool.acquire() as conn:
     query = """
       SELECT guid, microsoft_id, email, username
@@ -61,7 +62,7 @@ async def get_database_user(state, microsoft_id):
       result = json.loads(result)
     return result
   
-async def make_database_user(state, microsoft_id, email, username):
+async def make_database_user(state: StateHelper, microsoft_id, email, username):
   new_guid = str(uuid.uuid4())
   async with state.pool.acquire() as conn:
     query = """

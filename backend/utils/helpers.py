@@ -18,7 +18,7 @@ class StateHelper:
     return self.bot.get_channel(self.bot.sys_channel)
   @property
   def pool(self) -> Any:
-    return self.request.app.state.theoraclepg_pool
+    return self.request.app.state.theoraclegp_pool
   @property
   def ms_api_id(self) -> Any:
     return self.request.app.state.ms_app_id
