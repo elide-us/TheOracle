@@ -25,8 +25,11 @@ from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
 async def lifespan(app: FastAPI):
   bot = await init_discord_bot()
   bot.sys_channel = get_discord_channel()
-  
   bot.app = app
+  # app.state.discord_debug = get_discord_channel()
+  # app.state.discord_image = get_discord_channel()
+  # app.state.discord_video = get_discord_channel()
+  # app.state.discord_audio = get_discord_channel()
   app.state.discord_bot = bot
 
   app.state.jwt_secret = get_jwt_secret()
@@ -38,9 +41,7 @@ async def lifespan(app: FastAPI):
   app.state.openai_client = await init_openai_client()
   app.state.lumaai_client = await init_lumaai_client()
   app.state.theoraclesa_client = await init_storage_client()
-
   app.state.theoraclegp_pool = await init_database_pool()
-  #app.state.conn = await db_client.acquire()
 
   setup_bot_routes(bot)
   loop = asyncio.get_event_loop()
