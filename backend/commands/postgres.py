@@ -52,7 +52,9 @@ async def get_layer_template(pool, layer_id):
 async def get_database_user(state, microsoft_id):
   async with state.pool.acquire() as conn:
     query = """
-      SELECT guid, microsoft_id, email, username FROM users WHERE microsoft_id = $1
+      SELECT guid, microsoft_id, email, username
+      FROM users
+      WHERE microsoft_id = $1
     """
     result = await conn.fetchrow(query, microsoft_id)
     if isinstance(result, str):
@@ -63,35 +65,10 @@ async def make_database_user(state, microsoft_id, email, username):
   new_guid = str(uuid.uuid4())
   async with state.pool.acquire() as conn:
     query = """
-        INSERT INTO users (guid, microsoft_id, email, username)
-        VALUES ($1, $2, $3, $4);
+      INSERT INTO users (guid, microsoft_id, email, username)
+      VALUES ($1, $2, $3, $4);
     """
     await conn.execute(query, new_guid, microsoft_id, email, username)
 
     result = await get_database_user(state, microsoft_id)
     return result
-
-# New code below
-
-async def verify_user_token_in_database(state, bearer_token, guid):
-  channel = state.channel
-  await channel.send("Verify User Token in Database")
-
-  async with state.pool.acquire() as conn:
-    query = """
-      SELECT microsoft_id FROM users WHERE guid = $1;
-    """
-    select = await conn.fetch(query, guid)
-    if isinstance(select, str):
-      select = json.loads(select)
-
-    # Extract "sub" and validate against app.store.jwks
-  return select
-
-async def charge_user_for_access(state, bearer_token, guid, charge):
-  channel = state.channel
-  await channel.send("Charge User for Access")
-
-  # if id < 20 = free
-
-  return None
