@@ -1,6 +1,6 @@
 import aiohttp, base64
 from jose import jwt
-from fastapi import HTTPException, status
+from fastapi import HTTPException, Request, status
 from typing import Dict
 from utils.helpers import StateHelper
 
@@ -94,3 +94,28 @@ async def fetch_user_profile(access_token: str):
       "username": user.get("displayName"),
       "profilePicture": profile_picture_base64
     }
+  
+async def process_login(request: Request):
+  state = StateHelper(request)
+
+  request_data = await request.json()
+
+  id_token = request_data.get("idToken")
+  if not id_token:
+    raise HTTPException(status_code=400, detail="ID Token is required.")
+
+  payload = await verify_id_token(state, id_token)
+
+  unique_identifier = payload.get("sub")
+  if not unique_identifier:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
+
+  access_token = request_data.get("accessToken")
+  if not access_token:
+    raise HTTPException(status_code=400, detail="Access Token is required.")
+
+  ms_profile = await fetch_user_profile(access_token)
+
+  await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
+
+  return unique_identifier, ms_profile
