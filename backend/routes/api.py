@@ -2,35 +2,12 @@ from fastapi import APIRouter, Request, HTTPException, status
 from jose import jwt
 from commands.images import generate_image
 from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user
-from services.auth import verify_id_token, fetch_user_profile
+from services.auth import process_login
 from utils.helpers import StateHelper
 
 router = APIRouter()
 
-async def process_login(request: Request):
-  state = StateHelper(request)
 
-  request_data = await request.json()
-
-  id_token = request_data.get("idToken")
-  if not id_token:
-    raise HTTPException(status_code=400, detail="ID Token is required.")
-
-  payload = await verify_id_token(state, id_token)
-
-  unique_identifier = payload.get("sub")
-  if not unique_identifier:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token payload.")
-
-  access_token = request_data.get("accessToken")
-  if not access_token:
-    raise HTTPException(status_code=400, detail="Access Token is required.")
-
-  ms_profile = await fetch_user_profile(access_token)
-
-  await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
-
-  return unique_identifier, ms_profile
 
 # @router.get("auth/test")
 # async def handle_test(request: Request, token: str = Depends(HTTPBearer)):
@@ -41,7 +18,7 @@ async def handle_login(request: Request):
   state = StateHelper(request)
 
   unique_identifier, ms_profile = await process_login(request)
-  
+
   ################################################################################
   # Look up user in DB, create new user if none found.
   user = await get_database_user(state, unique_identifier)
