@@ -43,7 +43,7 @@ async def decode_jwt(state: StateHelper, token: str):
 @router.get("/auth/test")
 async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
   state = StateHelper(request)
-  state.channel.send("auth_test")
+  await state.channel.send("auth_test")
 
   payload = await decode_jwt(state, token.credentials)
   return payload
