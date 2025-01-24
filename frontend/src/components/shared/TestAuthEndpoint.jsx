@@ -6,7 +6,7 @@ const TestAuthEndpoint = () => {
 
   const handleTestAuth = async () => {
     try {
-      const response = await fetch('/auth/test', {
+      const response = await fetch('/api/auth/test', {
         method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
