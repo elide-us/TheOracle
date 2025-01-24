@@ -113,5 +113,5 @@ async def process_login(request: Request):
 def make_bearer_token(state: StateHelper, guid: str):
   exp = datetime.utcnow() + timedelta(hours=24)
   token_data = {"sub": guid, "exp": exp.timestamp()}
-  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm)
+  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm_internal)
   return token
