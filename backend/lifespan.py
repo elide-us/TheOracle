@@ -33,7 +33,8 @@ async def lifespan(app: FastAPI):
   app.state.discord_bot = bot
 
   app.state.jwt_secret = get_jwt_secret()
-  app.state.jwt_algorithm = "HS256"
+  app.state.jwt_algorithm = "RS256"
+  app.state.jwt_algorithm_internal = "HS256"
   app.state.ms_app_id = get_ms_app_id()
   app.state.ms_jwks_uri = await fetch_ms_jwks_uri()
   app.state.ms_jwks = await fetch_ms_jwks(app.state.ms_jwks_uri)

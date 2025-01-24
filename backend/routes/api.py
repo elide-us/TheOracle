@@ -11,7 +11,7 @@ router = APIRouter()
 
 async def decode_jwt(state: StateHelper, token: str):
   await state.channel.send("decoding token")
-  payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algorithm])
+  payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algorithm_internal])
   await state.channel.send("payload decoded")
   try:
     exp = payload.get("exp")

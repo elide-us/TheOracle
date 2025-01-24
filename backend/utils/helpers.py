@@ -29,6 +29,9 @@ class StateHelper:
   def jwt_algorithm(self) -> Any:
     return self.request.app.state.jwt_algorithm
   @property
+  def jwt_algorithm_internal(self) -> Any:
+    return self.request.app.state.jwt_algorithm_internal
+  @property
   def ms_jwks(self):
     return self.request.app.state.ms_jwks
   @property
