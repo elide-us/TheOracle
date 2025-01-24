@@ -3,13 +3,13 @@ import axios from 'axios';
 import UserContext from './UserContextProvider';
 
 const TestAuthEndpoint = () => {
-  const { token } = useContext(UserContext);
+  const { userData } = useContext(UserContext);
 
   const handleTestAuth = async () => {
     try {
       const response = await axios.get('/api/auth/test', {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${userData.token}`,
         },
       });
 
