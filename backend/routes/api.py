@@ -27,7 +27,7 @@ async def decode_jwt(state: StateHelper, token: str):
       result = await conn.fetchrow(query, sub)
       if isinstance(result, str):
         result = json.loads(result)
-        await state.channel.send(f"User has {result["credits"]} credits.")
+        await state.channel.send(f"User has {result['credits']} credits.")
       if result["credits"] > 0:
         return {"credits": result["credits"]}
       else:
