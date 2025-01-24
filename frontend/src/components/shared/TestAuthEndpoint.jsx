@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import axios from 'axios';
 import UserContext from './UserContextProvider';
 
 const TestAuthEndpoint = () => {
@@ -7,17 +6,25 @@ const TestAuthEndpoint = () => {
 
   const handleTestAuth = async () => {
     try {
-      const response = await axios.get('/auth/test', {
+      const response = await fetch('/auth/test', {
+        method: 'GET',
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      // If we get a response, print it to the alert
-      console.log(`Success! Response: ${JSON.stringify(response.data)}`);
+  
+      if (!response.ok) {
+        throw new Error(`API Response failure: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+  
+      // Log the response for debugging
+      console.log(`Success! Response: ${JSON.stringify(data)}`);
+      alert(`Success! Credits: ${data.credits}`);
     } catch (error) {
       console.error('Error testing auth endpoint:', error);
-      alert(`Error: ${error.response?.data?.detail || 'Unable to test auth endpoint'}`);
+      alert(`Error: ${error.message || 'Unable to test auth endpoint'}`);
     }
   };
 
