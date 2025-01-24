@@ -13,7 +13,8 @@ const TestAuthEndpoint = () => {
         },
       });
 
-      alert(`Success! Response: ${JSON.stringify(response.data)}`);
+      // If we get a response, print it to the alert
+      console.log(`Success! Response: ${JSON.stringify(response.data)}`);
     } catch (error) {
       console.error('Error testing auth endpoint:', error);
       alert(`Error: ${error.response?.data?.detail || 'Unable to test auth endpoint'}`);

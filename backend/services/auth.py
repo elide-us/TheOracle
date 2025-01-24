@@ -1,4 +1,5 @@
 import aiohttp, base64
+from datetime import datetime, timedelta
 from jose import jwt
 from fastapi import HTTPException, Request, status
 from typing import Dict
@@ -110,6 +111,7 @@ async def process_login(request: Request):
   return unique_identifier, ms_profile
 
 def make_bearer_token(state: StateHelper, guid: str):
-  token_data = {"sub": guid}
+  exp = datetime.utcnow() + timedelta(hours=24)
+  token_data = {"sub": guid, "exp": exp.timestamp()}
   token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm)
   return token
