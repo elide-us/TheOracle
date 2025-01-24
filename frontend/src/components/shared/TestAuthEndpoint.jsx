@@ -7,7 +7,7 @@ const TestAuthEndpoint = () => {
 
   const handleTestAuth = async () => {
     try {
-      const response = await axios.get('/auth/test', {
+      const response = await axios.get('/api/auth/test', {
         headers: {
           Authorization: `Bearer ${token}`,
         },
