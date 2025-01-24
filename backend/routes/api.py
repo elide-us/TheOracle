@@ -11,7 +11,6 @@ router = APIRouter()
 
 async def decode_jwt(state: StateHelper, token: str):
   payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algorithm])
-
   try:
     exp = payload.get("exp")
     if exp and datetime.utcfromtimestamp(exp) < datetime.utcnow():
@@ -29,12 +28,12 @@ async def decode_jwt(state: StateHelper, token: str):
       if isinstance(result, str):
         result = json.loads(result)
         await state.channel.send(f"User has {result["credits"]} credits.")
-      if credits > 0:
-        return credits
+      if result["credits"] > 0:
+        return {"credits": result["credits"]}
+      else:
+        return {"credits": 0}
   except Exception:
-    raise HTTPException(status_code=status.HTTP_402_PAYMENT_REQUIRED)
-
-  return {"credits": credits}
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Subject not found", headers={"WWW-Authenticate": "Bearer"})
 
 @router.get("/auth/test")
 async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
