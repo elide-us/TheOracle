@@ -48,7 +48,7 @@ async def verify_id_token(state: StateHelper, id_token: str) -> Dict:
     payload = jwt.decode(
       id_token,
       rsa_key,
-      algorithms=["RS256"],
+      algorithms=[state.jwt_algo_ms],
       audience=state.ms_api_id,
       issuer="https://login.microsoftonline.com/9188040d-6c67-4c5b-b112-36a304b66dad/v2.0"
     )
@@ -113,5 +113,5 @@ async def process_login(request: Request):
 def make_bearer_token(state: StateHelper, guid: str):
   exp = datetime.utcnow() + timedelta(hours=24)
   token_data = {"sub": guid, "exp": exp.timestamp()}
-  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algorithm_internal)
+  token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algo_int)
   return token

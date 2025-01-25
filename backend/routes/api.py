@@ -11,7 +11,7 @@ router = APIRouter()
 
 async def decode_jwt(state: StateHelper, token: str):
   await state.channel.send("decoding token")
-  payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algorithm_internal])
+  payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
   await state.channel.send("payload decoded")
   try:
     exp = payload.get("exp")
@@ -43,7 +43,7 @@ async def decode_jwt(state: StateHelper, token: str):
 @router.get("/auth/test")
 async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
   state = StateHelper(request)
-  await state.channel.send("auth_test")
+  await state.channel.send(f"auth_test creds: {token.credentials}")
 
   payload = await decode_jwt(state, token.credentials)
   return payload
