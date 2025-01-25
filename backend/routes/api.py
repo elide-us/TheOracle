@@ -12,7 +12,7 @@ router = APIRouter()
 async def decode_jwt(state: StateHelper, token: str):
   await state.channel.send("decoding token")
   payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
-  await state.channel.send("payload decoded")
+  await state.channel.send(f"payload decoded: {payload}")
   try:
     exp = payload.get("exp")
     if exp and datetime.utcfromtimestamp(exp) < datetime.utcnow():
