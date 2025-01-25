@@ -26,11 +26,11 @@ class StateHelper:
   def jwt_secret(self) -> Any:
     return self.request.app.state.jwt_secret
   @property
-  def jwt_algorithm(self) -> Any:
-    return self.request.app.state.jwt_algorithm
+  def jwt_algo_ms(self) -> Any:
+    return self.request.app.state.jwt_algorithm_rs256
   @property
-  def jwt_algorithm_internal(self) -> Any:
-    return self.request.app.state.jwt_algorithm_internal
+  def jwt_algo_int(self) -> Any:
+    return self.request.app.state.jwt_algorithm_hs256
   @property
   def ms_jwks(self):
     return self.request.app.state.ms_jwks
