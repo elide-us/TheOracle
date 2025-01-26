@@ -53,14 +53,14 @@ async def get_layer_template(pool, layer_id):
 async def get_database_user(state: StateHelper, microsoft_id):
   async with state.pool.acquire() as conn:
     query = """
-      SELECT guid, microsoft_id, email, username
+      SELECT guid, microsoft_id, email, username, credits
       FROM users
       WHERE microsoft_id = $1
     """
     result = await conn.fetchrow(query, microsoft_id)
     if isinstance(result, str):
       result = json.loads(result)
-      await state.channel.send(f"Found user for {result["guid"]}: {result["username"]}, {result["email"]}")
+      await state.channel.send(f"Found user for {result["guid"]}: {result["username"]}, {result["email"]}, Credits: {result["credits"]}")
     return result
   
 async def make_database_user(state: StateHelper, microsoft_id, email, username):
