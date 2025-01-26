@@ -44,7 +44,6 @@ async def decode_jwt(state: StateHelper, token: str):
 @router.get("/auth/test")
 async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
   state = StateHelper(request)
-  await state.channel.send(f"auth_test creds: {token.credentials}")
 
   payload = await decode_jwt(state, token.credentials)
   return payload
@@ -59,7 +58,7 @@ async def handle_login(request: Request):
   if not user:
     user = await make_database_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
 
-  return {"bearerToken": make_bearer_token(state, str(user["guid"])), "email": user["email"], "username": user["username"], "profilePicture": ms_profile["profilePicture"]}
+  return {"bearerToken": make_bearer_token(state, str(user["guid"])), "email": user["email"], "username": user["username"], "profilePicture": ms_profile["profilePicture"], "credits": user["credits"]}
 
 @router.get("/files")
 async def list_files(request: Request):

@@ -41,6 +41,7 @@ function Login({open}) {
 				username: data.username,
 				email: data.email,
 				profilePicture: profilePictureBase64,
+				credits: data.credits,
 			});
 			setNotification({ open: true, severity: "success", message: "Login successful!" });
 		} catch (error) {
@@ -76,7 +77,7 @@ function Login({open}) {
 						{userData.username}
 					</Typography>
 					<Typography component="span" variant="body2" sx={{ display: "block", fontSize: "0.9em", color: "gray" }}>
-					  {userData.email}
+					  {userData.credits}
 					</Typography>
 				  </Box>) : "Login"} sx={{ marginLeft: "8px" }} />
 			)}
