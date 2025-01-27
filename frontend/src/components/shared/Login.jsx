@@ -76,7 +76,7 @@ function Login({open}) {
 						{userData.username}
 					</Typography>
 					<Typography component="span" variant="body2" sx={{ display: "block", fontSize: "0.9em", color: "gray" }}>
-					  {userData.credits}
+						{new Intl.NumberFormat(navigator.language).format(userData.credits)}
 					</Typography>
 				  </Box>) : "Login"} sx={{ marginLeft: "8px" }} />
 			)}
