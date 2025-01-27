@@ -1,52 +1,40 @@
-import json
-from datetime import datetime
-from fastapi import APIRouter, Request, HTTPException, Depends, status
-from fastapi.security import HTTPBearer
-from jose import JWTError, jwt
+from fastapi import APIRouter, Request, Depends
+from typing import Optional
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from commands.images import generate_image
-from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user
-from services.auth import process_login, make_bearer_token
+from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user, get_public_routes, get_secure_routes
+from services.auth import process_login, make_bearer_token, decode_jwt
 from utils.helpers import StateHelper
 
 router = APIRouter()
 
-async def decode_jwt(state: StateHelper, token: str):
-  await state.channel.send("decoding token")
-  payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
-  await state.channel.send(f"payload decoded: {payload}")
-  try:
-    exp = payload.get("exp")
-    if exp and datetime.utcfromtimestamp(exp) < datetime.utcnow():
-      raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired", headers={"WWW-Authenticate": "Bearer"})
-  except JWTError:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token", headers={"WWW-Authenticate": "Bearer"})
-  await state.channel.send("valid token exp")
-
-  try:
-    sub = payload.get("sub") # This should be the GUID for the user
-    query = """
-      SELECT credits FROM users WHERE guid = $1
-    """
-    async with state.pool.acquire() as conn:
-      result = await conn.fetchrow(query, sub)
-      if isinstance(result, str):
-        result = json.loads(result)
-      credits = result["credits"]
-      if credits > 0:
-        await state.channel.send(f"Credits: {credits}")
-        return {"credits": credits}
-      else:
-        await state.channel.send("No credits")
-        return {"credits": 0}
-  except Exception:
-    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Subject not found", headers={"WWW-Authenticate": "Bearer"})
-
-@router.get("/auth/test")
-async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
+@router.get("/routes")
+async def get_routes(request: Request, token: Optional[HTTPAuthorizationCredentials] = Depends(HTTPBearer())):
   state = StateHelper(request)
+  await state.channel.send("routes")
+  
+  if token:
+    await state.channel.send("with token")
+    decoded_token = await decode_jwt(state, token.credentials)
+    if not decoded_token:
+      return {"error": "Invalid token"}
+    
+    user_guid = decoded_token.get("guid")
+    if not user_guid:
+      return {"error": "User GUID not found in token"}
+    await state.channel.send("with guid")
 
-  payload = await decode_jwt(state, token.credentials)
-  return payload
+    secure_routes = await get_secure_routes(state, user_guid)
+    if secure_routes:
+      await state.channel.send("with secure")
+      return secure_routes
+    
+    await state.channel.send("without secure")
+    return {"routes": [{'/', 'Home', 'home'}]}
+  else:
+    public_routes = await get_public_routes(state)
+    await state.channel.send("with public")
+    return public_routes
 
 @router.post("/auth/login")
 async def handle_login(request: Request):
