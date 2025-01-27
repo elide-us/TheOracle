@@ -1,7 +1,7 @@
 import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
-from config.env import get_jwt_secret, get_ms_app_id, get_discord_channel
+from config.env import get_jwt_secret, get_ms_app_id, get_discord_channel, get_debug_ch, get_image_ch, get_video_ch, get_audio_ch, get_chat_ch
 from services.discord import init_discord_bot, setup_bot_routes, start_discord_bot
 from services.storage import init_storage_client
 from services.postgres import init_database_pool
@@ -9,27 +9,16 @@ from services.openai import init_openai_client
 from services.lumaai import init_lumaai_client
 from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
 
-# bot <- Discord bot
-# bot.sys_channel <- Discord channel #
-# app <- the app
-# app.discord_bot <- the discord bot
-# jwt_secret <- my secret for jwt encryption
-# jwt_algorithm <- encryption algo
-# ms_app_id <- my app reg for MS authorization
-# openai_client <- for calling API
-# lumaai_client <- for calling API
-# theoraclesa_client <- for accessing theoraclegpt blob container
-# theoraclegp_pool <- for pool.acquire()
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
   bot = await init_discord_bot()
   bot.sys_channel = get_discord_channel()
+  bot.debug_channel = bot.get_channel(get_debug_ch())
+  bot.image_channel = bot.get_channel(get_image_ch())
+  bot.video_channel = bot.get_channel(get_video_ch())
+  bot.audio_channel = bot.get_channel(get_audio_ch())
+  bot.chat_channel = bot.get_channel(get_chat_ch())
   bot.app = app
-  # app.state.discord_debug = get_discord_channel()
-  # app.state.discord_image = get_discord_channel()
-  # app.state.discord_video = get_discord_channel()
-  # app.state.discord_audio = get_discord_channel()
   app.state.discord_bot = bot
 
   app.state.jwt_secret = get_jwt_secret()

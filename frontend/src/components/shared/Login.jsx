@@ -1,7 +1,6 @@
 import { msalConfig, loginRequest } from '../../config/msal';
 import Notification from './Notification';
 import UserContext from "./UserContextProvider";
-import TestAuthEndpoint from './TestAuthEndpoint';
 import { PublicClientApplication } from '@azure/msal-browser';
 import { useState, useContext } from 'react';
 import { Login as LoginIcon } from '@mui/icons-material';
@@ -59,7 +58,7 @@ function Login({open}) {
 		<Box sx={{ display: 'flex' }} >
 			{userData ? (
 				<Tooltip title="Logout">
-					<TestAuthEndpoint />
+					{/* <TestAuthEndpoint /> */}
 					<IconButton onClick={handleLogout}>
 						<img src={userData.profilePicture} alt={userData.username} style={{ width: "28px", height: "28px", borderRadius: "50%", border: "1px solid #000" }} />
 					</IconButton>

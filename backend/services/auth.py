@@ -1,9 +1,10 @@
 import aiohttp, base64
 from datetime import datetime, timedelta
-from jose import jwt
+from jose import JWTError, jwt
 from fastapi import HTTPException, Request, status
 from typing import Dict
 from utils.helpers import StateHelper
+from commands.postgres import get_details_for_user
 
 async def fetch_ms_jwks_uri():
   async with aiohttp.ClientSession() as session:
@@ -115,3 +116,22 @@ def make_bearer_token(state: StateHelper, guid: str):
   token_data = {"sub": guid, "exp": exp.timestamp()}
   token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algo_int)
   return token
+
+async def decode_jwt(state: StateHelper, token: str):
+  try:
+    payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
+  except JWTError:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Invalid token", headers={"WWW-Authenticate": "Bearer"})
+  
+  exp = payload.get("exp")
+  if not exp:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Expiry not found", headers={"WWW-Authenticate": "Bearer"})
+  if exp and datetime.utcfromtimestamp(exp) < datetime.utcnow():
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired", headers={"WWW-Authenticate": "Bearer"})
+
+  sub = payload.get("sub")
+  if not sub:
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Subject not found", headers={"WWW-Authenticate": "Bearer"})
+
+  details = await get_details_for_user(state, sub)
+  return details

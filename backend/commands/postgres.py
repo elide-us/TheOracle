@@ -75,3 +75,59 @@ async def make_database_user(state: StateHelper, microsoft_id, email, username):
     result = await get_database_user(state, microsoft_id)
     await state.channel.send(f"Added user for {new_guid}: {username}, {email}")
     return result
+
+async def get_details_for_user(state: StateHelper, sub):
+  query = """
+    SELECT credits FROM users WHERE guid = $1
+  """
+  async with state.pool.acquire() as conn:
+    result = await conn.fetchrow(query, sub)
+    credits = 0
+    if isinstance(result, str):
+      result = json.loads(result)
+      credits = result["credits]"]
+    if credits > 0:
+      return {"credits": credits, "guid": sub}
+    else:
+      return {"credits": 0, "guid": sub}
+
+async def get_public_routes(state: StateHelper):
+  query = """
+    SELECT json_agg(
+      json_build_object('path', path, 'name', name, 'icon', icon)
+    ) AS routes
+    FROM (
+      SELECT path, name, icon 
+      FROM routes 
+      WHERE security < 1 
+      ORDER BY sequence) subquery;
+  """
+  async with state.pool.acquire() as conn:
+    result = await conn.fetch(query)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result or None
+  
+async def get_secure_routes(state: StateHelper, guid):
+  query = """
+    SELECT json_agg(
+      json_build_object(
+        'path', r.path,
+        'name', r.name,
+        'icon', r.icon
+        )
+    ) AS routes
+    FROM (
+      SELECT r.path, r.name, r.icon
+      FROM routes r
+      JOIN users u ON u.guid = $1
+      WHERE r.security < u.security
+      ORDER BY r.sequence
+    ) subquery;
+  """
+  async with state.pool.acquire() as conn:
+    result = await conn.fetch(query, guid)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result or None
+  
