@@ -2,7 +2,7 @@ from fastapi import APIRouter, Request, Depends
 from typing import Optional
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from commands.images import generate_image
-from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user, get_public_routes, get_secure_routes
+from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user, get_public_routes, get_secure_routes, charge_user_credits
 from services.auth import process_login, make_bearer_token, decode_jwt
 from utils.helpers import StateHelper
 
@@ -36,6 +36,13 @@ async def get_routes(request: Request, token: Optional[HTTPAuthorizationCredenti
     await state.channel.send("with public")
     return public_routes
 
+@router.get("/auth/test")
+async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
+  state = StateHelper(request)
+
+  payload = await decode_jwt(state, token.credentials)
+  return payload
+
 @router.post("/auth/login")
 async def handle_login(request: Request):
   state = StateHelper(request)
@@ -62,25 +69,37 @@ async def list_files(request: Request):
   return {"files": blobs}
 
 # @router.delete("/files/{filename}")
-# async def delete_file(filename: str, request: Request):
+# async def delete_file(filename: str, request: Request, token: str = Depends(HTTPBearer())):
+#   state = StateHelper(request)
 #   container_client = request.app.state.container_client
 #   await container_client.delete_blob(filename)
 #   return {"status": "deleted", "file": filename}
 
 # @router.post("/files")
-# async def upload_file(filename: str, request: Request):
+# async def upload_file(filename: str, request: Request, token: str = Depends(HTTPBearer()):
+#   state = StateHelper(request)
 #   container_client = request.app.state.container_client
 #   await container_client.upload_blob(filename)
 #   return {"status": "uploaded", "file": filename}
 
 @router.post("/imagen")
-async def image_generation(request: Request):
+async def image_generation(request: Request, token: str = Depends(HTTPBearer())):
   state = StateHelper(request)
-  await state.channel.send("image_generation")
+
+  payload = await decode_jwt(state, token.credentials)
+
+  charge = 5
+  credits = payload.get("credits")
+
+  if credits > charge:
+    response = await charge_user_credits(state, charge, payload.get("guid"))
+    if response["success"]:
+        await state.channel.send(f"Post-charge credits: {response['credits']}")
+    else:
+        await state.channel.send(f"Error: {response['error']}, Remaining credits: {response.get('credits', 0)}")
+
   request_data = await request.json()
-  if not request_data:
-    await state.channel.send("no request_data")
-    
+
   template_key = request_data.get("template", "default")
   user_input = request_data.get("userinput", "")
   selected_keys = request_data.get("keys", {})

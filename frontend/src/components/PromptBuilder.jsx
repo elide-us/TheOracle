@@ -72,13 +72,12 @@ const PromptBuilder = ({ selectedTemplate }) => {
 			}
 			
 		} catch (error) {
-			console.log(error);
-			// const axiosError = `Axios error: ${error.message}`;
-			// setNotification({
-			// 	open: true,
-			// 	message: axiosError,
-			// 	severity: 'error',
-			// });
+			const axiosError = `Axios error: ${error.message}`;
+			setNotification({
+				open: true,
+				message: axiosError,
+				severity: 'error',
+			});
 		} finally {
 			setIsLoading(false);
 		}
