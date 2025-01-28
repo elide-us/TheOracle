@@ -3,10 +3,10 @@ import { Box, Button, Select, Typography, MenuItem, CircularProgress } from '@mu
 import { PageTitle } from './shared/PageTitle';
 import Notification from './shared/Notification';
 
-const SubmitButton = ({ onClick }) => {
+const SubmitButton = ({ onClick, disabled }) => {
 	return (
 		<Box sx={{ display:'flex', justifyContent:'flex-end', marginTop:2 }}>
-			<Button variant="contained" color="primary" onClick={onClick}>
+			<Button variant="contained" color="primary" onClick={onClick}> disabled={disabled}
 				Submit
 			</Button>
 		</Box>
@@ -186,7 +186,7 @@ const PromptBuilderHeader = ({ selectedTemplate, currentImageUrl, isLoading }) =
 				{selectedTemplate.description}
 			</Typography>
 			{currentImageUrl && (
-				<Box sx={{ position: "relative", marginTop: 2 }}>
+				<Box sx={{ position: "relative", marginTop: 2, width: "100%", maxWidth: "600px" }}>
 					<Box
 						component="img"
 						src={currentImageUrl}
@@ -249,6 +249,7 @@ const PromptBuilderComplexityBar = ({ percentage }) => {
 const PromptBuilder = ({ selectedTemplate }) => {
   	const [selections, setSelections] = useState({});
   	const [inputText, setInputText] = useState('');
+  	const [isLoading, setIsLoading] = useState(false);
 
   	const [notification, setNotification] = useState({
     	open: false,
@@ -256,7 +257,6 @@ const PromptBuilder = ({ selectedTemplate }) => {
     	severity: 'success', // 'success' | 'error' | 'warning' | 'info'
   	});
 
-  	const [isLoading, setIsLoading] = useState(false);
   	const [currentImageUrl, setCurrentImageUrl] = useState(
     	selectedTemplate ? selectedTemplate.imageUrl : ''
   	);
@@ -378,7 +378,7 @@ const PromptBuilder = ({ selectedTemplate }) => {
 							inputText={inputText}
 							setInputText={setInputText}
 						/>
-						<SubmitButton onClick={handleSubmit} />
+						<SubmitButton onClick={handleSubmit} disabled={isLoading}/>
 					</Box>
 				</Box>
 

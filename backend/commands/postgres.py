@@ -67,8 +67,8 @@ async def make_database_user(state: StateHelper, microsoft_id, email, username):
   new_guid = str(uuid.uuid4())
   async with state.pool.acquire() as conn:
     query = """
-      INSERT INTO users (guid, microsoft_id, email, username)
-      VALUES ($1, $2, $3, $4);
+      INSERT INTO users (guid, microsoft_id, email, username, security, credits)
+      VALUES ($1, $2, $3, $4, 1, 50);
     """
     await conn.execute(query, new_guid, microsoft_id, email, username)
 
