@@ -37,3 +37,6 @@ class StateHelper:
   @property
   def storage(self):
     return self.request.app.state.theoraclesa_client
+  @property
+  def openai(self):
+    return self.request.app.state.openai_client

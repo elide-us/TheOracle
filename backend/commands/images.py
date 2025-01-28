@@ -3,6 +3,7 @@ from openai import OpenAIError
 from typing import Dict
 from datetime import datetime, timezone
 from services.storage import load_json
+from utils.helpers import StateHelper
 
 ###############################################################################
 ## Basic Helper Functions
@@ -101,12 +102,12 @@ async def post_request(client, prompt):
   return completion.data[0].url
 
 # Write buffer out to Discord channel
-async def write_discord(buffer, state, filename):
+async def write_discord(buffer, state: StateHelper, filename):
   buffer.seek(0)
   await state.channel.send(file=discord.File(fp=buffer, filename=filename))
 
 # Write buffer out to CDN
-async def write_cdn(buffer, state, filename):
+async def write_cdn(buffer, state: StateHelper, filename):
   buffer.seek(0)
   client = state.storage
   await client.upload_blob(data=buffer, name=filename, overwrite=True)
@@ -135,7 +136,7 @@ class AsyncBufferWriter():
       self.buffer.close()
 
 # Handles downloading and storing the resultant image
-async def process_image(image_url: str, template_key: str, state) -> str:
+async def process_image(image_url: str, template_key: str, state: StateHelper) -> str:
   filename = generate_filename(template_key)
 
   async with AsyncBufferWriter(image_url) as buffer:
@@ -148,12 +149,12 @@ async def process_image(image_url: str, template_key: str, state) -> str:
 ## Public Functions
 ###############################################################################
 
-async def generate_image(state, template_key: str, selected_keys: dict, user_input: str):
+async def generate_image(state: StateHelper, template_key: str, selected_keys: dict, user_input: str):
   try:
     prompt_text = await format_prompt(template_key, selected_keys, user_input)
-    generated_image_url = await post_request(state.app.state.openai_client, prompt_text)
+    generated_image_url = await post_request(state.openai, prompt_text)
 
-    return await process_image(generated_image_url, template_key, state.bot)
+    return await process_image(generated_image_url, template_key, state)
   
   except Exception as e:
     await state.channel.send(f"Error generating image: {str(e)}")
