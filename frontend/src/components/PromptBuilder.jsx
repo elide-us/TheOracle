@@ -44,8 +44,6 @@ const PromptBuilder = ({ selectedTemplate }) => {
       		return;
     	}
 
-		// This is where we set up the JSON that gets sent
-
     	const payload = {
       		keys: selections,
       		template: selectedTemplate.title,
@@ -62,39 +60,17 @@ const PromptBuilder = ({ selectedTemplate }) => {
 				},
 			});
 
-			const { data, status } = response;
-
-			if (status !== 200) {
-        		const errorText = `API error: ${response.statusText}`;
-        		setNotification({
-          			open: true,
-          			message: errorText,
-          			severity: 'error',
-        		});
-			} else {
-				if (data.error) {
-					setNotification({
-						open: true,
-						message: `Server error: ${data.error}`,
-						severity: 'error',
-					});
-				} else if (data.imageUrl) {
-					setCurrentImageUrl(data.imageUrl);
-					setNotification({
-						open: true,
-						message: 'Image updated successfully.',
-						severity: 'success',
-					});
-					setSelections({});
-					setInputText('');
-				} else {
-					setNotification({
-						open: true,
-						message: 'Unexpected API response.',
-						severity: 'error',
-					});
-				}
-			}				
+			if (response.data.imageUrl) {
+				setCurrentImageUrl(response.data.imageUrl);
+				setNotification({
+					open: true,
+					message: 'Image updated successfully.',
+					severity: 'success',
+				});
+				setSelections({});
+				setInputText('');
+			}
+			
 		} catch (error) {
 			const axiosError = `Axios error: ${error.message}`;
 			setNotification({
