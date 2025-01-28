@@ -85,11 +85,22 @@ async def get_details_for_user(state: StateHelper, sub):
     credits = 0
     if isinstance(result, str):
       result = json.loads(result)
-      credits = result["credits]"]
+      credits = result["credits"]
     if credits > 0:
       return {"credits": credits, "guid": sub}
     else:
       return {"credits": 0, "guid": sub}
+
+async def get_security_for_user(state: StateHelper, sub):
+  query = """
+    SELECT security FORM users WHERE guid = $1
+  """
+  async with state.pool.acquire() as conn:
+    result = await conn.fetchrow(query, sub)
+    security = 0
+    if isinstance(result, str):
+      security = result["security"]
+    return {"security": security, "guid": sub}
 
 async def get_public_routes(state: StateHelper):
   query = """

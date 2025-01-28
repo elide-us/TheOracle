@@ -85,18 +85,22 @@ async def list_files(request: Request):
 @router.post("/imagen")
 async def image_generation(request: Request, token: str = Depends(HTTPBearer())):
   state = StateHelper(request)
+  await state.channel.send("image_generation")
 
   payload = await decode_jwt(state, token.credentials)
+  await state.channel.send(f"Payload: {payload}")
 
   charge = 5
   credits = payload.get("credits")
+  await state.channel.send(f"Credits: {credits}")
 
   if credits > charge:
     response = await charge_user_credits(state, charge, payload.get("guid"))
+    await state.channel.send(f"Response: {response}")
     if response["success"]:
-        await state.channel.send(f"Post-charge credits: {response['credits']}")
+      await state.channel.send(f"Post-charge credits: {response['credits']}")
     else:
-        await state.channel.send(f"Error: {response['error']}, Remaining credits: {response.get('credits', 0)}")
+      await state.channel.send(f"Error: {response['error']}, Remaining credits: {response.get('credits', 0)}")
 
   request_data = await request.json()
 
