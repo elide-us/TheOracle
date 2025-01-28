@@ -6,7 +6,7 @@ import Notification from './shared/Notification';
 const SubmitButton = ({ onClick, disabled }) => {
 	return (
 		<Box sx={{ display:'flex', justifyContent:'flex-end', marginTop:2 }}>
-			<Button variant="contained" color="primary" onClick={onClick}> disabled={disabled}
+			<Button variant="contained" color="primary" onClick={onClick} disabled={disabled}>
 				Submit
 			</Button>
 		</Box>
