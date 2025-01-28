@@ -76,9 +76,11 @@ async def list_files(request: Request):
 @router.post("/imagen")
 async def image_generation(request: Request):
   state = StateHelper(request)
-
+  await state.channel.send("image_generation")
   request_data = await request.json()
-
+  if not request_data:
+    await state.channel.send("no request_data")
+    
   template_key = request_data.get("template", "default")
   user_input = request_data.get("userinput", "")
   selected_keys = request_data.get("keys", {})
