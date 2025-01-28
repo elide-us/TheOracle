@@ -131,3 +131,26 @@ async def get_secure_routes(state: StateHelper, guid):
       result = json.loads(result)
     return result or None
   
+async def charge_user_credits(state: StateHelper, charge: int, guid: str):
+  query_select = """
+    SELECT credits FROM users WHERE guid = $1
+  """
+  query_update = """
+    UPDATE users SET credits = $1 WHERE guid = $2
+  """
+  async with state.pool.acquire() as conn:
+    async with conn.transaction():
+      # Fetch the current credits
+      result = await conn.fetchrow(query_select, guid)
+      if result:
+        credits = result["credits"] if isinstance(result, dict) else json.loads(result)["credits"]
+        if credits >= charge:
+          # Deduct the charge
+          new_credits = credits - charge
+          # Update the database
+          await conn.execute(query_update, new_credits, guid)
+          return {"success": True, "credits": new_credits, "guid": guid}
+        else:
+          return {"success": False, "error": "Insufficient credits", "credits": credits, "guid": guid}
+      else:
+            return {"success": False, "error": "User not found", "guid": guid}
