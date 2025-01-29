@@ -118,7 +118,7 @@ def make_bearer_token(state: StateHelper, guid: str):
   return token
 
 async def decode_jwt(state: StateHelper, token: str):
-  state.channel.send("decode_jwt")
+  await state.channel.send("decode_jwt")
   try:
     payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
   except JWTError:
@@ -135,4 +135,5 @@ async def decode_jwt(state: StateHelper, token: str):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Subject not found", headers={"WWW-Authenticate": "Bearer"})
 
   details = await get_details_for_user(state, sub)
+  await state.channel.send(f"Details: {details}")
   return details
