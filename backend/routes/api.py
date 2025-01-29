@@ -82,12 +82,14 @@ async def list_files(request: Request):
 #   await container_client.upload_blob(filename)
 #   return {"status": "uploaded", "file": filename}
 
+async def get_jwt_payload(request: Request, token: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+  state = StateHelper(request)
+  return await decode_jwt(state, token.credentials)
+
 @router.post("/imagen")
-async def image_generation(request: Request, token: str = Depends(HTTPBearer())):
+async def image_generation(request: Request, payload: dict = Depends(get_jwt_payload)):
   state = StateHelper(request)
   await state.channel.send("image_generation")
-
-  payload = await decode_jwt(state, token.credentials)
   await state.channel.send(f"Payload: {payload}")
 
   charge = 5
