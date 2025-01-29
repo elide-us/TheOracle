@@ -77,7 +77,7 @@ async def make_database_user(state: StateHelper, microsoft_id, email, username):
     return result
 
 async def get_details_for_user(state: StateHelper, sub):
-  await state.channel.send("get_details_for_user")
+  await state.channel.send(f"get_details_for_user {sub}")
   query = """
     SELECT credits FROM users WHERE guid = $1
   """
