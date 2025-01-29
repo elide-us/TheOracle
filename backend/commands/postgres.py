@@ -85,7 +85,9 @@ async def get_details_for_user(state: StateHelper, sub):
     credits = 0
     if isinstance(result, str):
       result = json.loads(result)
+      await state.channel.send(f"result: {result}")
       credits = result["credits"]
+      await state.channel.send(f"credits: {credits}")
     if credits > 0:
       return {"credits": credits, "guid": sub}
     else:

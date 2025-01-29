@@ -12,7 +12,7 @@ async def handle_tts(ctx, command_str):
   session, voice = split[0], split[1]
   text = " ".join(split[2:])
 
-  channel.send(f"Starting TTS generation for text: {text}")
+  await channel.send(f"Starting TTS generation for text: {text}")
 
   blob_name = f"{session}_{voice}_{text}.mp3"
 
