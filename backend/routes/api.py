@@ -92,6 +92,8 @@ async def image_generation(request: Request, payload: dict = Depends(get_jwt_pay
   await state.channel.send("image_generation")
   await state.channel.send(f"Payload: {payload}")
 
+  # Look up user credits
+
   charge = 5
   credits = payload.get("credits")
   await state.channel.send(f"Credits: {credits}")
