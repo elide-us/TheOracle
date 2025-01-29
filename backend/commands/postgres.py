@@ -1,4 +1,5 @@
 import json, uuid
+from uuid import UUID
 from utils.helpers import StateHelper
 
 async def get_public_template(pool):
@@ -82,7 +83,8 @@ async def get_details_for_user(state: StateHelper, sub):
     SELECT credits FROM users WHERE guid = $1
   """
   async with state.pool.acquire() as conn:
-    result = await conn.fetchrow(query, sub)
+    uuid_sub = UUID(sub)
+    result = await conn.fetchrow(query, uuid_sub)
     credits = 0
     if isinstance(result, str):
       result = json.loads(result)
@@ -99,7 +101,8 @@ async def get_security_for_user(state: StateHelper, sub):
     SELECT security FORM users WHERE guid = $1
   """
   async with state.pool.acquire() as conn:
-    result = await conn.fetchrow(query, sub)
+    uuid_sub = UUID(sub)
+    result = await conn.fetchrow(query, uuid_sub)
     security = 0
     if isinstance(result, str):
       security = result["security"]
@@ -153,16 +156,17 @@ async def charge_user_credits(state: StateHelper, charge: int, guid: str):
     UPDATE users SET credits = $1 WHERE guid = $2
   """
   async with state.pool.acquire() as conn:
+    uuid_guid = UUID(guid)
     async with conn.transaction():
       # Fetch the current credits
-      result = await conn.fetchrow(query_select, guid)
+      result = await conn.fetchrow(query_select, uuid_guid)
       if result:
         credits = result["credits"] if isinstance(result, dict) else json.loads(result)["credits"]
         if credits >= charge:
           # Deduct the charge
           new_credits = credits - charge
           # Update the database
-          await conn.execute(query_update, new_credits, guid)
+          await conn.execute(query_update, new_credits, uuid_guid)
           return {"success": True, "credits": new_credits, "guid": guid}
         else:
           return {"success": False, "error": "Insufficient credits", "credits": credits, "guid": guid}
