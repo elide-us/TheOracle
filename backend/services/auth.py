@@ -118,6 +118,7 @@ def make_bearer_token(state: StateHelper, guid: str):
   return token
 
 async def decode_jwt(state: StateHelper, token: str):
+  state.channel.send("decode_jwt")
   try:
     payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
   except JWTError:
