@@ -3,7 +3,7 @@ from openai import OpenAIError
 from typing import Dict
 from datetime import datetime, timezone
 from services.storage import load_json
-from utils.helpers import StateHelper
+from utils.helpers import StateHelper, AsyncBufferWriter
 
 ###############################################################################
 ## Basic Helper Functions
@@ -111,29 +111,6 @@ async def write_cdn(buffer, state: StateHelper, filename):
   buffer.seek(0)
   client = state.storage
   await client.upload_blob(data=buffer, name=filename, overwrite=True)
-
-# Async Context Manager for buffer
-class AsyncBufferWriter():
-  def __init__(self, url):
-    self.buffer = None
-    self.url = url
-
-  async def __aenter__(self):
-    self.buffer = await self._fetch_buffer()
-    return self.buffer
-  
-  async def _fetch_buffer(self):
-    try:
-      async with aiohttp.ClientSession() as session:
-        async with session.get(self.url) as response:
-          response.raise_for_status()
-          return io.BytesIO(await response.read())
-    except aiohttp.ClientError as e:
-      raise ValueError(f"Failed to fetch buffer from {self.url}: {str(e)}")
-
-  async def __aexit__(self, exc_type, exc_val, exc_tb):
-    if self.buffer:
-      self.buffer.close()
 
 # Handles downloading and storing the resultant image
 async def process_image(image_url: str, template_key: str, state: StateHelper) -> str:

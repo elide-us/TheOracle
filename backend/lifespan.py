@@ -2,7 +2,8 @@ import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from config.env import get_jwt_secret, get_ms_app_id, get_discord_channel, get_debug_ch, get_image_ch, get_video_ch, get_audio_ch, get_chat_ch
-from services.discord import init_discord_bot, setup_bot_routes, start_discord_bot
+from services.discord import init_discord_bot, start_discord_bot
+from routes.bot import setup_bot_routes
 from services.storage import init_storage_client
 from services.postgres import init_database_pool
 from services.openai import init_openai_client
