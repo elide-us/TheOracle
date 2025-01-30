@@ -19,7 +19,6 @@ async def handle_tts(ctx: commands.Context, command_str):
 
   try:
     buffer = io.BytesIO()
-    await ctx.send("calling api")
     async with client.audio.speech.with_streaming_response.create(
       model='tts-1',
       voice=voice,

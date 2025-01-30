@@ -12,7 +12,6 @@ def setup_bot_routes(bot: commands.Bot):
 
   @bot.command(name="tts")
   async def tts_gen(ctx, *args):
-    await ctx.send("tts_gen")
     command_str = " ".join(args)
     response = await handle_tts(ctx, command_str)
     if response:
