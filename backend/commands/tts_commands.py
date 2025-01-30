@@ -1,8 +1,10 @@
 import io, discord
+from discord.ext import commands
+from fastapi import FastAPI
 
-async def handle_tts(ctx, command_str):
-  app = ctx.bot.app
-  bot = ctx.bot
+async def handle_tts(ctx: commands.Context, command_str):
+  app: FastAPI = ctx.bot.app
+  
   channel = ctx.channel
   client = app.state.openai_client
   container = app.state.container_client
