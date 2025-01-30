@@ -4,8 +4,7 @@ from fastapi import FastAPI
 
 async def handle_tts(ctx: commands.Context, command_str):
   app: FastAPI = ctx.bot.app
-  
-  channel = ctx.channel
+
   client = app.state.openai_client
   container = app.state.container_client
   
@@ -14,12 +13,13 @@ async def handle_tts(ctx: commands.Context, command_str):
   session, voice = split[0], split[1]
   text = " ".join(split[2:])
 
-  await channel.send(f"Starting TTS generation for text: {text}")
+  await ctx.send(f"Starting TTS generation for text: {text}")
 
   blob_name = f"{session}_{voice}_{text}.mp3"
 
   try:
     buffer = io.BytesIO()
+    await ctx.send("calling api")
     async with client.audio.speech.with_streaming_response.create(
       model='tts-1',
       voice=voice,
@@ -36,8 +36,8 @@ async def handle_tts(ctx: commands.Context, command_str):
       # Send the file to Discord
       buffer.seek(0)  # Reset buffer position again
       
-      await channel.send(file=discord.File(fp=buffer, filename=blob_name))      
+      await ctx.send(file=discord.File(fp=buffer, filename=blob_name))      
   except Exception as e:
-    await channel.send(f"Error communicating with OpenAI: {str(e)}")
+    await ctx.send(f"Error communicating with OpenAI: {str(e)}")
     return
   
