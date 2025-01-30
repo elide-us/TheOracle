@@ -84,7 +84,7 @@ async def get_details_for_user(state: StateHelper, sub):
   """
   async with state.pool.acquire() as conn:
     # uuid_sub = UUID(sub)
-    result = await conn.fetchrow(query, sub)
+    result = await conn.fetch(query, sub)
     credits = 0
     if isinstance(result, str):
       result = json.loads(result)
