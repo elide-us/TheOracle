@@ -25,6 +25,7 @@ async def handle_tts(ctx: commands.Context, command_str):
       voice=voice,
       input=text
     ) as response:
+      await ctx.send(f"Response: {response}")
       async for chunk in response.iter_bytes():
         buffer.write(chunk)  # Write chunks to the buffer
       
