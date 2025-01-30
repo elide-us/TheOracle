@@ -14,7 +14,7 @@ const PromptBuilder = ({ selectedTemplate }) => {
   	const [selections, setSelections] = useState({});
   	const [inputText, setInputText] = useState('');
   	const [isLoading, setIsLoading] = useState(false);
-	const { userData } = useContext(UserContext);
+	const { userData, setUserData } = useContext(UserContext);
 
   	const [currentImageUrl, setCurrentImageUrl] = useState(
 		selectedTemplate ? selectedTemplate.imageUrl : ''
@@ -71,6 +71,13 @@ const PromptBuilder = ({ selectedTemplate }) => {
 				setInputText('');
 			}
 			
+			if (response.data.credits !== undefined) {
+				setUserData((prevUserData) => ({
+					...prevUserData,
+					credits: response.data.credits,
+				}));
+			}
+
 		} catch (error) {
 			const axiosError = `Axios error: ${error.message}`;
 			setNotification({
