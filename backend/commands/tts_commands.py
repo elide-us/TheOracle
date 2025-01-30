@@ -6,7 +6,7 @@ async def handle_tts(ctx: commands.Context, command_str):
   app: FastAPI = ctx.bot.app
 
   client = app.state.openai_client
-  container = app.state.container_client
+  container = app.state.theoraclesa_client
   
   split = command_str.split(" ")
 
