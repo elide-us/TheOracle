@@ -89,20 +89,14 @@ async def get_jwt_payload(request: Request, token: HTTPAuthorizationCredentials 
 @router.post("/imagen")
 async def image_generation(request: Request, payload: dict = Depends(get_jwt_payload)):
   state = StateHelper(request)
-  await state.channel.send("image_generation")
-  await state.channel.send(f"Payload: {payload}")
-
-  # Look up user credits
 
   charge = 5
   credits = payload.get("credits")
-  await state.channel.send(f"Credits: {credits}")
 
   if credits > charge:
     response = await charge_user_credits(state, charge, payload.get("guid"))
-    await state.channel.send(f"Response: {response}")
     if response["success"]:
-      await state.channel.send(f"Post-charge credits: {response['credits']}")
+      await state.channel.send(f"User: {response["guid"]} Credits: {response['credits']}")
     else:
       await state.channel.send(f"Error: {response['error']}, Remaining credits: {response.get('credits', 0)}")
 
