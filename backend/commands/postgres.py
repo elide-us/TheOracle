@@ -102,7 +102,7 @@ async def get_security_for_user(state: StateHelper, sub):
   """
   async with state.pool.acquire() as conn:
     uuid_sub = UUID(sub)
-    result = await conn.fetchrow(query, uuid_sub)
+    result = await conn.fetch(query, uuid_sub)
     security = 0
     if isinstance(result, str):
       security = result["security"]
