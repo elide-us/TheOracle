@@ -1,5 +1,4 @@
 import json, uuid
-from uuid import UUID
 from utils.helpers import StateHelper
 
 async def get_public_template(pool):
@@ -78,64 +77,37 @@ async def make_database_user(state: StateHelper, microsoft_id, email, username):
     return result
 
 async def get_details_for_user(state: StateHelper, sub):
-  # await state.channel.send(f"get_details_for_user {sub}")
-  # query = """
-  #   SELECT credits, guid FROM users WHERE guid = $1::uuid
-  # """
-  # async with state.pool.acquire() as conn:
-  #   uuid_sub = UUID(sub)
-  #   result = await conn.fetch(query, uuid_sub)
-  #   credits = 0
-  #   if isinstance(result, str):
-  #     result = json.loads(result)
-  #     await state.channel.send(f"result: {result}")
-  #     credits = result["credits"]
-  #     await state.channel.send(f"credits: {credits}")
-  #   if credits > 0:
-  #     return {"credits": credits, "guid": sub}
-  #   else:
-  #     return {"credits": 0, "guid": sub}
-
   await state.channel.send(f"get_details_for_user {sub}")
-
   try:
-      sub_uuid = uuid.UUID(sub)  # Ensure it's a UUID object
+    sub_uuid = uuid.UUID(sub)  # Ensure it's a UUID object
   except ValueError:
-      await state.channel.send("Invalid GUID format")
-      return {"error": "Invalid GUID format"}
-
-  query = "SELECT credits FROM users WHERE guid = $1"
-
+    await state.channel.send("Invalid GUID format")
+    return {"error": "Invalid GUID format"}
+  query = """
+    SELECT credits FROM users WHERE guid = $1
+  """
   async with state.pool.acquire() as conn:
-      # Check if the UUID exists manually
-      stored_guid = await conn.fetchval("SELECT guid FROM users WHERE guid = $1", sub_uuid)
-      await state.channel.send(f"DB Check - Stored GUID for {sub_uuid}: {stored_guid}")
-
-      # Log query execution
-      await state.channel.send(f"Executing query: {query} with param {sub_uuid} (type: {type(sub_uuid)})")
-
-      result = await conn.fetchrow(query, sub_uuid)
-
-      if result:
-          await state.channel.send(f"Match found: {result}")
-          return {"credits": result["credits"], "guid": str(sub_uuid)}
-      else:
-          await state.channel.send(f"No match found for GUID: {sub_uuid}")
-          return {"credits": 0, "guid": str(sub_uuid)}
-
-
+    result = await conn.fetchrow(query, sub_uuid)
+    if isinstance(result, str):
+      result = json.loads(result)
+    if result:
+      return {"credits": result["credits"], "guid": str(sub_uuid)}
+    else:
+      return {"credits": 0, "guid": str(sub_uuid)}
 
 async def get_security_for_user(state: StateHelper, sub):
   query = """
     SELECT security, guid FORM users WHERE guid = $1
   """
   async with state.pool.acquire() as conn:
-    uuid_sub = UUID(sub)
-    result = await conn.fetch(query, uuid_sub)
-    security = 0
+    uuid_sub = uuid.UUID(sub)
+    result = await conn.fetchrow(query, uuid_sub)
     if isinstance(result, str):
       security = result["security"]
-    return {"security": security, "guid": sub}
+    if result:
+      return {"security": security, "guid": sub}
+    else:
+      raise
 
 async def get_public_routes(state: StateHelper):
   query = """
