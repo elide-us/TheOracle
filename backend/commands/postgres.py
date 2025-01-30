@@ -80,11 +80,11 @@ async def make_database_user(state: StateHelper, microsoft_id, email, username):
 async def get_details_for_user(state: StateHelper, sub):
   await state.channel.send(f"get_details_for_user {sub}")
   query = """
-    SELECT credits FROM users WHERE guid = $1
+    SELECT credits FROM users WHERE guid = $1::uuid
   """
   async with state.pool.acquire() as conn:
-    uuid_sub = UUID(sub)
-    result = await conn.fetchrow(query, uuid_sub)
+    # uuid_sub = UUID(sub)
+    result = await conn.fetchrow(query, sub)
     credits = 0
     if isinstance(result, str):
       result = json.loads(result)
