@@ -161,8 +161,10 @@ async def charge_user_credits(state: StateHelper, charge: int, guid: str):
     async with conn.transaction():
       # Fetch the current credits
       result = await conn.fetchrow(query_select, uuid_guid)
+      if isinstance(result, str):
+        result = json.loads(result)
       if result:
-        credits = result["credits"] if isinstance(result, dict) else json.loads(result)["credits"]
+        credits = result["credits"]
         if credits >= charge:
           # Deduct the charge
           new_credits = credits - charge
