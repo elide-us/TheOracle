@@ -157,7 +157,7 @@ async def charge_user_credits(state: StateHelper, charge: int, guid: str):
     UPDATE users SET credits = $1 WHERE guid = $2
   """
   async with state.pool.acquire() as conn:
-    uuid_guid = UUID(guid)
+    uuid_guid = uuid.UUID(guid)
     async with conn.transaction():
       # Fetch the current credits
       result = await conn.fetchrow(query_select, uuid_guid)
