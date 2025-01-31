@@ -12,9 +12,9 @@ def setup_bot_routes(bot: commands.Bot):
 
   @bot.event
   async def on_guild_join(guild):
-    channel = guild.get_channel(1332467424758468732)  # Replace with actual channel ID
+    channel = bot.get_channel(bot.sys_channel)
     if channel:
-      await channel.send("TheOracleGPT Online.")
+      await channel.send(f"Joined {guild.name} ({guild.id})")
 
   @bot.command(name="tts")
   async def tts_gen(ctx, *args):
