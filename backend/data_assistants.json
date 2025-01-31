@@ -13,5 +13,10 @@
 		"model": "chatgpt-4o-latest",
 		"max_tokens": 250,
 		"role": "You are a helpful assistant. Who provides brief, concise, simple, short, single sentence answers to simple questions. Any complex question that can't be answered in just 250 tokens should be told to use the research assistant instead."
+	},
+	"summary": {
+		"model": "chatgpt-4o-latest",
+		"max_tokens": 1000,
+		"role": "You provide concise summaries of conversations, highlighting key decision points raised or resolved, with a social and connection highlight for conversations."
 	}
 }
