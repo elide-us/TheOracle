@@ -44,6 +44,15 @@ const PromptBuilder = ({ selectedTemplate }) => {
       		return;
     	}
 
+		if (!userData?.token) {
+			setNotification({
+				open: true,
+				message: 'User is not logged in. Please log in to continue.',
+				severity: 'warning',
+			});
+			return;
+		}
+
     	const payload = {
       		keys: selections,
       		template: selectedTemplate.title,

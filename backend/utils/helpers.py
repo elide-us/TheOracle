@@ -1,6 +1,13 @@
 from typing import Any
 from fastapi import Request
-import aiohttp, io
+import aiohttp, io, aiofiles, json
+
+async def load_json(file_path: str) -> Any:
+  try:
+    async with aiofiles.open(file_path, mode='r') as file:
+      return json.loads(await file.read())
+  except FileNotFoundError:
+    return None
 
 class StateHelper:
   def __init__(self, request: Request):
@@ -64,3 +71,7 @@ class AsyncBufferWriter():
   async def __aexit__(self, exc_type, exc_val, exc_tb):
     if self.buffer:
       self.buffer.close()
+
+class SafeDict(dict):
+    def __missing__(self, key):
+        return ''

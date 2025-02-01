@@ -55,8 +55,8 @@ def cdn_container_name():
 ## Postgres SQL on Azure Configuration
 ################################################################################
 
-def get_db_password():
-  return get_env_var("PG_DB_PASSWORD")
+def db_connection_string():
+  return get_env_var("POSTGRES_CONNECTION_STRING")
 
 ################################################################################
 ## Microsoft Auth Service Configuration

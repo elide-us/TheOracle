@@ -2,7 +2,6 @@ import json, uuid
 from typing import Dict
 from utils.helpers import StateHelper
 
-
 async def get_elements(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
   elements = {}
   await state.channel.send("Testing new get_elements")
