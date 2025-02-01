@@ -11,7 +11,7 @@ async def get_elements(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
     SELECT jsonb_object_agg(key_value, sub_data) 
     FROM (
       SELECT key_value, jsonb_object_agg(subkey_value, private_value) AS sub_data
-      FROM elements
+      FROM keys
       WHERE (key_value, subkey_value) IN (
         SELECT unnest($1::text[]), unnest($2::text[])
       )
