@@ -1,5 +1,42 @@
 import json, uuid
+from typing import Dict
 from utils.helpers import StateHelper
+
+
+async def get_elements(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
+  elements = {}
+  await state.channel.send("Testing new get_elements")
+  async with state.pool.acquire() as conn:
+    query = """
+    SELECT jsonb_object_agg(key_value, sub_data) 
+    FROM (
+      SELECT key_value, jsonb_object_agg(subkey_value, private_value) AS sub_data
+      FROM elements
+      WHERE (key_value, subkey_value) IN (
+        SELECT unnest($1::text[]), unnest($2::text[])
+      )
+      GROUP BY key_value
+    ) AS nested_data;
+    """
+    keys = list(selected_keys.keys())
+    await state.channel.send(f"Keys: {keys}")
+    subkeys = list(selected_keys.values())
+    await state.channel.send(f"Subkeys: {subkeys}")
+    result = await conn.fetchval(query, keys, subkeys)
+    if isinstance(result, str):
+      result = json.loads(result)
+    await state.channel.send(f"Result: {result}")
+      
+    if result is None:
+      raise ValueError("No matching elements found in the database.")
+
+  for key, subkey in selected_keys.items():
+    if key in result and subkey in result[key]:
+      elements[key] = result[key][subkey]
+    else:
+      raise ValueError(f"Key '{subkey}' not found under '{key}' in database.")
+
+  return elements
 
 async def get_public_template(pool):
   result = {}
