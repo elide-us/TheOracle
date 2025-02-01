@@ -30,6 +30,7 @@ function Login({ open }) {
   // When logged in, clicking on the icon logs the user out.
   const handleLogout = async () => {
     try {
+	  await pca.initialize();
       await pca.logoutPopup();
       clearUserData();
       setNotification({
