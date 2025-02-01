@@ -12,6 +12,7 @@ import TheOracleGPT from './components/TheOracleGPT';
 import Prism from './components/Prism';
 import CategoryEditor from './components/CategoryEditor';
 import KeyEditor from './components/KeyEditor';
+import LoginPage from './components/LoginPage';
 
 function App() {
 	const [open, setOpen] = useState(false);
@@ -32,6 +33,7 @@ function App() {
 								<Route path='/prism' element={ <Prism /> } />
 								<Route path='/cat-edit' element={ <CategoryEditor /> } />
 								<Route path='/key-edit' element={ <KeyEditor /> } />
+								<Route path='/login' element={<LoginPage />} />
 							</Routes>
 						</Box>
 					</Container>
