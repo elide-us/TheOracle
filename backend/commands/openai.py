@@ -4,7 +4,7 @@ from typing import Dict
 from datetime import datetime, timezone
 from commands.discord import write_buffer_to_discord
 from commands.storage import write_buffer_to_blob
-from commands.postgres import select_prompt_keys
+# from commands.postgres import select_prompt_keys
 from utils.helpers import StateHelper, AsyncBufferWriter, SafeDict, load_json
 
 ###############################################################################
