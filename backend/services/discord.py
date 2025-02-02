@@ -23,19 +23,19 @@ def setup_bot_routes(bot: commands.Bot):
     if channel:
       await channel.send(f"Joined {guild.name} ({guild.id})")
 
-  @bot.command(name="tts")
-  async def tts_gen(ctx, *args):
+  @bot.command(name="tts", help="Format: !tts <Prefix> <voice> <Text to generate> Will convert text to speech for provided text.")
+  async def command_tts(ctx, *args):
     command_str = " ".join(args)
     response = await handle_tts(ctx, command_str)
     if response:
       await ctx.send(response)
 
-  @bot.command(name="hello")
-  async def hello(ctx):
+  @bot.command(name="hello", help="Provides a greeting message.")
+  async def command_hello(ctx):
     await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
 
-  @bot.command(name="summarize")
-  async def summarize_chat(ctx, hours: int = 1):
+  @bot.command(name="summarize", help="Format: !summarize <hours> Will collect message history for defined hours (default 1) and provide a summary.")
+  async def command_summarize(ctx, hours: int = 1):
     text = await summarize(ctx, hours)
 
     command_str = f"summary Summarize the following conversations: {text}"
@@ -44,13 +44,13 @@ def setup_bot_routes(bot: commands.Bot):
       await ctx.send(f"Exception: {exception}")
 
   @bot.command(name="assistants", help="Lists the assistants available for the !chat command.")
-  async def assistants(ctx, *args):
+  async def command_assistants(ctx, *args):
     data = await load_json("data_assistants.json")
     assistants_list = ", ".join(data.keys())
     await ctx.send(f"Available assistants: {assistants_list}")
 
   @bot.command(name="chat", help="Format: !chat <assistant> <Your question here.> Each assistant is tuned to provide specific expertise.")
-  async def chat(ctx, *args):
+  async def command_chat(ctx, *args):
     command_str = " ".join(args)
     response = await handle_text_generate(ctx, command_str)
     if response:

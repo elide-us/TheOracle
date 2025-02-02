@@ -1,30 +1,20 @@
 from fastapi import APIRouter, Request, Depends
-from typing import Optional
-from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from commands.images import generate_image
-from commands.postgres import get_public_template, get_layer_template, get_database_user, make_database_user, get_public_routes, get_secure_routes, charge_user_credits
-from services.auth import process_login, make_bearer_token, decode_jwt
+from commands.postgres import get_public_template, get_layer_template, select_ms_user, insert_ms_user, select_public_routes, select_secure_routes, update_user_credits
+from services.auth import handle_ms_auth_login, make_bearer_token, get_bearer_token_payload
 from utils.helpers import StateHelper
 
 router = APIRouter()
 
 @router.get("/routes")
-async def get_routes(request: Request, token: Optional[HTTPAuthorizationCredentials] = Depends(HTTPBearer())):
+async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_payload)):
   state = StateHelper(request)
   await state.channel.send("routes")
-  
-  if token:
-    await state.channel.send("with token")
-    decoded_token = await decode_jwt(state, token.credentials)
-    if not decoded_token:
-      return {"error": "Invalid token"}
-    
-    user_guid = decoded_token.get("guid")
-    if not user_guid:
-      return {"error": "User GUID not found in token"}
-    await state.channel.send("with guid")
 
-    secure_routes = await get_secure_routes(state, user_guid)
+  user_guid = payload.get("guid")
+  if user_guid:
+    await state.channel.send("with guid")
+    secure_routes = await select_secure_routes(state, user_guid)
     if secure_routes:
       await state.channel.send("with secure")
       return secure_routes
@@ -32,31 +22,24 @@ async def get_routes(request: Request, token: Optional[HTTPAuthorizationCredenti
     await state.channel.send("without secure")
     return {"routes": [{'/', 'Home', 'home'}]}
   else:
-    public_routes = await get_public_routes(state)
+    public_routes = await select_public_routes(state)
     await state.channel.send("with public")
     return public_routes
 
-@router.get("/auth/test")
-async def handle_test(request: Request, token: str = Depends(HTTPBearer())):
+@router.post("/auth/login/ms")
+async def post_auth_login_ms(request: Request):
   state = StateHelper(request)
 
-  payload = await decode_jwt(state, token.credentials)
-  return payload
+  unique_identifier, ms_profile = await handle_ms_auth_login(request)
 
-@router.post("/auth/login")
-async def handle_login(request: Request):
-  state = StateHelper(request)
-
-  unique_identifier, ms_profile = await process_login(request)
-
-  user = await get_database_user(state, unique_identifier)
+  user = await select_ms_user(state, unique_identifier)
   if not user:
-    user = await make_database_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
+    user = await insert_ms_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
 
   return {"bearerToken": make_bearer_token(state, str(user["guid"])), "email": user["email"], "username": user["username"], "profilePicture": ms_profile["profilePicture"], "credits": user["credits"]}
 
 @router.get("/files")
-async def list_files(request: Request):
+async def get_files(request: Request):
   state = StateHelper(request)
 
   base_url = f"https://theoraclesa.blob.core.windows.net/{state.storage.container_name}/"  # Replace with your actual base URL
@@ -82,19 +65,16 @@ async def list_files(request: Request):
 #   await container_client.upload_blob(filename)
 #   return {"status": "uploaded", "file": filename}
 
-async def get_jwt_payload(request: Request, token: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
-  state = StateHelper(request)
-  return await decode_jwt(state, token.credentials)
 
 @router.post("/imagen")
-async def image_generation(request: Request, payload: dict = Depends(get_jwt_payload)):
+async def post_imagen(request: Request, payload: dict = Depends(get_bearer_token_payload)):
   state = StateHelper(request)
 
   charge = 5
   credits = payload.get("credits")
 
   if credits > charge:
-    response = await charge_user_credits(state, charge, payload.get("guid"))
+    response = await update_user_credits(state, charge, payload.get("guid"))
     if response["success"]:
       await state.channel.send(f"User: {response["guid"]} Credits: {response['credits']}")
     else:
@@ -113,7 +93,7 @@ async def image_generation(request: Request, payload: dict = Depends(get_jwt_pay
     return {"error": str(e)}
 
 @router.get("/imagen/{template_id}")
-async def get_template(template_id: int, request: Request):
+async def get_imagen_template_id(template_id: int, request: Request):
   state = StateHelper(request)
 
   match template_id:
