@@ -11,7 +11,7 @@ async def load_json(file_path: str) -> Any:
 
 class StateHelper:
   def __init__(self, app: Any):
-    self.app = app  # Directly assign app, regardless of the source
+    self._app = app  # Directly assign app, regardless of the source
 
   @classmethod
   def from_request(cls, request: Request):
@@ -27,7 +27,7 @@ class StateHelper:
 
   @property
   def app(self) -> Any:
-    return self.app
+    return self._app
   @property
   def bot(self) -> Any:
     return self.app.state.discord_bot
