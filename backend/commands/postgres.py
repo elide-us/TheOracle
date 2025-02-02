@@ -3,6 +3,11 @@ from typing import Dict
 from utils.helpers import StateHelper
 from utils.messaging import send_to_discord
 
+################################################################################
+## Database Queries for the Prompt Builder
+################################################################################
+
+# Returns the prompt text elements for the selected keys
 async def select_prompt_keys(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
   elements = {}
   await state.channel.send("Testing new get_elements")
@@ -40,7 +45,8 @@ async def select_prompt_keys(state, selected_keys: Dict[str, str]) -> Dict[str, 
 
   return elements
 
-async def get_public_template(pool):
+# Returns the categorized templates list
+async def select_category_templates(pool):
   result = {}
   async with pool.acquire() as conn:
     query = """
@@ -71,7 +77,8 @@ async def get_public_template(pool):
       result = json.loads(result)
   return result
 
-async def get_layer_template(pool, layer_id):
+# Returns the keys for a selected template
+async def select_template_keys(pool, layer_id):
   result = {}
   id = int(layer_id)
   async with pool.acquire() as conn:
@@ -90,8 +97,10 @@ async def get_layer_template(pool, layer_id):
     return result
 
 ################################################################################
+## Database Queries for Authentication
 ################################################################################
 
+# Select user's guid and credit values from Microsoft user ID
 async def select_ms_user(state: StateHelper, microsoft_id):
   async with state.pool.acquire() as conn:
     query = """
@@ -104,7 +113,8 @@ async def select_ms_user(state: StateHelper, microsoft_id):
       result = json.loads(result)
       await state.channel.send(f"Found user for {result["guid"]}: {result["username"]}, {result["email"]}, Credits: {result["credits"]}")
     return result
-  
+
+# Create a user record with defaults for Microsoft user ID
 async def insert_ms_user(state: StateHelper, microsoft_id, email, username):
   new_guid = str(uuid.uuid4())
   async with state.pool.acquire() as conn:
@@ -117,6 +127,10 @@ async def insert_ms_user(state: StateHelper, microsoft_id, email, username):
     result = await select_ms_user(state, microsoft_id)
     await state.channel.send(f"Added user for {new_guid}: {username}, {email}")
     return result
+
+################################################################################
+## Database Queries for User Profile
+################################################################################
 
 # Details appropriate for return to the front end
 async def select_user_details(state: StateHelper, sub):
@@ -153,8 +167,10 @@ async def select_user_security(state: StateHelper, sub):
       raise
 
 ################################################################################
+## Database Commands for Front End "Routes" Object
 ################################################################################
 
+# Returns routes that require no security, called when user is not logged in
 async def select_public_routes(state: StateHelper):
   query = """
     SELECT json_agg(
@@ -171,7 +187,8 @@ async def select_public_routes(state: StateHelper):
     if isinstance(result, str):
       result = json.loads(result)
     return result or None
-  
+
+# Returns routes based on security level
 async def select_secure_routes(state: StateHelper, guid):
   query = """
     SELECT json_agg(
@@ -196,8 +213,10 @@ async def select_secure_routes(state: StateHelper, guid):
     return result or None
 
 ################################################################################
+## Database Queries for Credits
 ################################################################################
 
+# A transaction for getting and updating credits for a user
 async def update_user_credits(state: StateHelper, charge: int, guid: str):
   query_select = """
     SELECT credits FROM users WHERE guid = $1
@@ -224,3 +243,26 @@ async def update_user_credits(state: StateHelper, charge: int, guid: str):
           return {"success": False, "error": "Insufficient credits", "credits": credits, "guid": guid}
       else:
             return {"success": False, "error": "User not found", "guid": guid}
+
+# A transaction for adding purchased credits for a user
+async def update_user_credits_purchased(state: StateHelper, purchase: int, guid, str):
+  query_select = """
+    SELECT credits FROM users WHERE guid = $1
+  """
+  query_update = """
+    UPDATE users SET credits = $1 WHERE guid = $2
+  """
+  async with state.pool.acquire() as conn:
+    uuid_guid = uuid.UUID(guid)
+    async with conn.transaction():
+      # Fetch the current credits
+      result = await conn.fetchrow(query_select, uuid_guid)
+      if isinstance(result, str):
+        result = json.loads(result)
+      if result:
+        credits = result["credits"]
+        new_credits = credits + purchase
+        await conn.execute(query_update, new_credits, uuid_guid)
+        return {"success": True, "credits": new_credits, "guid": guid}
+      else:
+        return {"success": False, "error": "User not found", "guid": guid}

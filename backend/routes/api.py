@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Depends
 from commands.images import generate_image
-from commands.postgres import get_public_template, get_layer_template, select_ms_user, insert_ms_user, select_public_routes, select_secure_routes, update_user_credits
+from commands.postgres import select_category_templates, select_template_keys, select_ms_user, insert_ms_user, select_public_routes, select_secure_routes, update_user_credits
 from services.auth import handle_ms_auth_login, make_bearer_token, get_bearer_token_payload
 from utils.helpers import StateHelper
 
@@ -98,15 +98,15 @@ async def get_imagen_template_id(template_id: int, request: Request):
 
   match template_id:
     case 0:
-      return await get_public_template(state.pool)
+      return await select_category_templates(state.pool)
     case 1:
-      return await get_layer_template(state.pool, 1)
+      return await select_template_keys(state.pool, 1)
     case 2:
-      return await get_layer_template(state.pool, 2)
+      return await select_template_keys(state.pool, 2)
     case 3:
-      return await get_layer_template(state.pool, 3)
+      return await select_template_keys(state.pool, 3)
     case 4:
-      return await get_layer_template(state.pool, 4)
+      return await select_template_keys(state.pool, 4)
     case _:
       return {}
 
