@@ -1,10 +1,14 @@
 import aiohttp, base64
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
+from fastapi import HTTPException, Request, Depends, status
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from jose import JWTError, jwt
-from fastapi import HTTPException, Request, status
 from typing import Dict
 from utils.helpers import StateHelper
-from commands.postgres import get_details_for_user
+from commands.postgres import select_user_details
+
+################################################################################
+################################################################################
 
 async def fetch_ms_jwks_uri():
   async with aiohttp.ClientSession() as session:
@@ -22,7 +26,10 @@ async def fetch_ms_jwks(jwks_uri):
       response_data = await response.json()
       return response_data
 
-async def verify_id_token(state: StateHelper, id_token: str) -> Dict:
+################################################################################
+################################################################################
+
+async def verify_ms_id_token(state: StateHelper, id_token: str) -> Dict:
   try:
     unverified_header = jwt.get_unverified_header(id_token)
   except Exception as e:
@@ -62,7 +69,7 @@ async def verify_id_token(state: StateHelper, id_token: str) -> Dict:
   except Exception:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token validation failed.")
 
-async def fetch_user_profile(access_token: str):
+async def fetch_ms_user_profile(access_token: str):
   async with aiohttp.ClientSession() as session:
     headers = {"Authorization": f"Bearer {access_token}"}
 
@@ -86,7 +93,7 @@ async def fetch_user_profile(access_token: str):
       "profilePicture": profile_picture_base64
     }
   
-async def process_login(request: Request):
+async def handle_ms_auth_login(request: Request):
   state = StateHelper(request)
 
   request_data = await request.json()
@@ -95,7 +102,7 @@ async def process_login(request: Request):
   if not id_token:
     raise HTTPException(status_code=400, detail="ID Token is required.")
 
-  payload = await verify_id_token(state, id_token)
+  payload = await verify_ms_id_token(state, id_token)
 
   unique_identifier = payload.get("sub")
   if not unique_identifier:
@@ -105,11 +112,14 @@ async def process_login(request: Request):
   if not access_token:
     raise HTTPException(status_code=400, detail="Access Token is required.")
 
-  ms_profile = await fetch_user_profile(access_token)
+  ms_profile = await fetch_ms_user_profile(access_token)
 
   await state.channel.send(f"Processing login for: {ms_profile["username"]}, {ms_profile["email"]}")
 
   return unique_identifier, ms_profile
+
+################################################################################
+################################################################################
 
 def make_bearer_token(state: StateHelper, guid: str):
   exp = datetime.utcnow() + timedelta(hours=24)
@@ -117,7 +127,7 @@ def make_bearer_token(state: StateHelper, guid: str):
   token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algo_int)
   return token
 
-async def decode_jwt(state: StateHelper, token: str):
+async def decode_bearer_token(state: StateHelper, token: str):
   try:
     payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
   except JWTError:
@@ -126,13 +136,18 @@ async def decode_jwt(state: StateHelper, token: str):
   exp = payload.get("exp")
   if not exp:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Expiry not found", headers={"WWW-Authenticate": "Bearer"})
-  if exp and datetime.utcfromtimestamp(exp) < datetime.utcnow():
+  if exp and datetime.fromtimestamp(exp, tz=timezone.utc) < datetime.now(timezone.utc):
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token has expired", headers={"WWW-Authenticate": "Bearer"})
 
   sub = payload.get("sub")
   if not sub:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Subject not found", headers={"WWW-Authenticate": "Bearer"})
 
-  details = await get_details_for_user(state, sub)
+  details = await select_user_details(state, sub)
   await state.channel.send(f"Details: {details}")
   return details
+
+# Provides a decode of the token for certain API calls that require validating credits or security before execution
+async def get_bearer_token_payload(request: Request, token: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
+  state = StateHelper(request)
+  return await decode_bearer_token(state, token.credentials)

@@ -29,7 +29,7 @@ function LoginPage() {
       const { idToken, accessToken } = loginResponse;
 
       // Send tokens to your backend for verification and to retrieve user details
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/login/ms', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ idToken, accessToken })

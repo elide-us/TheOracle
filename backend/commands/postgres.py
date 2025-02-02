@@ -1,8 +1,9 @@
 import json, uuid
 from typing import Dict
 from utils.helpers import StateHelper
+from utils.messaging import send_to_discord
 
-async def get_elements(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
+async def select_prompt_keys(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
   elements = {}
   await state.channel.send("Testing new get_elements")
   async with state.pool.acquire() as conn:
@@ -21,10 +22,12 @@ async def get_elements(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
     await state.channel.send(f"Keys: {keys}")
     subkeys = list(selected_keys.values())
     await state.channel.send(f"Subkeys: {subkeys}")
+
     result = await conn.fetchval(query, keys, subkeys)
+    await send_to_discord(state.channel, result)
     if isinstance(result, str):
       result = json.loads(result)
-    await state.channel.send(f"Result: {result}")
+    await send_to_discord(state.channel, result)
       
     if result is None:
       raise ValueError("No matching elements found in the database.")
@@ -86,7 +89,10 @@ async def get_layer_template(pool, layer_id):
       result = json.loads(result)
     return result
 
-async def get_database_user(state: StateHelper, microsoft_id):
+################################################################################
+################################################################################
+
+async def select_ms_user(state: StateHelper, microsoft_id):
   async with state.pool.acquire() as conn:
     query = """
       SELECT guid, microsoft_id, email, username, credits
@@ -99,7 +105,7 @@ async def get_database_user(state: StateHelper, microsoft_id):
       await state.channel.send(f"Found user for {result["guid"]}: {result["username"]}, {result["email"]}, Credits: {result["credits"]}")
     return result
   
-async def make_database_user(state: StateHelper, microsoft_id, email, username):
+async def insert_ms_user(state: StateHelper, microsoft_id, email, username):
   new_guid = str(uuid.uuid4())
   async with state.pool.acquire() as conn:
     query = """
@@ -108,11 +114,12 @@ async def make_database_user(state: StateHelper, microsoft_id, email, username):
     """
     await conn.execute(query, new_guid, microsoft_id, email, username)
 
-    result = await get_database_user(state, microsoft_id)
+    result = await select_ms_user(state, microsoft_id)
     await state.channel.send(f"Added user for {new_guid}: {username}, {email}")
     return result
 
-async def get_details_for_user(state: StateHelper, sub):
+# Details appropriate for return to the front end
+async def select_user_details(state: StateHelper, sub):
   try:
     sub_uuid = uuid.UUID(sub)  # Ensure it's a UUID object
   except ValueError:
@@ -130,7 +137,8 @@ async def get_details_for_user(state: StateHelper, sub):
     else:
       return {"credits": 0, "guid": str(sub_uuid)}
 
-async def get_security_for_user(state: StateHelper, sub):
+# This should never be returned to the front end
+async def select_user_security(state: StateHelper, sub):
   query = """
     SELECT security, guid FORM users WHERE guid = $1
   """
@@ -144,7 +152,10 @@ async def get_security_for_user(state: StateHelper, sub):
     else:
       raise
 
-async def get_public_routes(state: StateHelper):
+################################################################################
+################################################################################
+
+async def select_public_routes(state: StateHelper):
   query = """
     SELECT json_agg(
       json_build_object('path', path, 'name', name, 'icon', icon)
@@ -161,7 +172,7 @@ async def get_public_routes(state: StateHelper):
       result = json.loads(result)
     return result or None
   
-async def get_secure_routes(state: StateHelper, guid):
+async def select_secure_routes(state: StateHelper, guid):
   query = """
     SELECT json_agg(
       json_build_object(
@@ -183,8 +194,11 @@ async def get_secure_routes(state: StateHelper, guid):
     if isinstance(result, str):
       result = json.loads(result)
     return result or None
-  
-async def charge_user_credits(state: StateHelper, charge: int, guid: str):
+
+################################################################################
+################################################################################
+
+async def update_user_credits(state: StateHelper, charge: int, guid: str):
   query_select = """
     SELECT credits FROM users WHERE guid = $1
   """
