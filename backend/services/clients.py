@@ -7,8 +7,8 @@ from services.env import cdn_connection_string, cdn_container_name
 from services.env import db_connection_string
 
 async def init_openai_client():
-    token = get_openai_token()
-    return AsyncOpenAI(api_key=token)
+  token = get_openai_token()
+  return AsyncOpenAI(api_key=token)
 
 async def init_lumaai_client():
   token = get_lumaai_token()
