@@ -10,44 +10,54 @@ async def load_json(file_path: str) -> Any:
     return None
 
 class StateHelper:
-  def __init__(self, request: Request):
-    self.request = request
+  def __init__(self, app: Any):
+    self.app = app  # Directly assign app, regardless of the source
+
+  @classmethod
+  def from_request(cls, request: Request):
+    return cls(request.app)
+
+  @classmethod
+  def from_context(cls, ctx: Any):
+    return cls(ctx.bot.app)
+
   #   self.__state = request.app.state
   # def __getattr__(self, name):
   #   getattr(self.__state, name)
+
   @property
   def app(self) -> Any:
-    return self.request.app
+    return self.app
   @property
   def bot(self) -> Any:
-    return self.request.app.state.discord_bot
+    return self.app.state.discord_bot
   @property
   def channel(self) -> Any:
     return self.bot.get_channel(self.bot.sys_channel)
   @property
   def pool(self) -> Any:
-    return self.request.app.state.theoraclegp_pool
+    return self.app.state.theoraclegp_pool
   @property
   def ms_api_id(self) -> Any:
-    return self.request.app.state.ms_app_id
+    return self.app.state.ms_app_id
   @property
   def jwt_secret(self) -> Any:
-    return self.request.app.state.jwt_secret
+    return self.app.state.jwt_secret
   @property
   def jwt_algo_ms(self) -> Any:
-    return self.request.app.state.jwt_algorithm_rs256
+    return self.app.state.jwt_algorithm_rs256
   @property
   def jwt_algo_int(self) -> Any:
-    return self.request.app.state.jwt_algorithm_hs256
+    return self.app.state.jwt_algorithm_hs256
   @property
   def ms_jwks(self):
-    return self.request.app.state.ms_jwks
+    return self.app.state.ms_jwks
   @property
   def storage(self):
-    return self.request.app.state.theoraclesa_client
+    return self.app.state.theoraclesa_client
   @property
   def openai(self):
-    return self.request.app.state.openai_client
+    return self.app.state.openai_client
   
 # Async Context Manager for buffer
 class AsyncBufferWriter():

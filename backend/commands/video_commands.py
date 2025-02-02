@@ -84,3 +84,4 @@ async def a_generate_video(app, start_asset, end_asset, prompt):
   if channel:
     await channel.send(f"Generation URL: {video_url}, Generation ID: {filename}")
   await a_download_generation(video_url, filename)
+  

@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
-from commands.tts_commands import handle_tts
+from commands.openai import handle_tts
 from commands.discord import handle_text_generate, summarize
-from utils.helpers import load_json
+from utils.helpers import StateHelper, load_json
 
 async def setup_bot_intents():
   intents = discord.Intents.default()
@@ -25,10 +25,11 @@ def setup_bot_routes(bot: commands.Bot):
 
   @bot.command(name="tts", help="Format: !tts <Prefix> <voice> <Text to generate> Will convert text to speech for provided text.")
   async def command_tts(ctx, *args):
+    state = StateHelper.from_context(ctx)
     command_str = " ".join(args)
-    response = await handle_tts(ctx, command_str)
+    response = await handle_tts(state, command_str)
     if response:
-      await ctx.send(response)
+      await state.channel.send(response)
 
   @bot.command(name="hello", help="Provides a greeting message.")
   async def command_hello(ctx):
@@ -39,9 +40,9 @@ def setup_bot_routes(bot: commands.Bot):
     text = await summarize(ctx, hours)
 
     command_str = f"summary Summarize the following conversations: {text}"
-    exception = await handle_text_generate(ctx, command_str=command_str)
-    if exception:
-      await ctx.send(f"Exception: {exception}")
+    e = await handle_text_generate(ctx, command_str=command_str)
+    if e:
+      await ctx.send(f"Exception: {e}")
 
   @bot.command(name="assistants", help="Lists the assistants available for the !chat command.")
   async def command_assistants(ctx, *args):

@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Request, Depends
-from commands.images import generate_image
+from commands.openai import generate_image
 from commands.postgres import select_category_templates, select_template_keys, select_ms_user, insert_ms_user, select_public_routes, select_secure_routes, update_user_credits
 from services.auth import handle_ms_auth_login, make_bearer_token, get_bearer_token_payload
 from utils.helpers import StateHelper
@@ -8,7 +8,7 @@ router = APIRouter()
 
 @router.get("/routes")
 async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_payload)):
-  state = StateHelper(request)
+  state = StateHelper.from_request(request)
   await state.channel.send("routes")
 
   user_guid = payload.get("guid")
@@ -28,7 +28,7 @@ async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_
 
 @router.post("/auth/login/ms")
 async def post_auth_login_ms(request: Request):
-  state = StateHelper(request)
+  state = StateHelper.from_request(request)
 
   unique_identifier, ms_profile = await handle_ms_auth_login(request)
 
@@ -40,7 +40,7 @@ async def post_auth_login_ms(request: Request):
 
 @router.get("/files")
 async def get_files(request: Request):
-  state = StateHelper(request)
+  state = StateHelper.from_request(request)
 
   base_url = f"https://theoraclesa.blob.core.windows.net/{state.storage.container_name}/"  # Replace with your actual base URL
   blobs = []
@@ -68,7 +68,7 @@ async def get_files(request: Request):
 
 @router.post("/imagen")
 async def post_imagen(request: Request, payload: dict = Depends(get_bearer_token_payload)):
-  state = StateHelper(request)
+  state = StateHelper.from_request(request)
 
   charge = 5
   credits = payload.get("credits")
@@ -94,7 +94,7 @@ async def post_imagen(request: Request, payload: dict = Depends(get_bearer_token
 
 @router.get("/imagen/{template_id}")
 async def get_imagen_template_id(template_id: int, request: Request):
-  state = StateHelper(request)
+  state = StateHelper.from_request(request)
 
   match template_id:
     case 0:

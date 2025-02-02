@@ -8,8 +8,10 @@ from utils.helpers import StateHelper
 from commands.postgres import select_user_details
 
 ################################################################################
+## Microsoft Authentication Setup
 ################################################################################
 
+# Gets the Microsoft RSA public JWKS URL
 async def fetch_ms_jwks_uri():
   async with aiohttp.ClientSession() as session:
     async with session.get("https://login.microsoftonline.com/consumers/v2.0/.well-known/openid-configuration") as response:
@@ -18,6 +20,7 @@ async def fetch_ms_jwks_uri():
       response_data = await response.json()
       return response_data["jwks_uri"]
 
+# Gets the Microsoft RSA public JWKS
 async def fetch_ms_jwks(jwks_uri):
   async with aiohttp.ClientSession() as session:
     async with session.get(jwks_uri) as response:
@@ -27,8 +30,10 @@ async def fetch_ms_jwks(jwks_uri):
       return response_data
 
 ################################################################################
+## Internal Functions for Microsoft Authentication
 ################################################################################
 
+# Verifies a JWT against the Microsoft public RSA keys
 async def verify_ms_id_token(state: StateHelper, id_token: str) -> Dict:
   try:
     unverified_header = jwt.get_unverified_header(id_token)
@@ -69,6 +74,7 @@ async def verify_ms_id_token(state: StateHelper, id_token: str) -> Dict:
   except Exception:
     raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Token validation failed.")
 
+# Uses an access token to retrieve user details for a Microsoft Account
 async def fetch_ms_user_profile(access_token: str):
   async with aiohttp.ClientSession() as session:
     headers = {"Authorization": f"Bearer {access_token}"}
@@ -92,9 +98,10 @@ async def fetch_ms_user_profile(access_token: str):
       "username": user.get("displayName"),
       "profilePicture": profile_picture_base64
     }
-  
+
+# Verifies and downloads the profile of a Microsoft Account user
 async def handle_ms_auth_login(request: Request):
-  state = StateHelper(request)
+  state = StateHelper.from_request(request)
 
   request_data = await request.json()
 
@@ -119,14 +126,17 @@ async def handle_ms_auth_login(request: Request):
   return unique_identifier, ms_profile
 
 ################################################################################
+## Intrnal Authentication Functions
 ################################################################################
 
+# Encodes a JWT against our internal user GUID
 def make_bearer_token(state: StateHelper, guid: str):
-  exp = datetime.utcnow() + timedelta(hours=24)
+  exp = datetime.now(timezone.utc) + timedelta(hours=24)
   token_data = {"sub": guid, "exp": exp.timestamp()}
   token = jwt.encode(token_data, state.jwt_secret, algorithm=state.jwt_algo_int)
   return token
 
+# Decodes a JWT against our internal secret
 async def decode_bearer_token(state: StateHelper, token: str):
   try:
     payload = jwt.decode(token, state.jwt_secret, algorithms=[state.jwt_algo_int])
@@ -149,5 +159,5 @@ async def decode_bearer_token(state: StateHelper, token: str):
 
 # Provides a decode of the token for certain API calls that require validating credits or security before execution
 async def get_bearer_token_payload(request: Request, token: HTTPAuthorizationCredentials = Depends(HTTPBearer())):
-  state = StateHelper(request)
+  state = StateHelper.from_request(request)
   return await decode_bearer_token(state, token.credentials)
