@@ -1,5 +1,6 @@
 import asyncio
 
+# A helper function that chunks and sends text to Discord to avoid flooding the gateway
 async def send_to_discord(channel, text: str, max_message_size: int = 1998, delay: float = 1.0):
   for block in text.split("\n"):
     if not block.strip() or block.strip() == "---":

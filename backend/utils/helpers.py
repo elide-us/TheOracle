@@ -2,6 +2,7 @@ from typing import Any
 from fastapi import Request
 import aiohttp, io, aiofiles, json
 
+# A temporary helper function to load local data JSON files
 async def load_json(file_path: str) -> Any:
   try:
     async with aiofiles.open(file_path, mode='r') as file:
@@ -9,22 +10,16 @@ async def load_json(file_path: str) -> Any:
   except FileNotFoundError:
     return None
 
+# Shortcut class for various objects commonly used on the app.state object
 class StateHelper:
   def __init__(self, app: Any):
-    self._app = app  # Directly assign app, regardless of the source
-
+    self._app = app
   @classmethod
   def from_request(cls, request: Request):
     return cls(request.app)
-
   @classmethod
   def from_context(cls, ctx: Any):
     return cls(ctx.bot.app)
-
-  #   self.__state = request.app.state
-  # def __getattr__(self, name):
-  #   getattr(self.__state, name)
-
   @property
   def app(self) -> Any:
     return self._app
@@ -82,6 +77,7 @@ class AsyncBufferWriter():
     if self.buffer:
       self.buffer.close()
 
+# A safe filter for dictionary keys that might be null
 class SafeDict(dict):
     def __missing__(self, key):
         return ''

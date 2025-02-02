@@ -1,7 +1,6 @@
-# Commands to select and make available the default container theoraclegpt
+from utils.helpers import StateHelper
 
-# Commands to create a new container for a user GUID
-
-# Commands to index and cache storage account contents for a user GUID
-
-# Commands to select and view contents of any user GUID (Admin)
+async def write_buffer_to_blob(buffer, state: StateHelper, filename):
+  buffer.seek(0)
+  client = state.storage
+  await client.upload_blob(data=buffer, name=filename, overwrite=True)

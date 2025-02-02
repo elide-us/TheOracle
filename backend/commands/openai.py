@@ -3,7 +3,8 @@ from openai import OpenAIError
 from typing import Dict
 from datetime import datetime, timezone
 from commands.discord import write_buffer_to_discord
-# from commands.postgres import get_elements
+from commands.storage import write_buffer_to_blob
+# from commands.postgres import select_prompt_keys
 from utils.helpers import StateHelper, AsyncBufferWriter, SafeDict, load_json
 
 ###############################################################################
@@ -77,6 +78,7 @@ async def format_template(template: str, replacements: dict) -> str:
 async def format_prompt(state: StateHelper, template_key: str, selected_keys: dict, user_input: str) -> str:
   template = await get_template(template_key)
   elements = await get_elements(state, selected_keys)
+  # elements = await select_prompt_keys(state, selected_keys)
   
   return await format_template(template, elements) + "*Main Subject Prompt*: " + user_input
 
@@ -98,19 +100,13 @@ async def post_request(client, prompt):
 
   return completion.data[0].url
 
-# Write buffer out to CDN
-async def write_cdn(buffer, state: StateHelper, filename):
-  buffer.seek(0)
-  client = state.storage
-  await client.upload_blob(data=buffer, name=filename, overwrite=True)
-
 # Handles downloading and storing the resultant image
 async def process_image(image_url: str, template_key: str, state: StateHelper) -> str:
   filename = generate_filename(template_key)
 
   async with AsyncBufferWriter(image_url) as buffer:
     await write_buffer_to_discord(buffer, state, filename)
-    await write_cdn(buffer, state, filename)
+    await write_buffer_to_blob(buffer, state, filename)
 
   return generate_filename_url(filename)
 
