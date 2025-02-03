@@ -53,7 +53,7 @@ async def handle_text_generate(ctx, command_str):
     await channel.send(f"Error loading assistant: {key} not found.")
     return
 
-  await channel.send(f"Sending prompt to OpenAI: {prompt}")
+  ## await channel.send(f"Sending prompt to OpenAI: {prompt}")
   try:
     completion = await client.chat.completions.create(
       model=assistant["model"],
