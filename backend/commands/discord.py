@@ -34,7 +34,10 @@ async def summarize(ctx, hours: int = 1):
   return full_text
 
 async def handle_text_generate(ctx, command_str):
-  client = ctx.bot.app.state.openai_client
+  app = ctx.bot.app
+  channel = ctx.channel
+  client = app.state.openai_client
+
   
   split = command_str.split(" ")
   key = split[0]
@@ -42,15 +45,15 @@ async def handle_text_generate(ctx, command_str):
 
   json = await load_json("data_assistants.json")
   if not json:
-    await ctx.channel.send("Error loading assistant data.")
+    await channel.send("Error loading assistant data.")
     return
 
   assistant = json[key]
   if not assistant:
-    await ctx.channel.send(f"Error loading assistant: {key} not found.")
+    await channel.send(f"Error loading assistant: {key} not found.")
     return
 
-  await ctx.channel.send(f"Sending prompt to OpenAI: {prompt}")
+  await channel.send(f"Sending prompt to OpenAI: {prompt}")
   try:
     completion = await client.chat.completions.create(
       model=assistant["model"],
@@ -62,11 +65,11 @@ async def handle_text_generate(ctx, command_str):
     )
     response_text = completion.choices[0].message.content
   except Exception as e:
-    await ctx.channel.send(f"Error communicating with OpenAI: {str(e)}")
+    await channel.send(f"Error communicating with OpenAI: {str(e)}")
     return
   
   response_text = completion.choices[0].message.content
-  await send_to_discord(ctx.channel, response_text)
+  await send_to_discord(channel, response_text)
 
 async def write_buffer_to_discord(buffer, state: StateHelper, filename):
   buffer.seek(0)
