@@ -140,7 +140,7 @@ async def select_user_details(state: StateHelper, sub):
     await state.channel.send("Invalid GUID format")
     return {"error": "Invalid GUID format"}
   query = """
-    SELECT u.username, u.email, u.backup_email, u.credits, ap.name AS default_provider
+    SELECT u.username, u.email, u.backup_email, u.credits, ap.name AS provider_name
     FROM users u
     LEFT JOIN auth_provider ap ON u.default_provider = ap.id
     WHERE u.guid = $1
