@@ -3,8 +3,13 @@ from discord.ext import commands
 from commands.openai import handle_tts
 from commands.discord import handle_text_generate, summarize
 from utils.helpers import StateHelper, load_json
+from services.env import get_discord_token
 
-async def setup_bot_intents():
+async def start_discord_bot(bot):
+  token = get_discord_token()
+  await bot.start(token)
+
+async def init_discord_bot():
   intents = discord.Intents.default()
   intents.messages = True
   intents.guilds = True
@@ -23,7 +28,7 @@ def setup_bot_routes(bot: commands.Bot):
     if channel:
       await channel.send(f"Joined {guild.name} ({guild.id})")
 
-  @bot.command(name="tts", help="Format: !tts <Prefix> <voice> <Text to generate> Will convert text to speech for provided text.")
+  @bot.command(name="tts", help="!tts <prefix> <voice> <text to generate> Will convert text to speech for provided text.")
   async def command_tts(ctx, *args):
     state = StateHelper.from_context(ctx)
     command_str = " ".join(args)
@@ -31,11 +36,11 @@ def setup_bot_routes(bot: commands.Bot):
     if response:
       await state.channel.send(response)
 
-  @bot.command(name="hello", help="Provides a greeting message.")
-  async def command_hello(ctx):
-    await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
+  # @bot.command(name="hello", help="Provides a greeting message.")
+  # async def command_hello(ctx):
+  #   await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
 
-  @bot.command(name="summarize", help="Format: !summarize <hours> Will collect message history for defined hours (default 1) and provide a summary.")
+  @bot.command(name="summarize", help="!summarize <hours> Will collect message history for defined hours (default 1) and provide a summary.")
   async def command_summarize(ctx, hours: int = 1):
     text = await summarize(ctx, hours)
 
@@ -50,7 +55,7 @@ def setup_bot_routes(bot: commands.Bot):
     assistants_list = ", ".join(data.keys())
     await ctx.send(f"Available assistants: {assistants_list}")
 
-  @bot.command(name="chat", help="Format: !chat <assistant> <Your question here.> Each assistant is tuned to provide specific expertise.")
+  @bot.command(name="chat", help="!chat <assistant> <your question here> Each assistant is tuned to provide specific expertise.")
   async def command_chat(ctx, *args):
     command_str = " ".join(args)
     response = await handle_text_generate(ctx, command_str)
