@@ -30,13 +30,13 @@
 - Build pipeline uses Vite for both development (npm start) and production (npm run build)
 - Backend devstart.cmd will build React, copy, and serve the solution on FastAPI for backend testing
 - Calls .env loader for local variables or reads hosting environment:
-  - AUTH_DISCORD_ID
-  - AUTH_MICROSOFT_ID
+  - AUTH_DISCORD_ID=
+  - AUTH_MICROSOFT_ID=
   - AZURE_BLOB_CONNECTION_STRING=
   - AZURE_BLOB_CONTAINER_NAME=
   - DISCORD_SECRET=
   - DISCORD_SYSTEM_CHANNEL=
-  - JWT_SECRET
+  - JWT_SECRET=
   - LUMAAI_SECRET=
   - OPENAI_SECRET=
   - POSTGRES_CONNECTION_STRING=

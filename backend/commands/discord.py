@@ -36,6 +36,7 @@ async def summarize(ctx, hours: int = 1):
 async def handle_text_generate(ctx, command_str, output):
   app = ctx.bot.app
   channel = ctx.channel
+  debug = ctx.bot.get_channel(ctx.bot.sys_channel)
   user = ctx.author
   client = app.state.openai_client
   
@@ -71,6 +72,7 @@ async def handle_text_generate(ctx, command_str, output):
   response_text = completion.choices[0].message.content
 
   if output is "user":
+    await debug.send("User summarize called")
     await send_to_discord_user(user, response_text)
   elif output is "channel":
     await send_to_discord(channel, response_text)
