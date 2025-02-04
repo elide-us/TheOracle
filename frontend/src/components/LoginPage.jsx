@@ -2,7 +2,7 @@ import { useContext, useState } from 'react';
 import { Container, Paper, Typography, Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import { PublicClientApplication } from '@azure/msal-browser';
-import { msalConfig, loginRequest } from '../config/msal'; // adjust import path as needed
+import { msalConfig, loginRequest } from '../config/msal';
 import UserContext from './shared/UserContextProvider';
 import Notification from './shared/Notification';
 

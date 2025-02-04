@@ -37,7 +37,6 @@ async def handle_text_generate(ctx, command_str):
   app = ctx.bot.app
   channel = ctx.channel
   client = app.state.openai_client
-
   
   split = command_str.split(" ")
   key = split[0]

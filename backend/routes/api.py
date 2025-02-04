@@ -26,6 +26,21 @@ async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_
     await state.channel.send("with public")
     return public_routes
 
+@router.get("/userpage")
+async def get_userpage(request: Request, payload: dict = Depends(get_bearer_token_payload)):
+  state = StateHelper.from_request(request)
+  await state.channel.send("userpage")
+
+  # guid = payload.get("guid")
+  # username = payload.get("username")
+  # email = payload.get("email")
+  # backupEmail = payload.get("backup_email")
+  # credits = payload.get("credits")
+  # defaultProvider = payload.get("default_provider")
+
+  return payload
+
+
 @router.post("/auth/login/ms")
 async def post_auth_login_ms(request: Request):
   state = StateHelper.from_request(request)
