@@ -140,7 +140,7 @@ async def select_user_details(state: StateHelper, sub):
     await state.channel.send("Invalid GUID format")
     return {"error": "Invalid GUID format"}
   query = """
-    SELECT u.username, u.email, u.backup_email, u.credits, ap.name AS default_provider
+    SELECT u.username, u.email, u.backup_email, u.credits, ap.name AS provider_name
     FROM users u
     LEFT JOIN auth_provider ap ON u.default_provider = ap.id
     WHERE u.guid = $1
@@ -149,7 +149,15 @@ async def select_user_details(state: StateHelper, sub):
     result = await conn.fetchrow(query, sub_uuid)
     if isinstance(result, str):
       result = json.loads(result)
-    return result
+    return {
+      "guid": str(sub_uuid),
+      "username": result.get("username", "No user found"),
+      "email": result.get("email", "No email found"),
+      "backup_email": result.get("backup_email", "No backup email found"),
+      "credits": result.get("credits", 0),
+      "default_provider": result.get("provider_name", "No provider found")
+    }
+
 
 # This should never be returned to the front end
 async def select_user_security(state: StateHelper, sub):
