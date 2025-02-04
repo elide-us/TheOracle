@@ -29,7 +29,7 @@ async def summarize(ctx, hours: int = 1):
     return
   
   full_text = " ".join(messages)
-  await ctx.send(f"Collected {len(messages)} messages for summarization.")
+  await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
 
   return full_text
 
