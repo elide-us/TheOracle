@@ -45,7 +45,7 @@ def setup_bot_routes(bot: commands.Bot):
     text = await summarize(ctx, hours)
 
     command_str = f"summary Summarize the following conversations: {text}"
-    e = await handle_text_generate(ctx, command_str=command_str)
+    e = await handle_text_generate(ctx, command_str, "user")
     if e:
       await ctx.send(f"Exception: {e}")
 
@@ -58,7 +58,7 @@ def setup_bot_routes(bot: commands.Bot):
   @bot.command(name="chat", help="!chat <assistant> <your question here> Each assistant is tuned to provide specific expertise.")
   async def command_chat(ctx, *args):
     command_str = " ".join(args)
-    response = await handle_text_generate(ctx, command_str)
+    response = await handle_text_generate(ctx, command_str, "channel")
     if response:
       await ctx.send(response)
 

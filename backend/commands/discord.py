@@ -1,5 +1,5 @@
 import discord, tiktoken
-from utils.messaging import send_to_discord
+from utils.messaging import send_to_discord, send_to_discord_user
 from utils.helpers import StateHelper, load_json
 from datetime import datetime, timedelta, timezone
 
@@ -33,9 +33,10 @@ async def summarize(ctx, hours: int = 1):
 
   return full_text
 
-async def handle_text_generate(ctx, command_str):
+async def handle_text_generate(ctx, command_str, output):
   app = ctx.bot.app
   channel = ctx.channel
+  user = ctx.author
   client = app.state.openai_client
   
   split = command_str.split(" ")
@@ -68,7 +69,14 @@ async def handle_text_generate(ctx, command_str):
     return
   
   response_text = completion.choices[0].message.content
-  await send_to_discord(channel, response_text)
+
+  if output is "user":
+    await send_to_discord_user(user, response_text)
+  elif output is "channel":
+    await send_to_discord(channel, response_text)
+  else:
+    await channel.send("Undefined output")
+    return
 
 async def write_buffer_to_discord(buffer, state: StateHelper, filename):
   buffer.seek(0)
