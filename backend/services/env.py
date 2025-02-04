@@ -24,7 +24,7 @@ def get_lumaai_token():
 ################################################################################
 
 def get_system_channel() -> int:
-  return int(get_env_var("DISCORD_SYSTEN_CHANNEL"))
+  return int(get_env_var("DISCORD_SYSTEM_CHANNEL"))
 
 ################################################################################
 ## Azure Storage Account Configuration
