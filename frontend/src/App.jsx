@@ -13,6 +13,7 @@ import Prism from './components/Prism';
 import CategoryEditor from './components/CategoryEditor';
 import KeyEditor from './components/KeyEditor';
 import LoginPage from './components/LoginPage';
+import UserPanel from './components/UserPanel';
 
 function App() {
 	const [open, setOpen] = useState(false);
@@ -34,6 +35,7 @@ function App() {
 								<Route path='/cat-edit' element={ <CategoryEditor /> } />
 								<Route path='/key-edit' element={ <KeyEditor /> } />
 								<Route path='/login' element={<LoginPage />} />
+								<Route path='/userpanel' element={<UserPanel />} />
 							</Routes>
 						</Box>
 					</Container>
