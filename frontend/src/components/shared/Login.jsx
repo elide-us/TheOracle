@@ -6,6 +6,7 @@ import { PublicClientApplication } from '@azure/msal-browser';
 import { msalConfig } from '../../config/msal';
 import Notification from './Notification';
 import UserContext from './UserContextProvider';
+import { Link as RouterLink } from 'react-router-dom';
 
 const pca = new PublicClientApplication(msalConfig);
 
@@ -78,9 +79,14 @@ function Login({ open }) {
             userData ? (
               <Box>
                 <Typography
-                  component="span"
+                  component={RouterLink}
+                  to="/userpanel"
                   variant="body1"
-                  sx={{ fontWeight: "bold", color: "gray" }}
+                  sx={{
+                    fontWeight: "bold",
+                    color: "gray",
+                    textDecoration: 'none', // Remove underline if desired
+                  }}
                 >
                   {userData.username}
                 </Typography>
