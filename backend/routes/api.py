@@ -29,7 +29,7 @@ async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_
 @router.get("/userpage")
 async def get_userpage(request: Request, payload: dict = Depends(get_bearer_token_payload)):
   state = StateHelper.from_request(request)
-  await state.channel.send("userpage")
+  await state.channel.send("get_userpage")
 
   # guid = payload.get("guid")
   # username = payload.get("username")
@@ -40,6 +40,15 @@ async def get_userpage(request: Request, payload: dict = Depends(get_bearer_toke
 
   return payload
 
+@router.post("/userpage")
+async def post_userpage(request: Request, payload: dict = Depends(get_bearer_token_payload)):
+  state = StateHelper.from_request(request)
+  await state.channel.send("post_userpage")
+
+  user_guid = payload.get("guid")
+  ## update default_provider, etc. from form data
+  
+  return None
 
 @router.post("/auth/login/ms")
 async def post_auth_login_ms(request: Request):

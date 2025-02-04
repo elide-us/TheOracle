@@ -24,22 +24,7 @@ def get_lumaai_token():
 ################################################################################
 
 def get_discord_channel() -> int:
-  return int(get_env_var("DISCORD_CHANNEL"))
-
-def get_debug_ch() -> int:
-  return int(1333131669409890334)
-
-def get_image_ch() -> int:
-  return int(1333131737148031117)
-
-def get_video_ch() -> int:
-  return int(1333131784526893076)
-
-def get_audio_ch() -> int:
-  return int(1333131829833896097)
-
-def get_chat_ch() -> int:
-  return int(get_env_var("DISCORD_CHANNEL"))
+  return int(get_env_var("DISCORD_DEBUG_CHANNEL"))
 
 ################################################################################
 ## Azure Storage Account Configuration
@@ -66,4 +51,4 @@ def get_jwt_secret():
   return get_env_var("JWT_SECRET")
 
 def get_ms_app_id():
-  return get_env_var("APPREG_ID")
+  return get_env_var("AUTH_MICROSOFT_ID")
