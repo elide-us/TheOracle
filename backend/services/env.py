@@ -23,8 +23,8 @@ def get_lumaai_token():
 ## Discord Channel ID Numbers 
 ################################################################################
 
-def get_discord_channel() -> int:
-  return int(get_env_var("DISCORD_DEBUG_CHANNEL"))
+def get_system_channel() -> int:
+  return int(get_env_var("DISCORD_SYSTEN_CHANNEL"))
 
 ################################################################################
 ## Azure Storage Account Configuration
@@ -52,3 +52,6 @@ def get_jwt_secret():
 
 def get_ms_app_id():
   return get_env_var("AUTH_MICROSOFT_ID")
+
+def get_discord_app_id():
+  return get_env_var("AUTH_DISCORD_ID")
