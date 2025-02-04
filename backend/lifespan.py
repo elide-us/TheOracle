@@ -2,13 +2,13 @@ import asyncio
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from services.env import get_jwt_secret, get_ms_app_id, get_system_channel
-from services.clients import init_discord_bot, init_openai_client, init_database_pool, init_lumaai_client, init_storage_client
-from services.discord import setup_bot_routes, setup_bot_intents
+from services.clients import init_openai_client, init_database_pool, init_lumaai_client, init_storage_client
+from services.discord import start_discord_bot, setup_bot_routes, init_discord_bot
 from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-  bot = await setup_bot_intents()
+  bot = await init_discord_bot()
   bot.sys_channel = get_system_channel()
   bot.app = app
   app.state.discord_bot = bot
@@ -27,7 +27,7 @@ async def lifespan(app: FastAPI):
 
   setup_bot_routes(bot)
   loop = asyncio.get_event_loop()
-  bot_task = loop.create_task(init_discord_bot(bot))
+  bot_task = loop.create_task(start_discord_bot(bot))
 
   try:
     yield
