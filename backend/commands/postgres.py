@@ -117,13 +117,13 @@ async def select_ms_user(state: StateHelper, microsoft_id):
         p.name AS provider_name
       FROM users u
       JOIN auth_provider p
-        ON u.provider_id = p.id
+        ON u.default_provider = p.id
       WHERE u.microsoft_id = $1;
     """
     result = await conn.fetchrow(query, microsoft_id)
     if isinstance(result, str):
       result = json.loads(result)
-      await state.channel.send(f"Found user for {result["guid"]}: {result["username"]}, {result["email"]}, Credits: {result["credits"]}")
+      await state.channel.send(f"Found {result["provider_name"]} user for {result["guid"]}: {result["username"]}, {result["email"]}, Credits: {result["credits"]}")
     return result
 
 # Create a user record with defaults for Microsoft user ID
