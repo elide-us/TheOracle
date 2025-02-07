@@ -46,16 +46,15 @@ async def get_keyframes(start_asset, end_asset):
 # This won't work in this form, needs to follow the ByteIO download to memory and then send to Discord/Storage Account pattern.
 async def download_generation(video_url, state, filename):
   async with AsyncBufferWriter(video_url) as buffer:
-    await write_buffer_to_discord(buffer, state, filename)
     await write_buffer_to_blob(buffer, state, filename)
+    await write_buffer_to_discord(buffer, state, filename)
 
 async def generate_video(ctx, start_asset, end_asset, prompt):
   state = StateHelper.from_context(ctx)
   client = state.lumaai
 
   keyframes = await get_keyframes(start_asset, end_asset)
-  
-  await state.sys_channel.send("trying client.generations.create")
+
   try:
     response = await client.generations.create(
       aspect_ratio="16:9",
@@ -67,21 +66,3 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
     await state.sys_channel.send(f"Response: {response}")
   except Exception as e:
     await state.sys_channel.send(f"Exception: {e}")  
-
-
-  # async with client.generations.with_streaming_response.create(
-  #   aspect_ratio="16:9",
-  #   loop="false",
-  #   prompt=prompt,
-  #   callback_url="https://elideusgroup.com/api/lumaai",
-  #   keyframes=keyframes
-  # ) as response:
-  #   data = await response.json()
-  #   await state.sys_channel.send(f"Response: {data}")
-
-
-  # video_url = generation.assets.video
-  # filename = generation.id
-
-  # await download_generation(video_url, state, filename)
-  
