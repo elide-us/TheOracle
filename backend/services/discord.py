@@ -72,12 +72,6 @@ def setup_bot_routes(bot: commands.Bot):
     response = await generate_video(ctx, frame0, frame1, prompt)
     if not response:
       await ctx.send("No response in bot context")
-
-  @bot.command(name="vidlist")
-  async def command_vidlist(ctx, *args):
-    command_str = " ".join(args)
-    await ctx.send("Get video list")
-
  
   # @bot.command(name="image")
   # async def image_gen(ctx, *args):

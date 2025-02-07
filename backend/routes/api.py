@@ -32,10 +32,13 @@ async def post_lumaai(request: Request):
   state = StateHelper.from_request(request)
   generation = await request.json()
 
-  video_url = generation.assets.video
-  filename = generation.id
+  if generation.state is "completed":
+    video_url = generation.assets.video
+    filename = generation.id
 
-  await download_generation(video_url, state, filename)
+    await download_generation(video_url, state, filename)
+  elif generation.state in ["dreaming", "queued"]:
+    await state.out_channel.send("Dreaming...")
 
 @router.get("/userpage")
 async def get_userpage(request: Request, payload: dict = Depends(get_bearer_token_payload)):
