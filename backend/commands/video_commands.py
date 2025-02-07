@@ -46,8 +46,8 @@ async def get_keyframes(start_asset, end_asset):
 # This won't work in this form, needs to follow the ByteIO download to memory and then send to Discord/Storage Account pattern.
 async def download_generation(video_url, state, filename):
   async with AsyncBufferWriter(video_url) as buffer:
-    await write_buffer_to_discord(buffer, state, filename)
     await write_buffer_to_blob(buffer, state, filename)
+    await write_buffer_to_discord(buffer, state, filename)
 
 async def generate_video(ctx, start_asset, end_asset, prompt):
   state = StateHelper.from_context(ctx)
