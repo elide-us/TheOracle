@@ -3,6 +3,9 @@ from typing import Dict
 from utils.helpers import StateHelper
 from utils.messaging import send_to_discord
 
+
+
+
 ################################################################################
 ## Database Queries for the Prompt Builder
 ################################################################################
@@ -104,9 +107,18 @@ async def select_template_keys(pool, layer_id):
 async def select_ms_user(state: StateHelper, microsoft_id):
   async with state.pool.acquire() as conn:
     query = """
-      SELECT guid, microsoft_id, email, username, credits
-      FROM users
-      WHERE microsoft_id = $1
+      SELECT 
+        u.guid, 
+        u.microsoft_id, 
+        u.email, 
+        u.username, 
+        u.backup_email, 
+        u.credits,
+        p.name AS provider_name
+      FROM users u
+      JOIN auth_provider p
+        ON u.provider_id = p.id
+      WHERE u.microsoft_id = $1;
     """
     result = await conn.fetchrow(query, microsoft_id)
     if isinstance(result, str):

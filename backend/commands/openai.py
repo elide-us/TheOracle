@@ -149,7 +149,7 @@ async def handle_tts(ctx, command_str):
     ) as response:
       async for chunk in response.iter_bytes():
         buffer.write(chunk)  # Write chunks to the buffer
-      await write_cdn(buffer, state, filename)
+      await write_buffer_to_blob(buffer, state, filename)
       await write_buffer_to_discord(buffer, state, filename)
   except Exception as e:
     await state.channel.send(f"Error communicating with OpenAI: {str(e)}")

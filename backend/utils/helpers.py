@@ -25,16 +25,22 @@ class StateHelper:
     return self._app
   @property
   def bot(self) -> Any:
-    return self.app.state.discord_bot
+    return self.app.state.bot
   @property
   def channel(self) -> Any:
     return self.bot.get_channel(self.bot.sys_channel)
   @property
-  def pool(self) -> Any:
-    return self.app.state.theoraclegp_pool
+  def sys_channel(self) -> Any:
+    return self.bot.get_channel(self.bot.sys_channel)
+  @property
+  def out_channel(self) -> Any:
+    return self.bot.get_channel(self.bot.out_channel)
   @property
   def ms_api_id(self) -> Any:
     return self.app.state.ms_app_id
+  @property
+  def ms_jwks(self):
+    return self.app.state.ms_jwks
   @property
   def jwt_secret(self) -> Any:
     return self.app.state.jwt_secret
@@ -45,14 +51,17 @@ class StateHelper:
   def jwt_algo_int(self) -> Any:
     return self.app.state.jwt_algorithm_hs256
   @property
-  def ms_jwks(self):
-    return self.app.state.ms_jwks
+  def pool(self) -> Any:
+    return self.app.state.theoraclegp_pool
   @property
   def storage(self):
     return self.app.state.theoraclesa_client
   @property
   def openai(self):
     return self.app.state.openai_client
+  @property
+  def lumaai(self):
+    return self.app.state.lumaai_client
   
 # Async Context Manager for buffer
 class AsyncBufferWriter():
