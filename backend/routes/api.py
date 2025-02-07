@@ -33,12 +33,9 @@ async def post_lumaai(request: Request):
   generation = await request.json()
   if generation.get("state") == "completed":
     video_url = generation.get("assets", {}).get("video")
-    filename = generation.get("id")
-    if video_url and filename:
-      await download_generation(video_url, state, filename)
-    else:
-      await state.sys_channel.send("Error: Missing video URL or filename.")
-  elif generation.get("state") in ["dreaming", "queued"]:
+    filename = f"{generation.get("id")}.mp4"
+    await download_generation(video_url, state, filename)
+  else:
     await state.out_channel.send("Dreaming...")
 
 @router.get("/userpage")
