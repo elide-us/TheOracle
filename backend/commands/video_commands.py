@@ -65,11 +65,11 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
     ) as response:
       async for chunk in response.iter_bytes():
         buffer.write(chunk)
-      response = response.json()
+      response = await response.json()
       await state.sys_channel.send(f"Response: {response}")
   except Exception as e:
     await state.sys_channel.send(f"Exception: {e}")
-    
+
   # video_url = generation.assets.video
   # filename = generation.id
 
