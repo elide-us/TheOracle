@@ -12,7 +12,7 @@ async def init_openai_client():
 
 async def init_lumaai_client():
   token = get_lumaai_token()
-  return LumaAI(auth_token=token)
+  return AsyncLumaAI(auth_token=token)
 
 async def init_storage_client():
   container = cdn_container_name()
