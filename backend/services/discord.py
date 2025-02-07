@@ -69,7 +69,9 @@ def setup_bot_routes(bot: commands.Bot):
     frame1 = args[1]
     prompt = " ".join(args[2:])
 
-    await generate_video(ctx, frame0, frame1, prompt)
+    response = await generate_video(ctx, frame0, frame1, prompt)
+    if not response:
+      await ctx.send("No response in bot context")
  
   # @bot.command(name="image")
   # async def image_gen(ctx, *args):
