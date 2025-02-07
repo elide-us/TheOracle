@@ -32,10 +32,9 @@ async def post_lumaai(request: Request):
   state = StateHelper.from_request(request)
   generation = await request.json()
 
-  if generation.state is "completed":
+  if generation.state == "completed":
     video_url = generation.assets.video
     filename = generation.id
-
     await download_generation(video_url, state, filename)
   elif generation.state in ["dreaming", "queued"]:
     await state.out_channel.send("Dreaming...")

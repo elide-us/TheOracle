@@ -56,14 +56,14 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
   keyframes = await get_keyframes(start_asset, end_asset)
 
   try:
-    response = await client.generations.create(
+    generation = await client.generations.create(
       aspect_ratio="16:9",
       loop="false",
       prompt=prompt,
       callback_url="https://elideusgroup.com/api/lumaai",
       keyframes=keyframes
     )
-    data = await response.json()
+    data = await generation.json()
     await state.sys_channel.send(f"Response: {data}")
   except Exception as e:
     await state.sys_channel.send(f"Exception: {e}")  
