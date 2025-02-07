@@ -64,7 +64,7 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
       prompt=prompt,
       keyframes=keyframes
     ) as response:
-      data = response.json()
+      data = await response.json()
       await state.sys_channel.send(f"Response: {data}")
       # async for chunk in response.iter_bytes():
       #   buffer.write(chunk)
