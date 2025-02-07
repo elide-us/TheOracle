@@ -45,8 +45,10 @@ function LoginPage() {
       // Save user details in context
       setUserData({
         token: data.bearerToken,
+        defaultProvider: data.defaultProvider,
         username: data.username,
         email: data.email,
+        backupEmail: data.backupEmail,
         profilePicture: profilePictureBase64,
         credits: data.credits
       });

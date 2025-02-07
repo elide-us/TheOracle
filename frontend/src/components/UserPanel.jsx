@@ -10,7 +10,6 @@ const UserPanel = () => {
     const [ profile, setProfile ] = useState(null); // Local state for profile details
     // const navigate = useNavigate();
 
-    // Fetch the user profile data from the backend on component mount
     useEffect(() => {
         if (!userData?.token) return; // Ensure token exists
 
@@ -22,7 +21,7 @@ const UserPanel = () => {
     }, [userData.token]);
 
     if (!profile) return <Typography>Loading...</Typography>;
-
+ 
     const handleChange = (e) => {
         const { name, value } = e.target;
         setProfile((prevProfile) => ({ ...prevProfile, [name]: value }));
@@ -36,7 +35,6 @@ const UserPanel = () => {
             headers: { Authorization: `Bearer ${userData.token}` },
         })
         .then((res) => {
-            // Update the local profile state with response data if needed
             setProfile(res.data);
 
             // Optionally, update the global userData if certain values have changed.
@@ -45,41 +43,18 @@ const UserPanel = () => {
             setUserData((prevData) => ({
                 ...prevData,
 
+                defaultProvider: res.data.defaultProvider,
                 username: res.data.username,
                 email: res.data.email,
+                backupEmail: res.data.backupEmail,
                 credits: res.data.credits,
             }));
         })
         .catch((err) => console.error("Failed to update user data", err));
     };
 
-    // return (
-    //     <Container maxWidth="sm">
-    //         <Typography variant="h5" gutterBottom>User Settings</Typography>
-    //         <TextField fullWidth margin="normal" label="Display Name" value={user.name} disabled />
-    //         <TextField fullWidth margin="normal" label="Email Address" value={user.email} disabled />
-            
-    //         <Typography variant="h6" gutterBottom>Linked Accounts</Typography>
-    //         <List>
-    //             {["Microsoft", "Discord", "Google", "Apple"].map(provider => (
-    //                 <ListItem key={provider}>
-    //                     <ListItemText primary={provider} secondary={user.linkedAccounts?.includes(provider) ? "Linked" : "Not Linked"} />
-    //                     {user.linkedAccounts?.includes(provider) ? (
-    //                         <Button variant="outlined" size="small">Unlink</Button>
-    //                     ) : (
-    //                         <Button variant="contained" size="small">Link</Button>
-    //                     )}
-    //                 </ListItem>
-    //             ))}
-    //         </List>
-            
-    //         <Typography variant="h6" gutterBottom>Credits: {user.credits}</Typography>
-    //         <Link href="/purchase">Buy More Credits</Link>
-    //     </Container>
-    // );
-
     return (
-        <Container maxWidth="sm">
+        <Box>
             <Typography variant="h5" gutterBottom>
                 User Settings
             </Typography>
@@ -154,7 +129,7 @@ const UserPanel = () => {
                 Credits: {profile.credits}
             </Typography>
             <Link href="/purchase">Buy More Credits</Link>
-        </Container>
+        </Box>
     );
 };
 
