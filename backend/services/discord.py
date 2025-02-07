@@ -67,7 +67,7 @@ def setup_bot_routes(bot: commands.Bot):
   async def command_video(ctx, *args):
     frame0 = args[0]
     frame1 = args[1]
-    prompt = args[2:]
+    prompt = " ".join(args[2:])
 
     response = await generate_video(ctx, frame0, frame1, prompt)
     if not response:
