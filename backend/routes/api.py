@@ -36,7 +36,7 @@ async def post_lumaai(request: Request):
   state = StateHelper.from_request(request)
   await state.sys_channel.send(f"LumaAI Callback - Request: {request}")
   buffer = io.BytesIO()
-  generation = request.json()
+  generation = await request.json()
 
   timestamp = datetime.now(timezone.utc).strftime("%Y%m%d%H%M%S")
   filename = f"LumaAI_{timestamp}.mp4"
