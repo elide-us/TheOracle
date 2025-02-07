@@ -31,12 +31,14 @@ async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_
 async def post_lumaai(request: Request):
   state = StateHelper.from_request(request)
   generation = await request.json()
-
-  if generation.state == "completed":
-    video_url = generation.assets.video
-    filename = generation.id
-    await download_generation(video_url, state, filename)
-  elif generation.state in ["dreaming", "queued"]:
+  if generation.get("state") == "completed":
+    video_url = generation.get("assets", {}).get("video")
+    filename = generation.get("id")
+    if video_url and filename:
+      await download_generation(video_url, state, filename)
+    else:
+      await state.sys_channel.send("Error: Missing video URL or filename.")
+  elif generation.get("state") in ["dreaming", "queued"]:
     await state.out_channel.send("Dreaming...")
 
 @router.get("/userpage")
