@@ -57,7 +57,7 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
 
   data = {}
   try:
-    async with client.generations.create(
+    async with client.generations.with_streaming_response.create(
       aspect_ratio="16:9",
       loop="false",
       prompt=prompt,
