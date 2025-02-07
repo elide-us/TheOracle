@@ -62,6 +62,7 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
       aspect_ratio="16:9",
       loop="false",
       prompt=prompt,
+      callback_url="https://elideusgroup.com/api/lumaai",
       keyframes=keyframes
     ) as response:
       data = await response.json()

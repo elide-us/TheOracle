@@ -26,6 +26,12 @@ async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_
     await state.channel.send("with public")
     return public_routes
 
+@router.post("/lumaai")
+async def post_lumaai(request: Request):
+  state = StateHelper.from_request(request)
+  await state.sys_channel.send(f"LumaAI Callback - Request: {request}")
+
+
 @router.get("/userpage")
 async def get_userpage(request: Request, payload: dict = Depends(get_bearer_token_payload)):
   state = StateHelper.from_request(request)
