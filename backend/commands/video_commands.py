@@ -55,18 +55,19 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
 
   keyframes = await get_keyframes(start_asset, end_asset)
 
+  data = {}
   try:
-    buffer = io.BytesIO()
+    # buffer = io.BytesIO()
     async with client.generations.with_streaming_response.create(
       aspect_ratio="16:9",
       loop="false",
       prompt=prompt,
       keyframes=keyframes
     ) as response:
-      async for chunk in response.iter_bytes():
-        buffer.write(chunk)
-      response = await response.json()
-      await state.sys_channel.send(f"Response: {response}")
+      data = response.json()
+      await state.sys_channel.send(f"Response: {data}")
+      # async for chunk in response.iter_bytes():
+      #   buffer.write(chunk)
   except Exception as e:
     await state.sys_channel.send(f"Exception: {e}")
 
