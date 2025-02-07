@@ -61,7 +61,13 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
   channel = state.sys_channel
   output = state.out_channel
 
+  await channel.send(f"Start: {start_asset}")
+  await channel.send(f"End: {end_asset}")
+  await channel.send(f"Prompt: {prompt}")
+
   keyframes = await get_keyframes(start_asset, end_asset)
+
+  await channel.send(f"Keyframes: {keyframes}")
 
   generation = client.generations.create(
     aspect_ratio="16:9",
@@ -69,6 +75,11 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
     prompt=prompt,
     keyframes=keyframes
   )
+
+  if generation:
+    await channel.send("generation")
+  else:
+    await channel.send("no generation")
 
   while (generation := client.generations.get(id=generation.id)).state != "completed":
     if generation.state == "failed":
@@ -78,7 +89,9 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
     await asyncio.sleep(5)
 
   video_url = generation.assets.video
+  await channel.send(f"Video URL: {video_url}")
   filename = generation.id
+  await channel.send(f"Filename: {filename}")
 
   if output:
     await output.send(f"Generation URL: {video_url}, Generation ID: {filename}")
