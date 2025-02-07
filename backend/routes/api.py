@@ -1,5 +1,7 @@
+import io
 from fastapi import APIRouter, Request, Depends
 from commands.openai import generate_image
+from commands.video_commands import download_generation
 from commands.postgres import select_category_templates, select_template_keys, select_ms_user, insert_ms_user, select_public_routes, select_secure_routes, update_user_credits
 from services.auth import handle_ms_auth_login, make_bearer_token, get_bearer_token_payload
 from utils.helpers import StateHelper
@@ -30,7 +32,22 @@ async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_
 async def post_lumaai(request: Request):
   state = StateHelper.from_request(request)
   await state.sys_channel.send(f"LumaAI Callback - Request: {request}")
+  # buffer = io.BytesIO()
+  generation = request.body()
+  await state.sys_channel.send(f"LumaAI Callback - Generation: {generation}")
+  # async for chunk in generation.iter_bytes():
+  #async for chunk in request.body_iterator():
+  #async for chunk in request.body(
+    # buffer.write(chunk)
+    # await state.sys_channel.send("I wrote the buffer")
+    #await write_buffer_to_discord(buffer, state, filename)
+    #await write_buffer_to_blob(buffer, state, filename)
+  # await state.sys_channel.send("I did not write the buffer")
 
+  video_url = generation.assets.video
+  filename = generation.id
+
+  await download_generation(video_url, state, filename)
 
 @router.get("/userpage")
 async def get_userpage(request: Request, payload: dict = Depends(get_bearer_token_payload)):
