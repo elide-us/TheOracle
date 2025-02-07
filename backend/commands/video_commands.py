@@ -1,4 +1,4 @@
-import asyncio, re
+import re, io
 from utils.helpers import StateHelper, AsyncBufferWriter
 from commands.discord import write_buffer_to_discord
 from commands.storage import write_buffer_to_blob
@@ -49,51 +49,29 @@ async def download_generation(video_url, state, filename):
     await write_buffer_to_discord(buffer, state, filename)
     await write_buffer_to_blob(buffer, state, filename)
 
-# prompt="Orbit right",
-# prompt="Orbit left",
-# prompt="Pan right",
-# prompt="Pan left",
-# prompt="Push in",
-# prompt="Pull out",
 async def generate_video(ctx, start_asset, end_asset, prompt):
   state = StateHelper.from_context(ctx)
   client = state.lumaai
-  channel = state.sys_channel
-  output = state.out_channel
-
-  await channel.send(f"Start: {start_asset}")
-  await channel.send(f"End: {end_asset}")
-  await channel.send(f"Prompt: {prompt}")
 
   keyframes = await get_keyframes(start_asset, end_asset)
 
-  await channel.send(f"Keyframes: {keyframes}")
+  try:
+    buffer = io.BytesIO()
+    async with client.generations.with_streaming_response.create(
+      aspect_ratio="16:9",
+      loop="false",
+      prompt=prompt,
+      keyframes=keyframes
+    ) as response:
+      async for chunk in response.iter_bytes():
+        buffer.write(chunk)
+      response = response.json()
+      await state.sys_channel.send(f"Response: {response}")
+  except Exception as e:
+    await state.sys_channel.send(f"Exception: {e}")
+    
+  # video_url = generation.assets.video
+  # filename = generation.id
 
-  generation = client.generations.create(
-    aspect_ratio="16:9",
-    loop="false",
-    prompt=prompt,
-    keyframes=keyframes
-  )
-
-  if generation:
-    await channel.send("generation")
-  else:
-    await channel.send("no generation")
-
-  while (generation := client.generations.get(id=generation.id)).state != "completed":
-    if generation.state == "failed":
-      await channel.send(f"Generation failed: {generation.failure_reason}.")
-    if channel:
-      await channel.send(f"Dreaming... current state: {generation.state}.")
-    await asyncio.sleep(5)
-
-  video_url = generation.assets.video
-  await channel.send(f"Video URL: {video_url}")
-  filename = generation.id
-  await channel.send(f"Filename: {filename}")
-
-  if output:
-    await output.send(f"Generation URL: {video_url}, Generation ID: {filename}")
-  await download_generation(video_url, state, filename)
+  # await download_generation(video_url, state, filename)
   
