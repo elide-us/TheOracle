@@ -1,4 +1,7 @@
-import aiohttp, aiofiles, asyncio, re
+import asyncio, re
+from utils.helpers import StateHelper, AsyncBufferWriter
+from commands.discord import write_buffer_to_discord
+from commands.storage import write_buffer_to_blob
 
 ## THIS CODE IS UNFINISHED AND MUST NOT BE CALLED ##
 
@@ -11,7 +14,7 @@ def is_valid_guid(guid):
   )
   return isinstance(guid, str) and guid_regex.match(guid)
 
-async def a_get_keyframes(start_asset, end_asset):
+async def get_keyframes(start_asset, end_asset):
   keyframes = {}
 
   if start_asset:
@@ -41,17 +44,10 @@ async def a_get_keyframes(start_asset, end_asset):
   return keyframes
 
 # This won't work in this form, needs to follow the ByteIO download to memory and then send to Discord/Storage Account pattern.
-async def a_download_generation(video_url, filename):
-  async with aiohttp.ClientSession() as session:
-    #async with session.get(video_url, stream=True) as response:
-    async with session.get(video_url) as response:
-      if response.status == 200:
-        file_path = f"{filename}.mp4"
-        async with aiofiles.open(file_path, "wb") as file:
-          await file.write(await response.read())
-        print(f"{file_path} downloaded successfully.")
-      else:
-        print(f"Failed to download {file_path}. Status: {response.status}")
+async def download_generation(video_url, state, filename):
+  async with AsyncBufferWriter(video_url) as buffer:
+    await write_buffer_to_discord(buffer, state, filename)
+    await write_buffer_to_blob(buffer, state, filename)
 
 # prompt="Orbit right",
 # prompt="Orbit left",
@@ -59,10 +55,13 @@ async def a_download_generation(video_url, filename):
 # prompt="Pan left",
 # prompt="Push in",
 # prompt="Pull out",
-async def a_generate_video(app, start_asset, end_asset, prompt):
-  client = app.state.lumaai_client
-  channel = app.state.sys_channel
-  keyframes = await a_get_keyframes(start_asset, end_asset)
+async def generate_video(ctx, start_asset, end_asset, prompt):
+  state = StateHelper.from_context(ctx)
+  client = state.lumaai
+  channel = state.sys_channel
+  output = state.out_channel
+
+  keyframes = await get_keyframes(start_asset, end_asset)
 
   generation = client.generations.create(
     aspect_ratio="16:9",
@@ -81,7 +80,7 @@ async def a_generate_video(app, start_asset, end_asset, prompt):
   video_url = generation.assets.video
   filename = generation.id
 
-  if channel:
-    await channel.send(f"Generation URL: {video_url}, Generation ID: {filename}")
-  await a_download_generation(video_url, filename)
+  if output:
+    await output.send(f"Generation URL: {video_url}, Generation ID: {filename}")
+  await download_generation(video_url, state, filename)
   

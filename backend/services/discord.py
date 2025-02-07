@@ -4,6 +4,7 @@ from commands.openai import handle_tts
 from commands.discord import handle_text_generate, summarize
 from utils.helpers import StateHelper, load_json
 from services.env import get_discord_token
+from commands.video_commands import generate_video
 
 async def start_discord_bot(bot):
   token = get_discord_token()
@@ -62,13 +63,16 @@ def setup_bot_routes(bot: commands.Bot):
     if response:
       await ctx.send(response)
 
-  # @bot.command(name="video")
-  # async def video_gen(ctx, *args):
-  #   command_str = " ".join(args)
-  #   lumaai_client = ctx.bot.app.state.lumaai_client
-  #   response = await handle_video(command_str, lumaai_client)
-  #   if response:
-  #     await ctx.send(response)
+  @bot.command(name="video")
+  async def command_video(ctx, *args):
+    frame0 = args[0]
+    frame1 = args[1]
+    prompt = args[2:]
+
+    response = await generate_video(ctx, frame0, frame1, prompt)
+    if not response:
+      await ctx.send("Generate video failed")
+
  
   # @bot.command(name="image")
   # async def image_gen(ctx, *args):

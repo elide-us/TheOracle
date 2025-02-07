@@ -34,9 +34,11 @@ async def summarize(ctx, hours: int = 1):
   return full_text
 
 async def handle_text_generate(ctx, command_str, output):
+  state = StateHelper.from_context(ctx)
+  
   app = ctx.bot.app
   channel = ctx.channel
-  debug = ctx.bot.get_channel(ctx.bot.sys_channel)
+  debug = state.sys_channel
   user = ctx.author
   client = app.state.openai_client
   
@@ -46,12 +48,12 @@ async def handle_text_generate(ctx, command_str, output):
 
   json = await load_json("data_assistants.json")
   if not json:
-    await channel.send("Error loading assistant data.")
+    await debug.send("Error loading assistant data.")
     return
 
   assistant = json[key]
   if not assistant:
-    await channel.send(f"Error loading assistant: {key} not found.")
+    await debug.send(f"Error loading assistant: {key} not found.")
     return
 
   ## await channel.send(f"Sending prompt to OpenAI: {prompt}")
@@ -66,7 +68,7 @@ async def handle_text_generate(ctx, command_str, output):
     )
     response_text = completion.choices[0].message.content
   except Exception as e:
-    await channel.send(f"Error communicating with OpenAI: {str(e)}")
+    await debug.send(f"Error communicating with OpenAI: {str(e)}")
     return
   
   response_text = completion.choices[0].message.content
@@ -77,9 +79,9 @@ async def handle_text_generate(ctx, command_str, output):
   elif output is "channel":
     await send_to_discord(channel, response_text)
   else:
-    await channel.send("Undefined output")
+    await debug.send("Undefined output")
     return
 
 async def write_buffer_to_discord(buffer, state: StateHelper, filename):
   buffer.seek(0)
-  await state.channel.send(file=discord.File(fp=buffer, filename=filename))
+  await state.out_channel.send(file=discord.File(fp=buffer, filename=filename))

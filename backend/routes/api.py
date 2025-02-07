@@ -45,10 +45,37 @@ async def post_userpage(request: Request, payload: dict = Depends(get_bearer_tok
   state = StateHelper.from_request(request)
   await state.channel.send("post_userpage")
 
-  user_guid = payload.get("guid")
-  ## update default_provider, etc. from form data
-  
+  # defaultProvider
+  # username
+  # email
+  # backupEmail
+
+  # update default_provider, etc. from form data
+
   return None
+  
+@router.post("/userpage/link")
+async def post_userpage_link(request: Request, payload: dict = Depends(get_bearer_token_payload)):
+  state = StateHelper.from_request(request)
+  await state.channel.send("post_userpage_link")
+  
+  # popup user login, capture accessToken and idToken
+  # decode and validate idToken
+  # get profile data
+  # create a users_auth entry for guid + unique_id + username + email
+  # update users record for id from users_auth
+
+  return None
+
+@router.post("/userpage/unlink")
+async def post_userpage_link(request: Request, payload: dict = Depends(get_bearer_token_payload)):
+  state = StateHelper.from_request(request)
+  await state.channel.send("post_userpage_unlink")
+  
+  # check if this is the last provider, ask if they wish to delete their account
+  # delete row by guid and provider unique select
+
+  return None  
 
 @router.post("/auth/login/ms")
 async def post_auth_login_ms(request: Request):
@@ -60,7 +87,15 @@ async def post_auth_login_ms(request: Request):
   if not user:
     user = await insert_ms_user(state, unique_identifier, ms_profile["email"], ms_profile["username"])
 
-  return {"bearerToken": make_bearer_token(state, str(user["guid"])), "email": user["email"], "username": user["username"], "profilePicture": ms_profile["profilePicture"], "credits": user["credits"]}
+  return {
+    "bearerToken": make_bearer_token(state, str(user["guid"])),
+    "defaultProvider": user["provider_name"],
+    "username": user["username"],
+    "email": user["email"],
+    "backupEmail": user["backup_email"],
+    "profilePicture": ms_profile["profilePicture"],
+    "credits": user["credits"]
+  }
 
 @router.get("/files")
 async def get_files(request: Request):
