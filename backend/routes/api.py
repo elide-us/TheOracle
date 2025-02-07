@@ -34,13 +34,13 @@ async def post_lumaai(request: Request):
   state = StateHelper.from_request(request)
   await state.sys_channel.send(f"LumaAI Callback - Request: {request}")
   buffer = io.BytesIO()
-  generation = request.json()
-  filename = generation.id
-  await state.sys_channel.send(f"LumaAI Callback - Generation: {generation}")
+  # generation = request.json()
+  # filename = generation.id
+  # await state.sys_channel.send(f"LumaAI Callback - Generation: {generation}")
   async for chunk in request.stream():
     buffer.write(chunk)
     await state.sys_channel.send("I wrote the buffer")
-    await write_buffer_to_discord(buffer, state, filename)
+    #await write_buffer_to_discord(buffer, state, filename)
     #await write_buffer_to_blob(buffer, state, filename)
   await state.sys_channel.send("I did not write the buffer")
 
