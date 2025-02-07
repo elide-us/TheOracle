@@ -73,10 +73,10 @@ async def handle_text_generate(ctx, command_str, output):
   
   response_text = completion.choices[0].message.content
 
-  if output is "user":
+  if output == "user":
     await debug.send("User summarize called")
     await send_to_discord_user(user, response_text)
-  elif output is "channel":
+  elif output == "channel":
     await send_to_discord(channel, response_text)
   else:
     await debug.send("Undefined output")

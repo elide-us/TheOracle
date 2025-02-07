@@ -55,19 +55,30 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
 
   keyframes = await get_keyframes(start_asset, end_asset)
 
-  data = {}
   try:
-    async with client.generations.with_streaming_response.create(
+    response = await client.generations.create(
       aspect_ratio="16:9",
       loop="false",
       prompt=prompt,
       callback_url="https://elideusgroup.com/api/lumaai",
       keyframes=keyframes
-    ) as response:
-      data = await response.json()
-      await state.sys_channel.send(f"Response: {data}")
+    )
+    data = await response.json()
+    await state.sys_channel.send(f"Response: {data}")
   except Exception as e:
-    await state.sys_channel.send(f"Exception: {e}")
+    await state.sys_channel.send(f"Exception: {e}")  
+
+
+  # async with client.generations.with_streaming_response.create(
+  #   aspect_ratio="16:9",
+  #   loop="false",
+  #   prompt=prompt,
+  #   callback_url="https://elideusgroup.com/api/lumaai",
+  #   keyframes=keyframes
+  # ) as response:
+  #   data = await response.json()
+  #   await state.sys_channel.send(f"Response: {data}")
+
 
   # video_url = generation.assets.video
   # filename = generation.id
