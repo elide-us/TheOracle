@@ -95,7 +95,7 @@ def stou(sub: str) -> uuid.UUID:
   try:
     cast_sub = uuid.UUID(sub)
   except ValueError:
-    return None
+    raise ValueError("Invalid GUID format")
   return cast_sub
 
 def utos(sub: uuid.UUID) -> str:
