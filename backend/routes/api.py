@@ -158,7 +158,7 @@ async def get_imagen_template_id(template_id: int, request: Request):
 
   match template_id:
     case 0:
-      return await select_category_templates(state.pool)
+      return await select_category_templates(state)
     case 1:
       return await select_template_keys(state.pool, 1)
     case 2:
