@@ -96,7 +96,7 @@ def stou(sub: str) -> uuid.UUID:
     cast_sub = uuid.UUID(sub)
   except ValueError:
     return None
-  return uuid.UUID(cast_sub)
+  return cast_sub
 
 def utos(sub: uuid.UUID) -> str:
   return str(sub)
