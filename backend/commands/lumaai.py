@@ -1,9 +1,7 @@
-import re, io
+import re
 from utils.helpers import StateHelper, AsyncBufferWriter
 from commands.discord import write_buffer_to_discord
 from commands.storage import write_buffer_to_blob
-
-## THIS CODE IS UNFINISHED AND MUST NOT BE CALLED ##
 
 def is_url(asset):
   return isinstance(asset, str) and asset.startswith("https:")
@@ -43,7 +41,6 @@ async def get_keyframes(start_asset, end_asset):
 
   return keyframes
 
-# This won't work in this form, needs to follow the ByteIO download to memory and then send to Discord/Storage Account pattern.
 async def download_generation(video_url, state, filename):
   async with AsyncBufferWriter(video_url) as buffer:
     await write_buffer_to_blob(buffer, state, filename)
@@ -60,7 +57,7 @@ async def generate_video(ctx, start_asset, end_asset, prompt):
       aspect_ratio="16:9",
       loop="false",
       prompt=prompt,
-      callback_url="https://elideusgroup.com/api/lumaai",
+      callback_url="https://elideusgroup.com/api/lumagen/callback",
       keyframes=keyframes
     )
     await state.sys_channel.send(f"Response: {response}")

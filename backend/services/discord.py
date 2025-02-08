@@ -4,7 +4,7 @@ from commands.openai import handle_tts
 from commands.discord import handle_text_generate, summarize
 from utils.helpers import StateHelper, load_json
 from services.env import get_discord_token
-from commands.video_commands import generate_video
+from commands.lumaai import generate_video
 
 async def start_discord_bot(bot):
   token = get_discord_token()

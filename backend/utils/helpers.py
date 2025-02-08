@@ -1,6 +1,6 @@
 from typing import Any
 from fastapi import Request
-import aiohttp, io, aiofiles, json
+import aiohttp, io, aiofiles, json, uuid
 
 # A temporary helper function to load local data JSON files
 async def load_json(file_path: str) -> Any:
@@ -90,3 +90,22 @@ class AsyncBufferWriter():
 class SafeDict(dict):
     def __missing__(self, key):
         return ''
+    
+def stou(sub: str) -> uuid.UUID:
+  try:
+    cast_sub = uuid.UUID(sub)
+  except ValueError:
+    return None
+  return uuid.UUID(cast_sub)
+
+def utos(sub: uuid.UUID) -> str:
+  return str(sub)
+
+def maybe_loads_json(result):
+  if isinstance(result, str):
+    try:
+      return json.loads(result)
+    except json.JSONDecodeError as e:
+      raise ValueError(f"Error: {e}") from e
+  else:
+    raise ValueError("result not isinstance str")
