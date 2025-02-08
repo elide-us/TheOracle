@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Request, Depends
 from commands.openai import generate_image
-from commands.video_commands import download_generation
+from commands.lumaai import download_generation
 from commands.postgres import select_category_templates, select_template_keys, select_ms_user, insert_ms_user, select_public_routes, select_secure_routes, update_user_credits
 from services.auth import handle_ms_auth_login, make_bearer_token, get_bearer_token_payload
 from utils.helpers import StateHelper
@@ -26,18 +26,6 @@ async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_
     public_routes = await select_public_routes(state)
     await state.channel.send("with public")
     return public_routes
-
-@router.post("/lumaai")
-async def post_lumaai(request: Request):
-  state = StateHelper.from_request(request)
-  generation = await request.json()
-  if generation.get("state") == "completed":
-    video_url = generation.get("assets", {}).get("video")
-    filename = f"{generation.get("id")}.mp4"
-    await state.out_channel.send(f"Filename: {filename}")
-    await download_generation(video_url, state, filename)
-  else:
-    await state.out_channel.send("Dreaming...")
 
 @router.get("/userpage")
 async def get_userpage(request: Request, payload: dict = Depends(get_bearer_token_payload)):
@@ -183,10 +171,20 @@ async def get_imagen_template_id(template_id: int, request: Request):
       return {}
 
 # @router.post("/lumagen")
-# async def video_generation(request: Request):
-#     incoming_data = await request.json()
+# async def video_generation(request: Request, payload: dict = Depends(get_bearer_token_payload)):
+#   state = StateHelper.from_request(request)
+# 
+#   return None
 
-#     app = request.app
-#     bot = app.state.discord_bot
+@router.post("/lumagen/callback")
+async def post_lumagen_callback(request: Request):
+  state = StateHelper.from_request(request)
+  generation = await request.json()
+  if generation.get("state") == "completed":
+    video_url = generation.get("assets", {}).get("video")
+    filename = f"{generation.get("id")}.mp4"
+    await state.out_channel.send(f"Filename: {filename}")
+    await download_generation(video_url, state, filename)
+  else:
+    await state.out_channel.send("Dreaming...")
 
-#     return None
