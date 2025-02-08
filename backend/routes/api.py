@@ -160,13 +160,13 @@ async def get_imagen_template_id(template_id: int, request: Request):
     case 0:
       return await select_category_templates(state)
     case 1:
-      return await select_template_keys(state.pool, 1)
+      return await select_template_keys(state, 1)
     case 2:
-      return await select_template_keys(state.pool, 2)
+      return await select_template_keys(state, 2)
     case 3:
-      return await select_template_keys(state.pool, 3)
+      return await select_template_keys(state, 3)
     case 4:
-      return await select_template_keys(state.pool, 4)
+      return await select_template_keys(state, 4)
     case _:
       return {}
 
