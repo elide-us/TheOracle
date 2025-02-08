@@ -1,7 +1,55 @@
-import json, uuid
+import json
+from uuid import uuid4
 from typing import Dict
-from utils.helpers import StateHelper
+from utils.helpers import StateHelper, stou, utos
 from utils.messaging import send_to_discord
+
+# Use to get complex data
+async def database_fetch_many(state: StateHelper, query: str, *args):
+  async with state.pool.acquire() as conn:
+    result = await conn.fetchval(query, args)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result
+
+# Use to get one row of data
+async def database_fetch_one(state: StateHelper, query: str, *args):
+  async with state.pool.acquire() as conn:
+    result = await conn.fetchrow(query, args)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result
+
+# Use for UPDATE, CREATE, etc.
+async def database_run(state: StateHelper, query: str, *args):
+  async with state.pool.acquire() as conn:
+    await conn.execute(query, args)
+  return None
+
+# Use to get complex data with a user's bearer token guid
+async def database_secure_fetch_many(state: StateHelper, query: str, sub: str, *args):
+  async with state.pool.acquire() as conn:
+    sub_uuid = stou(sub)
+    result = await conn.fetchval(query, sub_uuid, args)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result
+
+# Use to get one row of data with a user's bearer token guid
+async def database_secure_fetch_one(state: StateHelper, query: str, sub: str, *args):
+  async with state.pool.acquire() as conn:
+    sub_uuid = stou(sub)
+    result = await conn.fetchrow(query, sub_uuid, args)
+    if isinstance(result, str):
+      result = json.loads(result)
+    return result
+
+# Use for UPDATE, CREATE, etc. with a user's bearer token guid
+async def database_secure_run(state: StateHelper, query: str, sub: str, *args):
+  async with state.pool.acquire() as conn:
+    sub_uuid = stou(sub)
+    await conn.execute(query, sub_uuid, args)
+  return None
 
 
 
@@ -128,16 +176,16 @@ async def select_ms_user(state: StateHelper, microsoft_id):
 
 # Create a user record with defaults for Microsoft user ID
 async def insert_ms_user(state: StateHelper, microsoft_id, email, username):
-  new_guid = str(uuid.uuid4())
+  new_uuid = utos(uuid4())
   async with state.pool.acquire() as conn:
     query = """
       INSERT INTO users (guid, microsoft_id, email, username, security, credits)
       VALUES ($1, $2, $3, $4, 1, 50);
     """
-    await conn.execute(query, new_guid, microsoft_id, email, username)
+    await conn.execute(query, new_uuid, microsoft_id, email, username)
 
     result = await select_ms_user(state, microsoft_id)
-    await state.channel.send(f"Added user for {new_guid}: {username}, {email}")
+    await state.channel.send(f"Added user for {new_uuid}: {username}, {email}")
     return result
 
 ################################################################################
@@ -147,7 +195,7 @@ async def insert_ms_user(state: StateHelper, microsoft_id, email, username):
 # Details appropriate for return to the front end
 async def select_user_details(state: StateHelper, sub):
   try:
-    sub_uuid = uuid.UUID(sub)  # Ensure it's a UUID object
+    sub_uuid = stou(sub)  # Ensure it's a UUID object
   except ValueError:
     await state.channel.send("Invalid GUID format")
     return {"error": "Invalid GUID format"}
@@ -162,7 +210,7 @@ async def select_user_details(state: StateHelper, sub):
     if isinstance(result, str):
       result = json.loads(result)
     return {
-      "guid": str(sub_uuid),
+      "guid": utos(sub_uuid),
       "username": result.get("username", "No user found"),
       "email": result.get("email", "No email found"),
       "backup_email": result.get("backup_email", "No backup email found"),
@@ -177,12 +225,12 @@ async def select_user_security(state: StateHelper, sub):
     SELECT security, guid FORM users WHERE guid = $1
   """
   async with state.pool.acquire() as conn:
-    uuid_sub = uuid.UUID(sub)
-    result = await conn.fetchrow(query, uuid_sub)
+    sub_uuid = stou(sub)
+    result = await conn.fetchrow(query, sub_uuid)
     if isinstance(result, str):
       security = result["security"]
     if result:
-      return {"security": security, "guid": sub}
+      return {"security": security, "guid": utos(sub_uuid)}
     else:
       raise
 
@@ -237,7 +285,7 @@ async def select_secure_routes(state: StateHelper, guid):
 ################################################################################
 
 # A transaction for getting and updating credits for a user
-async def update_user_credits(state: StateHelper, charge: int, guid: str):
+async def update_user_credits(state: StateHelper, charge: int, sub: str):
   query_select = """
     SELECT credits FROM users WHERE guid = $1
   """
@@ -245,10 +293,10 @@ async def update_user_credits(state: StateHelper, charge: int, guid: str):
     UPDATE users SET credits = $1 WHERE guid = $2
   """
   async with state.pool.acquire() as conn:
-    uuid_guid = uuid.UUID(guid)
+    sub_uuid = stou(sub)
     async with conn.transaction():
       # Fetch the current credits
-      result = await conn.fetchrow(query_select, uuid_guid)
+      result = await conn.fetchrow(query_select, sub_uuid)
       if isinstance(result, str):
         result = json.loads(result)
       if result:
@@ -257,15 +305,15 @@ async def update_user_credits(state: StateHelper, charge: int, guid: str):
           # Deduct the charge
           new_credits = credits - charge
           # Update the database
-          await conn.execute(query_update, new_credits, uuid_guid)
-          return {"success": True, "credits": new_credits, "guid": guid}
+          await conn.execute(query_update, new_credits, sub_uuid)
+          return {"success": True, "credits": new_credits, "guid": utos(sub_uuid)}
         else:
-          return {"success": False, "error": "Insufficient credits", "credits": credits, "guid": guid}
+          return {"success": False, "error": "Insufficient credits", "credits": credits, "guid": utos(sub_uuid)}
       else:
-            return {"success": False, "error": "User not found", "guid": guid}
+            return {"success": False, "error": "User not found", "guid": sub}
 
 # A transaction for adding purchased credits for a user
-async def update_user_credits_purchased(state: StateHelper, purchase: int, guid, str):
+async def update_user_credits_purchased(state: StateHelper, purchase: int, sub: str):
   query_select = """
     SELECT credits FROM users WHERE guid = $1
   """
@@ -273,16 +321,16 @@ async def update_user_credits_purchased(state: StateHelper, purchase: int, guid,
     UPDATE users SET credits = $1 WHERE guid = $2
   """
   async with state.pool.acquire() as conn:
-    uuid_guid = uuid.UUID(guid)
+    sub_uuid = stou(sub)
     async with conn.transaction():
       # Fetch the current credits
-      result = await conn.fetchrow(query_select, uuid_guid)
+      result = await conn.fetchrow(query_select, sub_uuid)
       if isinstance(result, str):
         result = json.loads(result)
       if result:
         credits = result["credits"]
         new_credits = credits + purchase
-        await conn.execute(query_update, new_credits, uuid_guid)
-        return {"success": True, "credits": new_credits, "guid": guid}
+        await conn.execute(query_update, new_credits, sub_uuid)
+        return {"success": True, "credits": new_credits, "guid": utos(sub_uuid)}
       else:
-        return {"success": False, "error": "User not found", "guid": guid}
+        return {"success": False, "error": "User not found", "guid": sub}
