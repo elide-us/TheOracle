@@ -1,58 +1,47 @@
 import json
 from uuid import uuid4
 from typing import Dict
-from utils.helpers import StateHelper, stou, utos
+from utils.helpers import StateHelper, stou, utos, maybe_loads_json
 from utils.messaging import send_to_discord
 
 # Use to get complex data
 async def database_fetch_many(state: StateHelper, query: str, *args):
   async with state.pool.acquire() as conn:
-    result = await conn.fetchval(query, args)
-    if isinstance(result, str):
-      result = json.loads(result)
-    return result
+    result = await conn.fetchval(query, *args)
+    return maybe_loads_json(result)
 
 # Use to get one row of data
 async def database_fetch_one(state: StateHelper, query: str, *args):
   async with state.pool.acquire() as conn:
-    result = await conn.fetchrow(query, args)
-    if isinstance(result, str):
-      result = json.loads(result)
-    return result
+    result = await conn.fetchrow(query, *args)
+    return maybe_loads_json(result)
 
 # Use for UPDATE, CREATE, etc.
 async def database_run(state: StateHelper, query: str, *args):
   async with state.pool.acquire() as conn:
-    await conn.execute(query, args)
+    await conn.execute(query, *args)
   return None
 
 # Use to get complex data with a user's bearer token guid
 async def database_secure_fetch_many(state: StateHelper, query: str, sub: str, *args):
   async with state.pool.acquire() as conn:
     sub_uuid = stou(sub)
-    result = await conn.fetchval(query, sub_uuid, args)
-    if isinstance(result, str):
-      result = json.loads(result)
-    return result
+    result = await conn.fetchval(query, sub_uuid, *args)
+    return maybe_loads_json(result)
 
 # Use to get one row of data with a user's bearer token guid
 async def database_secure_fetch_one(state: StateHelper, query: str, sub: str, *args):
   async with state.pool.acquire() as conn:
     sub_uuid = stou(sub)
-    result = await conn.fetchrow(query, sub_uuid, args)
-    if isinstance(result, str):
-      result = json.loads(result)
-    return result
+    result = await conn.fetchrow(query, sub_uuid, *args)
+    return maybe_loads_json(result)
 
 # Use for UPDATE, CREATE, etc. with a user's bearer token guid
 async def database_secure_run(state: StateHelper, query: str, sub: str, *args):
   async with state.pool.acquire() as conn:
     sub_uuid = stou(sub)
-    await conn.execute(query, sub_uuid, args)
+    await conn.execute(query, sub_uuid, *args)
   return None
-
-
-
 
 ################################################################################
 ## Database Queries for the Prompt Builder
@@ -217,7 +206,6 @@ async def select_user_details(state: StateHelper, sub):
       "credits": result.get("credits", 0),
       "default_provider": result.get("provider_name", "No provider found")
     }
-
 
 # This should never be returned to the front end
 async def select_user_security(state: StateHelper, sub):

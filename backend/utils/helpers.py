@@ -100,3 +100,12 @@ def stou(sub: str) -> uuid.UUID:
 
 def utos(sub: uuid.UUID) -> str:
   return str(sub)
+
+def maybe_loads_json(result):
+  if isinstance(result, str):
+    try:
+      return json.loads(result)
+    except json.JSONDecodeError as e:
+      raise ValueError(f"Error: {e}") from e
+  else:
+    raise ValueError("result not isinstance str")
