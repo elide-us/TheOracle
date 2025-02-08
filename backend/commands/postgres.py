@@ -103,7 +103,7 @@ async def select_category_templates(state: StateHelper):
     SELECT json_object_agg(category, templates) AS result
     FROM template_data;
   """
-  return database_fetch_many(state, query)
+  return await database_fetch_many(state, query)
 
 # Returns the keys for a selected template
 async def select_template_keys(state: StateHelper, layer: int):
@@ -116,7 +116,7 @@ async def select_template_keys(state: StateHelper, layer: int):
       GROUP BY key_Value
     ) AS grouped;
   """
-  return database_fetch_many(state, query, layer)
+  return await database_fetch_many(state, query, layer)
 
 ################################################################################
 ## Database Queries for Authentication
