@@ -48,11 +48,9 @@ async def database_secure_run(state: StateHelper, query: str, sub: str, *args):
 ################################################################################
 
 # Returns the prompt text elements for the selected keys
-async def select_prompt_keys(state, selected_keys: Dict[str, str]) -> Dict[str, str]:
+async def select_prompt_keys(state: StateHelper, selected_keys: Dict[str, str]) -> Dict[str, str]:
   elements = {}
-  await state.channel.send("Testing new get_elements")
-  async with state.pool.acquire() as conn:
-    query = """
+  query = """
     SELECT jsonb_object_agg(key_value, sub_data) 
     FROM (
       SELECT key_value, jsonb_object_agg(subkey_value, private_value) AS sub_data
@@ -62,20 +60,15 @@ async def select_prompt_keys(state, selected_keys: Dict[str, str]) -> Dict[str, 
       )
       GROUP BY key_value
     ) AS nested_data;
-    """
-    keys = list(selected_keys.keys())
-    await state.channel.send(f"Keys: {keys}")
-    subkeys = list(selected_keys.values())
-    await state.channel.send(f"Subkeys: {subkeys}")
+  """
+  keys = list(selected_keys.keys())
+  await state.channel.send(f"Keys: {keys}")
+  subkeys = list(selected_keys.values())
+  await state.channel.send(f"Subkeys: {subkeys}")
 
-    result = await conn.fetchval(query, keys, subkeys)
-    await send_to_discord(state.channel, result)
-    if isinstance(result, str):
-      result = json.loads(result)
-    await send_to_discord(state.channel, result)
-      
-    if result is None:
-      raise ValueError("No matching elements found in the database.")
+  result = await database_fetch_many(state, query, keys, subkeys)
+  if result is None:
+    raise ValueError("No matching elements in the database.")
 
   for key, subkey in selected_keys.items():
     if key in result and subkey in result[key]:
@@ -86,55 +79,44 @@ async def select_prompt_keys(state, selected_keys: Dict[str, str]) -> Dict[str, 
   return elements
 
 # Returns the categorized templates list
-async def select_category_templates(pool):
-  result = {}
-  async with pool.acquire() as conn:
-    query = """
-      WITH template_data AS (
-        SELECT 
-          c.name AS category,
-          json_agg(
-            json_build_object(
-              'title', t.title,
-              'description', t.description,
-              'imageUrl', t.image_url,
-              'layer1', t.layer1,
-              'layer2', t.layer2,
-              'layer3', t.layer3,
-              'layer4', t.layer4,
-              'input', t.input
-            )
-          ) AS templates
-        FROM templates t
-        JOIN categories c ON t.category_id = c.id
-        GROUP BY c.name
-      )
-      SELECT json_object_agg(category, templates) AS result
-      FROM template_data;
-    """
-    result = await conn.fetchval(query)
-    if isinstance(result, str):
-      result = json.loads(result)
-  return result
+async def select_category_templates(state: StateHelper):
+  query = """
+    WITH template_data AS (
+      SELECT 
+        c.name AS category,
+        json_agg(
+          json_build_object(
+            'title', t.title,
+            'description', t.description,
+            'imageUrl', t.image_url,
+            'layer1', t.layer1,
+            'layer2', t.layer2,
+            'layer3', t.layer3,
+            'layer4', t.layer4,
+            'input', t.input
+          )
+        ) AS templates
+      FROM templates t
+      JOIN categories c ON t.category_id = c.id
+      GROUP BY c.name
+    )
+    SELECT json_object_agg(category, templates) AS result
+    FROM template_data;
+  """
+  return database_fetch_many(state, query)
 
 # Returns the keys for a selected template
-async def select_template_keys(pool, layer_id):
-  result = {}
-  id = int(layer_id)
-  async with pool.acquire() as conn:
-    query = """
-      SELECT jsonb_object_agg(key_value, subkeys) AS layer_data
-      FROM (
-        SELECT key_value, jsonb_object_agg(subkey_value, public_value) AS subkeys
-        FROM keys
-        WHERE layer = $1
-        GROUP BY key_Value
-      ) AS grouped;
-    """
-    result = await conn.fetchval(query, id)
-    if isinstance(result, str):
-      result = json.loads(result)
-    return result
+async def select_template_keys(state: StateHelper, layer: int):
+  query = """
+    SELECT jsonb_object_agg(key_value, subkeys) AS layer_data
+    FROM (
+      SELECT key_value, jsonb_object_agg(subkey_value, public_value) AS subkeys
+      FROM keys
+      WHERE layer = $1
+      GROUP BY key_Value
+    ) AS grouped;
+  """
+  return database_fetch_many(state, query, layer)
 
 ################################################################################
 ## Database Queries for Authentication
