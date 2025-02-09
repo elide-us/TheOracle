@@ -32,7 +32,7 @@ async def summarize(ctx, hours: int = 1):
   
   full_text = " ".join(messages)
   await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
-  await state.sys_channel.send(f"Summarize tokens submitted: {msg_tokens}")
+  await state.sys_channel.send(f"User: {ctx.author.name} Messages: {len(messages)} Tokens: {msg_tokens}")
 
   return full_text
 
@@ -73,7 +73,6 @@ async def handle_text_generate(ctx, command_str, output):
   response_text = completion.choices[0].message.content
 
   if output == "user":
-    await state.sys_channel.send(f"{ctx.author.name} called summarize for channel {ctx.channel.name}")
     await send_to_discord_user(ctx.author, response_text)
   elif output == "channel":
     await send_to_discord(ctx.channel, response_text)
