@@ -36,6 +36,7 @@ async def summarize(ctx, hours: int = 1):
 
   return full_text
 
+# Looks up the assistant details and submits the prompt to OpenAI
 async def handle_text_generate(ctx, command_str, output):
   state = StateHelper.from_context(ctx)
   client = state.openai
@@ -80,6 +81,7 @@ async def handle_text_generate(ctx, command_str, output):
     await state.sys_channel.send("Undefined output")
     return
 
+# Used by the AsyncBufferWriter to send downloads to discord
 async def write_buffer_to_discord(buffer, state: StateHelper, filename):
   buffer.seek(0)
   await state.out_channel.send(file=discord.File(fp=buffer, filename=filename))
