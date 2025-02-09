@@ -1,6 +1,6 @@
-from typing import Any
+from typing import Optional, Any
 from fastapi import Request
-import aiohttp, io, aiofiles, json, uuid
+import asyncio, aiohttp, aiofiles, io, json, uuid
 
 # A temporary helper function to load local data JSON files
 async def load_json(file_path: str) -> Any:
@@ -9,6 +9,21 @@ async def load_json(file_path: str) -> Any:
       return json.loads(await file.read())
   except FileNotFoundError:
     return None
+
+def stou(sub: str) -> uuid.UUID:
+  try:
+    cast_sub = uuid.UUID(sub)
+  except ValueError:
+    raise ValueError("Invalid GUID format")
+  return cast_sub
+
+def utos(sub: uuid.UUID) -> str:
+  return str(sub)
+
+def maybe_loads_json(result):
+  if isinstance(result, str):
+    return json.loads(result)
+  return result
 
 # Shortcut class for various objects commonly used on the app.state object
 class StateHelper:
@@ -90,19 +105,21 @@ class AsyncBufferWriter():
 class SafeDict(dict):
     def __missing__(self, key):
         return ''
-    
-def stou(sub: str) -> uuid.UUID:
-  try:
-    cast_sub = uuid.UUID(sub)
-  except ValueError:
-    raise ValueError("Invalid GUID format")
-  return cast_sub
 
-def utos(sub: uuid.UUID) -> str:
-  return str(sub)
+# An object for keeping track of LumaAI API callbacks
+class DownloadRegistry:
+  def __init__(self):
+    self._registry = {}
+    self._lock = asyncio.Lock()
 
-def maybe_loads_json(result):
-  if isinstance(result, str):
-    return json.loads(result)
-  return result
+  async def add_task(self, key: str, task: asyncio.Task):
+    async with self._lock:
+      self._registry[key] = task
 
+  async def get_task(self, key: str) -> Optional[asyncio.Task]:
+    async with self._lock:
+      return self._registry.get(key)
+
+  async def remove_task(self, key: str):
+    async with self._lock:
+      self._registry.pop(key, None)
