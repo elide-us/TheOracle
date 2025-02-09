@@ -81,6 +81,7 @@ async def handle_text_generate(ctx, command_str, output):
     return
 
 # Used by the AsyncBufferWriter to send downloads to discord
-async def write_buffer_to_discord(buffer, state: StateHelper, filename):
+async def write_buffer_to_discord(buffer, state: StateHelper, filename: str):
+  safe_filename = filename.replace(" ", "_")
   buffer.seek(0)
-  await state.out_channel.send(file=discord.File(fp=buffer, filename=filename))
+  await state.out_channel.send(file=discord.File(fp=buffer, filename=safe_filename))
