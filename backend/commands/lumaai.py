@@ -1,5 +1,5 @@
-import re
-from utils.helpers import StateHelper, AsyncBufferWriter
+import re, asyncio
+from utils.helpers import StateHelper, AsyncBufferWriter, DownloadRegistry
 from commands.discord import write_buffer_to_discord
 from commands.storage import write_buffer_to_blob
 
@@ -42,6 +42,28 @@ async def get_keyframes(start_asset, end_asset):
   return keyframes
 
 async def download_generation(video_url, state, filename):
+  registry: DownloadRegistry = state.lumaai_downloads
+
+  # Check if there's already a download in progress for this filename.
+  existing_task = await registry.get_task(filename)
+  if existing_task:
+    # Option 1: Wait for the current task to complete and then exit.
+    # await existing_task
+    # return
+    # Option 2: Simply return if you do not need to wait.
+    return
+
+  # Otherwise, create a new download task.
+  task = asyncio.create_task(_download_generation(video_url, state, filename))
+  await registry.add_task(filename, task)
+  
+  try:
+    await task
+  finally:
+    # Clean up: remove the task from the registry, regardless of success/failure.
+    await registry.remove_task(filename)
+
+async def _download_generation(video_url, state, filename):
   async with AsyncBufferWriter(video_url) as buffer:
     await write_buffer_to_blob(buffer, state, filename)
     await write_buffer_to_discord(buffer, state, filename)
