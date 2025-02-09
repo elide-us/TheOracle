@@ -4,6 +4,7 @@ from utils.helpers import StateHelper, load_json
 from datetime import datetime, timedelta, timezone
 
 async def summarize(ctx, hours: int = 1):
+  state = StateHelper.from_context(ctx)
   """Collect messages up to a max token limit or given hours."""
   max_tokens = 3800  # Hardcoded max token count
   tokenizer = tiktoken.get_encoding("cl100k_base")
@@ -30,6 +31,7 @@ async def summarize(ctx, hours: int = 1):
   
   full_text = " ".join(messages)
   await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
+  await state.sys_channel.send(f"Summarize tokens submitted: {msg_tokens}")
 
   return full_text
 
