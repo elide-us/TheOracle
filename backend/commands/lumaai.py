@@ -49,8 +49,7 @@ async def download_generation(video_url, state, filename):
     await existing_task
     return
 
-  loop = asyncio.get_event_loop()
-  task = loop.create_task(_download_generation(video_url, state, filename))
+  task = asyncio.create_task(_download_generation(video_url, state, filename))
   await registry.add_task(filename, task)
   
   try:
