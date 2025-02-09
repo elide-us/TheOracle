@@ -103,9 +103,6 @@ def utos(sub: uuid.UUID) -> str:
 
 def maybe_loads_json(result):
   if isinstance(result, str):
-    try:
-      return json.loads(result)
-    except json.JSONDecodeError as e:
-      raise ValueError(f"Error: {e}") from e
-  else:
-    raise ValueError("result not isinstance str")
+    return json.loads(result)
+  return result
+
