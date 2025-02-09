@@ -3,9 +3,10 @@ from utils.messaging import send_to_discord, send_to_discord_user
 from utils.helpers import StateHelper, load_json
 from datetime import datetime, timedelta, timezone
 
+#  Collect messages up to a max token limit or given hours.
 async def summarize(ctx, hours: int = 1):
   state = StateHelper.from_context(ctx)
-  """Collect messages up to a max token limit or given hours."""
+
   max_tokens = 3800  # Hardcoded max token count
   tokenizer = tiktoken.get_encoding("cl100k_base")
   
@@ -37,12 +38,7 @@ async def summarize(ctx, hours: int = 1):
 
 async def handle_text_generate(ctx, command_str, output):
   state = StateHelper.from_context(ctx)
-  
-  app = ctx.bot.app
-  channel = ctx.channel
-  debug = state.sys_channel
-  user = ctx.author
-  client = app.state.openai_client
+  client = state.openai
   
   split = command_str.split(" ")
   key = split[0]
@@ -50,15 +46,15 @@ async def handle_text_generate(ctx, command_str, output):
 
   json = await load_json("data_assistants.json")
   if not json:
-    await debug.send("Error loading assistant data.")
+    await state.sys_channel.send("Error loading assistant data.")
     return
 
   assistant = json[key]
   if not assistant:
-    await debug.send(f"Error loading assistant: {key} not found.")
+    await state.sys_channel.send(f"Error loading assistant: {key} not found.")
     return
 
-  ## await channel.send(f"Sending prompt to OpenAI: {prompt}")
+  ## await debug.send(f"Sending prompt to OpenAI: {prompt}")
   try:
     completion = await client.chat.completions.create(
       model=assistant["model"],
@@ -70,18 +66,18 @@ async def handle_text_generate(ctx, command_str, output):
     )
     response_text = completion.choices[0].message.content
   except Exception as e:
-    await debug.send(f"Error communicating with OpenAI: {str(e)}")
+    await state.sys_channel.send(f"Error communicating with OpenAI: {str(e)}")
     return
   
   response_text = completion.choices[0].message.content
 
   if output == "user":
-    await debug.send(f"{user.name} called summarize for channel {channel.name}")
-    await send_to_discord_user(user, response_text)
+    await state.sys_channel.send(f"{ctx.author.name} called summarize for channel {ctx.channel.name}")
+    await send_to_discord_user(ctx.author, response_text)
   elif output == "channel":
-    await send_to_discord(channel, response_text)
+    await send_to_discord(ctx.channel, response_text)
   else:
-    await debug.send("Undefined output")
+    await state.sys_channel.send("Undefined output")
     return
 
 async def write_buffer_to_discord(buffer, state: StateHelper, filename):
