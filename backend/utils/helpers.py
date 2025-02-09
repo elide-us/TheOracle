@@ -77,6 +77,9 @@ class StateHelper:
   @property
   def lumaai(self):
     return self.app.state.lumaai_client
+  @property
+  def lumaai_downloads(self):
+    return self.app.state.lumaai_downloads
   
 # Async Context Manager for buffer
 class AsyncBufferWriter():
