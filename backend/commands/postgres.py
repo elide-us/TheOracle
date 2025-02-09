@@ -61,18 +61,13 @@ async def select_prompt_keys(state: StateHelper, selected_keys: Dict[str, str]) 
     ) AS nested_data;
   """
   keys = list(selected_keys.keys())
-  await state.channel.send(f"Keys: {keys}")
   subkeys = list(selected_keys.values())
-  await state.channel.send(f"Subkeys: {subkeys}")
-
   result = await database_fetch_many(state, query, keys, subkeys)
-
   for key, subkey in selected_keys.items():
     if key in result and subkey in result[key]:
       elements[key] = result[key][subkey]
     else:
       raise ValueError(f"Key '{subkey}' not found under '{key}' in database.")
-
   return elements
 
 # Returns the categorized templates list
