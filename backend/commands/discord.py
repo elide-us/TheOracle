@@ -32,7 +32,7 @@ async def summarize(ctx, hours: int = 1):
   
   full_text = " ".join(messages)
   await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
-  await state.sys_channel.send(f"User: {ctx.author.name} Messages: {len(messages)} Tokens: {msg_tokens}")
+  await state.sys_channel.send(f"Summarize called for {ctx.author.name}. {len(messages)} messages collected. {msg_tokens} tokens used.")
 
   return full_text
 
