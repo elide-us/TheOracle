@@ -75,6 +75,9 @@ class StateHelper:
   def openai(self):
     return self.app.state.openai_client
   @property
+  def tokenizer(self):
+    return self.app.state.tokenizer
+  @property
   def lumaai(self):
     return self.app.state.lumaai_client
   @property
