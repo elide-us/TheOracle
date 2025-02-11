@@ -11,14 +11,15 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Stage Source Repository
+        uses: actions/checkout@v4
 
       - name: Install Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Lint and Build React Web App
+      - name: Vite Build React Web App
         run: |
           cd frontend
           npm ci
