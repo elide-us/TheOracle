@@ -13,7 +13,8 @@ async def lookup_access(ctx, hours: int):
   else:
     await context.sys_channel.send("No guild...")
     return
-  channels = guild.channels
+  channels = await guild.fetch_channels()
+  
   await context.sys_channel.send(f"Channels: {channels}")
   member = guild.get_member(ctx.user.id)
   if member is None:
