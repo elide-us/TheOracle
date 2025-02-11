@@ -30,6 +30,8 @@ async def summarize(ctx, args):
   context = ContextHelper(ctx)
   await context.sys_channel.send("summarize() called")
 
+  args = args.split(" ")
+
   hours = 8
   index_all = False
   if isinstance(args[0], str) and args[0].upper() == "ALL":
