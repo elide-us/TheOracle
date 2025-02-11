@@ -55,12 +55,10 @@ async def lookup_access(ctx, hours: int):
     # await context.sys_channel.send(f"Checking Channel: {channel.name}")
     perms = channel.permissions_for(ctx.author)
     if perms.view_channel:
-      await context.app.state.openai_queue.add(_summarize, channel, hours)
+      await context.app.state.openai_queue.add(_summarize, ctx, channel, hours)
       #await _summarize(ctx, channel, hours)
 
 async def summarize(ctx, *args):
-  context = ContextHelper(ctx)
-
   hours = 8
   index_all = False
   if args[0].lower() == "all":
