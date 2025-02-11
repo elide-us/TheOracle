@@ -32,17 +32,17 @@ class ContextHelper:
     self._ctx: commands.Context = ctx
     self._app = ctx.bot.app
   @property
-  def sys_channel(self) -> Any:
-    return self._ctx.get_channel(self._ctx.bot.sys_channel)
-  @property
-  def out_channel(self) -> Any:
-    return self._ctx.get_channel(self._ctx.bot.out_channel)
-  @property
   def app(self) -> FastAPI:
     return self._app
   @property
   def bot(self) -> commands.Bot:
     return self._ctx.bot
+  @property
+  def sys_channel(self) -> Any:
+    return self.bot.get_channel(self.bot.sys_channel)
+  @property
+  def out_channel(self) -> Any:
+    return self.bot.get_channel(self.bot.out_channel)
   @property
   def tokenizer(self):
     return self.app.state.tokenizer
