@@ -1,20 +1,57 @@
-import discord, tiktoken
+import discord
 from utils.messaging import send_to_discord, send_to_discord_user
 from utils.helpers import StateHelper, load_json
 from datetime import datetime, timedelta, timezone
 
+async def lookup_access(ctx, hours: int):
+  state = StateHelper.from_context(ctx)
+
+  if ctx.guild:
+    guild = ctx.guild
+  else:
+    await state.sys_channel.send("No guild...")
+    return
+  channels = guild.channels
+  member = guild.get_member(ctx.user.id)
+  if member is None:
+    try:
+      member = await guild.fetch_member(ctx.user.id)
+    except Exception as e:
+      await state.sys_channel.send(f"Error fetching member with ID: {ctx.user.id}: {e}")
+      return
+
+  for channel in channels:
+    perms = channel.permissions_for(member)
+    if perms.view_channel:
+      await _summarize(ctx, channel, hours)
+
+async def summarize(ctx, args):
+  hours = 8
+  index_all = False
+  if isinstance(args[0], str) and args[0].upper() == "ALL":
+    if len(args) > 1 and args[1].isdigit():
+      hours = int(args[1])
+    index_all = True
+  elif args[0].isdigit():
+    hours = int(args[0])
+  
+  if index_all:
+    await lookup_access(ctx, hours)
+  else:
+    await _summarize(ctx, ctx.channel, hours)
+
 #  Collect messages up to a max token limit or given hours.
-async def summarize(ctx, hours: int = 1):
+async def _summarize(ctx, channel, hours: int):
   state = StateHelper.from_context(ctx)
 
   max_tokens = 3800  # Hardcoded max token count
-  tokenizer = tiktoken.get_encoding("cl100k_base")
+  tokenizer = state.tokenizer
   
   since = datetime.now(timezone.utc) - timedelta(hours=hours)
   message_stack = []
   total_tokens = 0
 
-  async for msg in ctx.channel.history(limit=5000, oldest_first=False):
+  async for msg in channel.history(limit=5000, oldest_first=False):
     msg_text = f"{msg.author.display_name}: {msg.content}"
     msg_tokens = len(tokenizer.encode(msg_text))
 
@@ -24,15 +61,15 @@ async def summarize(ctx, hours: int = 1):
     message_stack.append(msg_text)  # Push onto stack
     total_tokens += msg_tokens
 
-  messages = list(reversed(message_stack))  # Unwind stack into chronological order
+  messages = message_stack[::-1]  # Unwind stack into chronological order
 
   if not messages:
-    await ctx.send("No messages found in the given time range.")
+    await ctx.author.send("No messages found in the given time range.")
     return
   
   full_text = " ".join(messages)
   await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
-  await state.sys_channel.send(f"Summarize called for {ctx.author.name}. {len(messages)} messages collected. {msg_tokens} tokens used.")
+  await state.sys_channel.send(f"Summarize called for {ctx.author.name}. {len(messages)} messages collected. {total_tokens} tokens used.")
 
   return full_text
 

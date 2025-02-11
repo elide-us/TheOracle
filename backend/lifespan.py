@@ -1,4 +1,4 @@
-import asyncio
+import asyncio, tiktoken
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from services.env import get_jwt_secret, get_ms_app_id, get_system_channel, get_output_channel
@@ -24,6 +24,7 @@ async def lifespan(app: FastAPI):
   app.state.ms_jwks = await fetch_ms_jwks(app.state.ms_jwks_uri)
 
   app.state.openai_client = await init_openai_client()
+  app.state.tokenizer = tiktoken.get_encoding("cl100k_base")
   app.state.lumaai_client = await init_lumaai_client()
   app.state.lumaai_downloads = DownloadRegistry()
   app.state.theoraclesa_client = await init_storage_client()
