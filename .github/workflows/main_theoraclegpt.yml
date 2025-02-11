@@ -1,7 +1,3 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
-
 name: Build and Deploy React/Python/Discord Solution to Azure Web App - theoraclegpt
 
 on:
@@ -17,36 +13,36 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python version
+      - name: Install Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Build Frontend
+      - name: Lint and Build React Web App
         run: |
           cd frontend
           npm ci
           npm run lint
           npm run build
 
-      - name: Copy Frontend Build
+      - name: Stage React Web App
         run: |
           mkdir -p backend/static/
           [ -d frontend/dist ] && cp -r frontend/dist/* backend/static/
 
-      - name: Setup and Install Backend
+      - name: Install Python Dependencies
         run: |
           cd backend
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
 
-      - name: Zip artifact for deployment
+      - name: Package Python and React Web App
         run: |
           cd backend
           zip ../release.zip ./* -r -x "venv/*"
 
-      - name: Upload artifact for deployment jobs
+      - name: Stage Release Package
         uses: actions/upload-artifact@v4
         with:
           name: python-app
@@ -66,23 +62,23 @@ jobs:
       id-token: write #This is required for requesting the JWT
 
     steps:
-      - name: Download artifact from build job
+      - name: Download Release Package
         uses: actions/download-artifact@v4
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
+      - name: Extract Python and React Web App
         run: unzip release.zip
 
       
-      - name: Login to Azure
+      - name: Runner Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_19A5CD2BF942480A969049E5E896F3CB }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_1789AE929E07449B91C5950F2AB64C55 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_CB3B6EBD7831431C8DB5449FA89F8F55 }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
