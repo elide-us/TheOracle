@@ -58,6 +58,7 @@ async def download_generation(video_url, state, filename):
     await registry.remove_task(filename)
 
 async def _download_generation(video_url, state, filename):
+  await state.out_channel.send(f"Filename: {filename}")
   async with AsyncBufferWriter(video_url) as buffer:
     await write_buffer_to_blob(buffer, state, filename)
     await write_buffer_to_discord(buffer, state, filename)
