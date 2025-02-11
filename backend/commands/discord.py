@@ -2,21 +2,39 @@ import discord, asyncio
 from utils.messaging import send_to_discord, send_to_discord_user
 from utils.helpers import StateHelper, ContextHelper, load_json
 from datetime import datetime, timedelta, timezone
-from collections import deque
+
+# class SummaryQueue:
+#   def __init__(self, delay=15):
+#     self.queue = deque()
+#     self.delay = delay
+#     self.processing = False
+#   async def add(self, func, *args, **kwargs):
+#     self.queue.append((func, args, kwargs))
+#     if not self.processing:
+#       asyncio.create_task(self._process_queue())
+#   async def _process_queue(self):
+#     self.proessing = True
+#     while self.queue:
+#       func, args, kwargs = self.queue.popleft()
+#       await func(*args, **kwargs)
+#       await asyncio.sleep(self.delay)
+#     self.processing = False
 
 class SummaryQueue:
   def __init__(self, delay=15):
-    self.queue = deque()
+    self.queue = asyncio.Queue()
     self.delay = delay
     self.processing = False
+
   async def add(self, func, *args, **kwargs):
-    self.queue.append((func, args, kwargs))
+    await self.queue.put((func, args, kwargs))
     if not self.processing:
       asyncio.create_task(self._process_queue())
+
   async def _process_queue(self):
-    self.proessing = True
-    while self.queue:
-      func, args, kwargs = self.queue.popleft()
+    self.processing = True
+    while not self.queue.empty():
+      func, args, kwargs = await self.queue.get()
       await func(*args, **kwargs)
       await asyncio.sleep(self.delay)
     self.processing = False
@@ -37,7 +55,8 @@ async def lookup_access(ctx, hours: int):
     # await context.sys_channel.send(f"Checking Channel: {channel.name}")
     perms = channel.permissions_for(ctx.author)
     if perms.view_channel:
-      await _summarize(ctx, channel, hours)
+      await context.app.state.openai_queue.add(_summarize, channel, hours)
+      #await _summarize(ctx, channel, hours)
 
 async def summarize(ctx, *args):
   context = ContextHelper(ctx)

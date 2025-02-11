@@ -6,6 +6,7 @@ from services.clients import init_openai_client, init_database_pool, init_lumaai
 from services.discord import start_discord_bot, setup_bot_routes, init_discord_bot
 from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
 from utils.helpers import DownloadRegistry
+from commands.discord import SummaryQueue
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -25,6 +26,7 @@ async def lifespan(app: FastAPI):
 
   app.state.openai_client = await init_openai_client()
   app.state.tokenizer = tiktoken.get_encoding("cl100k_base")
+  app.state.openai_queue = SummaryQueue()
   app.state.lumaai_client = await init_lumaai_client()
   app.state.lumaai_downloads = DownloadRegistry()
   app.state.theoraclesa_client = await init_storage_client()
