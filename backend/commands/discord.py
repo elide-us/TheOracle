@@ -17,19 +17,19 @@ async def lookup_access(ctx, hours: int):
   # for channel in guild.text_channels:
   #   await context.sys_channel.send(f"Channel: {channel.name}")
     
-  member = guild.get_member(ctx.user.id)
-  await context.sys_channel.send(f"Get Member: {member}")
-  if member is None:
-    try:
-      member = await guild.fetch_member(ctx.user.id)
-      await context.sys_channel.send(f"Fetch Member: {member}")
-    except Exception as e:
-      await context.sys_channel.send(f"Error fetching member with ID: {ctx.user.id}: {e}")
-      return
+  # member = guild.get_member(ctx.author.id)
+  # if member is None:
+  #   try:
+  #     member = await guild.fetch_member(ctx.user.id)
+  #     await context.sys_channel.send(f"Fetch Member: {member}")
+  #   except Exception as e:
+  #     await context.sys_channel.send(f"Error fetching member with ID: {ctx.user.id}: {e}")
+  #     return
+  # await context.sys_channel.send(f"Member: {member}")
 
   for channel in guild.text_channels:
-    await context.sys_channel.send(f"Checking Channel: {channel.name}")
-    perms = channel.permissions_for(member)
+    # await context.sys_channel.send(f"Checking Channel: {channel.name}")
+    perms = channel.permissions_for(ctx.author)
     if perms.view_channel:
       await _summarize(ctx, channel, hours)
 
