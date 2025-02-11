@@ -26,7 +26,7 @@ async def lookup_access(ctx, hours: int):
     if perms.view_channel:
       await _summarize(ctx, channel, hours)
 
-async def summarize(ctx, args):
+async def summarize(ctx, *args):
   context = ContextHelper(ctx)
   await context.sys_channel.send("summarize() called")
 
