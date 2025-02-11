@@ -1,16 +1,16 @@
 import discord
 from utils.messaging import send_to_discord, send_to_discord_user
-from utils.helpers import StateHelper, load_json
+from utils.helpers import StateHelper, ContextHelper, load_json
 from datetime import datetime, timedelta, timezone
 
 async def lookup_access(ctx, hours: int):
-  state = StateHelper.from_context(ctx)
-  state.sys_channel.send("Lookup Access called")
+  context = ContextHelper(ctx)
+  context.sys_channel.send("lookup_access() called")
 
   if ctx.guild:
     guild = ctx.guild
   else:
-    await state.sys_channel.send("No guild...")
+    await context.sys_channel.send("No guild...")
     return
   channels = guild.channels
   member = guild.get_member(ctx.user.id)
@@ -18,7 +18,7 @@ async def lookup_access(ctx, hours: int):
     try:
       member = await guild.fetch_member(ctx.user.id)
     except Exception as e:
-      await state.sys_channel.send(f"Error fetching member with ID: {ctx.user.id}: {e}")
+      await context.sys_channel.send(f"Error fetching member with ID: {ctx.user.id}: {e}")
       return
 
   for channel in channels:
@@ -27,18 +27,19 @@ async def lookup_access(ctx, hours: int):
       await _summarize(ctx, channel, hours)
 
 async def summarize(ctx, args):
-  state = StateHelper.from_context(ctx)
-  state.sys_channel.send("Summarize called")
+  context = ContextHelper(ctx)
+  context.sys_channel.send("summarize() called")
+
   hours = 8
   index_all = False
   if isinstance(args[0], str) and args[0].upper() == "ALL":
-    state.sys_channel.send("Found ALL")
+    context.sys_channel.send("Found ALL")
     index_all = True
     if len(args) > 1 and args[1].isdigit():
-      state.sys_channel.send("Found hours")
+      context.sys_channel.send("Found hours")
       hours = int(args[1])
   elif args[0].isdigit():
-    state.sys_channel.send("Found only hours")
+    context.sys_channel.send("Found only hours")
     hours = int(args[0])
   
   if index_all:
@@ -48,11 +49,11 @@ async def summarize(ctx, args):
 
 #  Collect messages up to a max token limit or given hours.
 async def _summarize(ctx, channel, hours: int):
-  state = StateHelper.from_context(ctx)
-  state.sys_channel.send("_Summarize called")
+  context = ContextHelper(ctx)
+  context.sys_channel.send("_summarize() called")
 
   max_tokens = 3800  # Hardcoded max token count
-  tokenizer = state.tokenizer
+  tokenizer = context.tokenizer
   
   since = datetime.now(timezone.utc) - timedelta(hours=hours)
   message_stack = []
@@ -76,14 +77,14 @@ async def _summarize(ctx, channel, hours: int):
   
   full_text = " ".join(messages)
   await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
-  await state.sys_channel.send(f"Summarize called for {ctx.author.name}. {len(messages)} messages collected. {total_tokens} tokens used.")
+  await context.sys_channel.send(f"Summarize called for {ctx.author.name}. {len(messages)} messages collected. {total_tokens} tokens used.")
 
   return full_text
 
 # Looks up the assistant details and submits the prompt to OpenAI
 async def handle_text_generate(ctx, command_str, output):
-  state = StateHelper.from_context(ctx)
-  client = state.openai
+  context = ContextHelper(ctx)
+  client = context.openai
   
   split = command_str.split(" ")
   key = split[0]
@@ -91,12 +92,12 @@ async def handle_text_generate(ctx, command_str, output):
 
   json = await load_json("data_assistants.json")
   if not json:
-    await state.sys_channel.send("Error loading assistant data.")
+    await context.sys_channel.send("Error loading assistant data.")
     return
 
   assistant = json[key]
   if not assistant:
-    await state.sys_channel.send(f"Error loading assistant: {key} not found.")
+    await context.sys_channel.send(f"Error loading assistant: {key} not found.")
     return
 
   ## await debug.send(f"Sending prompt to OpenAI: {prompt}")
@@ -111,7 +112,7 @@ async def handle_text_generate(ctx, command_str, output):
     )
     response_text = completion.choices[0].message.content
   except Exception as e:
-    await state.sys_channel.send(f"Error communicating with OpenAI: {str(e)}")
+    await context.sys_channel.send(f"Error communicating with OpenAI: {str(e)}")
     return
   
   response_text = completion.choices[0].message.content
@@ -121,7 +122,7 @@ async def handle_text_generate(ctx, command_str, output):
   elif output == "channel":
     await send_to_discord(ctx.channel, response_text)
   else:
-    await state.sys_channel.send("Undefined output")
+    await context.sys_channel.send("Undefined output")
     return
 
 # Used by the AsyncBufferWriter to send downloads to discord

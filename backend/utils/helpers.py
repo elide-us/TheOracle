@@ -1,6 +1,8 @@
 from typing import Optional, Any
 from fastapi import Request
 import asyncio, aiohttp, aiofiles, io, json, uuid
+from discord.ext import commands
+from fastapi import FastAPI
 
 # A temporary helper function to load local data JSON files
 async def load_json(file_path: str) -> Any:
@@ -25,6 +27,29 @@ def maybe_loads_json(result):
     return json.loads(result)
   return result
 
+class ContextHelper:
+  def __init__(self, ctx: commands.Context):
+    self._ctx: commands.Context = ctx
+    self._app = ctx.bot.app
+  @property
+  def sys_channel(self) -> Any:
+    return self._ctx.get_channel(self._ctx.bot.sys_channel)
+  @property
+  def out_channel(self) -> Any:
+    return self._ctx.get_channel(self._ctx.bot.out_channel)
+  @property
+  def app(self) -> FastAPI:
+    return self._app
+  @property
+  def bot(self) -> commands.Bot:
+    return self._ctx.bot
+  @property
+  def tokenizer(self):
+    return self.app.state.tokenizer
+  @property
+  def openai(self):
+    return self.app.state.openai_client
+
 # Shortcut class for various objects commonly used on the app.state object
 class StateHelper:
   def __init__(self, app: Any):
@@ -33,7 +58,7 @@ class StateHelper:
   def from_request(cls, request: Request):
     return cls(request.app)
   @classmethod
-  def from_context(cls, ctx: Any):
+  def from_context(cls, ctx: commands.Context):
     return cls(ctx.bot.app)
   @property
   def app(self) -> Any:
