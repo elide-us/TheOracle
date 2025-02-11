@@ -35,18 +35,14 @@ async def lookup_access(ctx, hours: int):
 
 async def summarize(ctx, *args):
   context = ContextHelper(ctx)
-  await context.sys_channel.send("summarize() called")
 
   hours = 8
   index_all = False
   if args[0].lower() == "all":
-    await context.sys_channel.send("Found ALL")
     index_all = True
     if len(args) > 1 and args[1].isdigit():
-      await context.sys_channel.send("Found hours")
       hours = int(args[1])
   elif args[0].isdigit():
-    await context.sys_channel.send("Found only hours")
     hours = int(args[0])
   
   if index_all:
@@ -84,7 +80,7 @@ async def _summarize(ctx, channel, hours: int):
   
   full_text = " ".join(messages)
   await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
-  await context.sys_channel.send(f"Summarize called for {ctx.author.name}. {len(messages)} messages collected. {total_tokens} tokens used.")
+  await context.sys_channel.send(f"Summarize {hours} hours called for {ctx.author.name}. {len(messages)} messages collected, {total_tokens} tokens used.")
 
   return full_text
 
