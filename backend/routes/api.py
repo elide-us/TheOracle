@@ -183,7 +183,6 @@ async def post_lumagen_callback(request: Request):
   if generation.get("state") == "completed":
     video_url = generation.get("assets", {}).get("video")
     filename = f"{generation.get("id")}.mp4"
-    await state.out_channel.send(f"Filename: {filename}")
     await download_generation(video_url, state, filename)
   else:
     await state.out_channel.send("Dreaming...")

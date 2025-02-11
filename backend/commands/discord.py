@@ -5,6 +5,7 @@ from datetime import datetime, timedelta, timezone
 
 async def lookup_access(ctx, hours: int):
   state = StateHelper.from_context(ctx)
+  state.sys_channel.send("Lookup Access called")
 
   if ctx.guild:
     guild = ctx.guild
@@ -26,13 +27,18 @@ async def lookup_access(ctx, hours: int):
       await _summarize(ctx, channel, hours)
 
 async def summarize(ctx, args):
+  state = StateHelper.from_context(ctx)
+  state.sys_channel.send("Summarize called")
   hours = 8
   index_all = False
   if isinstance(args[0], str) and args[0].upper() == "ALL":
-    if len(args) > 1 and args[1].isdigit():
-      hours = int(args[1])
+    state.sys_channel.send("Found ALL")
     index_all = True
+    if len(args) > 1 and args[1].isdigit():
+      state.sys_channel.send("Found hours")
+      hours = int(args[1])
   elif args[0].isdigit():
+    state.sys_channel.send("Found only hours")
     hours = int(args[0])
   
   if index_all:
@@ -43,6 +49,7 @@ async def summarize(ctx, args):
 #  Collect messages up to a max token limit or given hours.
 async def _summarize(ctx, channel, hours: int):
   state = StateHelper.from_context(ctx)
+  state.sys_channel.send("_Summarize called")
 
   max_tokens = 3800  # Hardcoded max token count
   tokenizer = state.tokenizer
