@@ -14,11 +14,6 @@ jobs:
       - name: Stage Source Repository
         uses: actions/checkout@v4
 
-      - name: Install Python 3.12
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.12'
-
       - name: Vite Build React Web App
         run: |
           cd frontend
@@ -30,6 +25,11 @@ jobs:
         run: |
           mkdir -p backend/static/
           [ -d frontend/dist ] && cp -r frontend/dist/* backend/static/
+
+      - name: Install Python 3.12
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
 
       - name: Install Python Dependencies
         run: |
