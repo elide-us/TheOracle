@@ -49,14 +49,14 @@ async def lookup_access(ctx, hours: int):
     await context.sys_channel.send(f"Guild: {guild.id} {guild.name}")
   else:
     await context.sys_channel.send("No guild...")
-    return
+    return None
 
   for channel in guild.text_channels:
     # await context.sys_channel.send(f"Checking Channel: {channel.name}")
     perms = channel.permissions_for(ctx.author)
     if perms.view_channel:
-      await context.app.state.openai_queue.add(_summarize, ctx, channel, hours)
-      #await _summarize(ctx, channel, hours)
+      # return await context.app.state.openai_queue.add(_summarize, ctx, channel, hours)
+      return await _summarize(ctx, channel, hours)
 
 async def summarize(ctx, *args):
   hours = 8
@@ -69,9 +69,9 @@ async def summarize(ctx, *args):
     hours = int(args[0])
   
   if index_all:
-    await lookup_access(ctx, hours)
+    return await lookup_access(ctx, hours)
   else:
-    await _summarize(ctx, ctx.channel, hours)
+    return await _summarize(ctx, ctx.channel, hours)
 
 #  Collect messages up to a max token limit or given hours.
 async def _summarize(ctx, channel, hours: int):
