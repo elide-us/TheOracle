@@ -51,12 +51,14 @@ async def lookup_access(ctx, hours: int):
     await context.sys_channel.send("No guild...")
     return None
 
+  results = []
   for channel in guild.text_channels:
-    # await context.sys_channel.send(f"Checking Channel: {channel.name}")
+    await ctx.author.send(f"Collecting messages in channel {channel.name}")
     perms = channel.permissions_for(ctx.author)
     if perms.view_channel:
-      # return await context.app.state.openai_queue.add(_summarize, ctx, channel, hours)
-      return await _summarize(ctx, channel, hours)
+      result = await context.app.state.openai_queue.add(_summarize, ctx, channel, hours)
+      results.append(result)
+      # return await _summarize(ctx, channel, hours)
 
 async def summarize(ctx, *args):
   hours = 8
