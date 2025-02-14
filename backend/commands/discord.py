@@ -178,3 +178,4 @@ async def handle_command_assistants(ctx, *args):
   return await database_fetch_many(context.pool, query, *args)
 
 
+
