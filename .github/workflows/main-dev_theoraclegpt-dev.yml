@@ -1,8 +1,4 @@
-# Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
-# More GitHub Actions for Azure: https://github.com/Azure/actions
-# More info on Python, GitHub Actions, and Azure App Service: https://aka.ms/python-webapps-actions
-
-name: Build and deploy Python app to Azure Web App - theoraclegpt-dev
+name: Build and Deploy React/Python/Discord Solution to Azure Web App - theoraclegpt-dev
 
 on:
   push:
@@ -14,36 +10,47 @@ jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
-      contents: read #This is required for actions/checkout
+      contents: read
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Stage Source Repository
+        uses: actions/checkout@v4
 
-      - name: Set up Python version
+      - name: Vite Build React Web App
+        run: |
+          cd frontend
+          npm ci
+          npm run lint
+          npm run build
+
+      - name: Stage React Web App
+        run: |
+          mkdir -p backend/static/
+          [ -d frontend/dist ] && cp -r frontend/dist/* backend/static/
+
+      - name: Install Python 3.12
         uses: actions/setup-python@v5
         with:
           python-version: '3.12'
 
-      - name: Create and start virtual environment
+      - name: Install Python Dependencies
         run: |
+          cd backend
           python -m venv venv
           source venv/bin/activate
-      
-      - name: Install dependencies
-        run: pip install -r requirements.txt
-        
-      # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
+          pip install -r requirements.txt
 
-      - name: Zip artifact for deployment
-        run: zip release.zip ./* -r
+      - name: Package Python and React Web App
+        run: |
+          cd backend
+          zip ../release.zip ./* -r -x "venv/*"
 
-      - name: Upload artifact for deployment jobs
+      - name: Stage Release Package
         uses: actions/upload-artifact@v4
         with:
           name: python-app
           path: |
             release.zip
-            !venv/
 
   deploy:
     runs-on: ubuntu-latest
@@ -56,26 +63,24 @@ jobs:
       contents: read #This is required for actions/checkout
 
     steps:
-      - name: Download artifact from build job
+      - name: Download Release Package
         uses: actions/download-artifact@v4
         with:
           name: python-app
 
-      - name: Unzip artifact for deployment
+      - name: Extract Python and React Web App
         run: unzip release.zip
 
-      
-      - name: Login to Azure
+      - name: Runnger Login to Azure
         uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZUREAPPSERVICE_CLIENTID_F80996D78F45480CB170C45663222B39 }}
           tenant-id: ${{ secrets.AZUREAPPSERVICE_TENANTID_B837A10399AF45CAA4086839CAF42337 }}
           subscription-id: ${{ secrets.AZUREAPPSERVICE_SUBSCRIPTIONID_485F50803011479598534411A5F62B1E }}
 
-      - name: 'Deploy to Azure Web App'
+      - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         id: deploy-to-webapp
         with:
           app-name: 'theoraclegpt-dev'
           slot-name: 'Production'
-          
