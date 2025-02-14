@@ -2,6 +2,7 @@ import discord, asyncio
 from utils.messaging import send_to_discord, send_to_discord_user
 from utils.helpers import StateHelper, ContextHelper, load_json
 from datetime import datetime, timedelta, timezone
+from commands.postgres import database_fetch_one
 
 # class SummaryQueue:
 #   def __init__(self, delay=15):
@@ -23,23 +24,32 @@ from datetime import datetime, timedelta, timezone
 class SummaryQueue:
   def __init__(self, delay=15):
     self.queue = asyncio.Queue()
+    self._lock = asyncio.Lock()
     self.delay = delay
     self.processing = False
-
+    self._processing_task = None
   async def add(self, func, *args, **kwargs):
-    await self.queue.put((func, args, kwargs))
-    if not self.processing:
-      asyncio.create_task(self._process_queue())
+    async with self._lock:
+      await self.queue.put((func, args, kwargs))
+      if not self.processing:
+        self.processing = True
+        loop = asyncio.get_event_loop()
+        self._processing_task = loop.create_task(self._process_queue())
+    async def _process_queue(self):
+      try:
+        while not self.queue.empty():
+          func, args, kwargs = await self.queue.get()
+          await func(*args, **kwargs)
+          await asyncio.sleep(self.delay)
+        self.processing = False
+      except asyncio.CancelledError:
+        raise
+      finally:
+        async with self._lock:
+          self.processing = False
 
-  async def _process_queue(self):
-    self.processing = True
-    while not self.queue.empty():
-      func, args, kwargs = await self.queue.get()
-      await func(*args, **kwargs)
-      await asyncio.sleep(self.delay)
-    self.processing = False
-
-
+# Function to look up a user's guild and then check their channel read access
+# and summarize only channels they have access to
 async def lookup_access(ctx, hours: int):
   context = ContextHelper(ctx)
   await context.sys_channel.send("lookup_access() called")
@@ -60,6 +70,7 @@ async def lookup_access(ctx, hours: int):
       results.append(result)
       # return await _summarize(ctx, channel, hours)
 
+# New entry point for summarize that captures and extracts the "all" argument
 async def summarize(ctx, *args):
   hours = 8
   index_all = False
@@ -75,7 +86,7 @@ async def summarize(ctx, *args):
   else:
     return await _summarize(ctx, ctx.channel, hours)
 
-#  Collect messages up to a max token limit or given hours.
+# Collect messages up to a max token limit or given hours.
 async def _summarize(ctx, channel, hours: int):
   context = ContextHelper(ctx)
   await context.sys_channel.send("_summarize() called")
@@ -105,7 +116,7 @@ async def _summarize(ctx, channel, hours: int):
   
   full_text = " ".join(messages)
   await ctx.author.send(f"Collected {len(messages)} messages for summarization.")
-  await context.sys_channel.send(f"Summarize {hours} hours called for {ctx.author.name}. {len(messages)} messages collected, {total_tokens} tokens used.")
+  await context.sys_channel.send(f"Summarize {hours} hours history on channel {ctx.guild.name}:{ctx.channel.name} called for {ctx.author.name}. {len(messages)} messages collected, {total_tokens} tokens used.")
 
   return full_text
 
@@ -158,3 +169,12 @@ async def write_buffer_to_discord(buffer, state: StateHelper, filename: str):
   safe_filename = filename.replace(" ", "_")
   buffer.seek(0)
   await state.out_channel.send(file=discord.File(fp=buffer, filename=safe_filename))
+
+async def handle_command_assistants(ctx, *args):
+  context = ContextHelper(ctx)
+  query = """
+    SELECT jsonb_agg(name) AS names FROM assistants;
+  """
+  return await database_fetch_one(context.pool, query, *args)
+
+
