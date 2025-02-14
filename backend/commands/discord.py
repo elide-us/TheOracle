@@ -2,7 +2,7 @@ import discord, asyncio
 from utils.messaging import send_to_discord, send_to_discord_user
 from utils.helpers import StateHelper, ContextHelper, load_json
 from datetime import datetime, timedelta, timezone
-from commands.postgres import database_fetch_one
+from commands.postgres import database_fetch_many
 
 # class SummaryQueue:
 #   def __init__(self, delay=15):
@@ -175,6 +175,6 @@ async def handle_command_assistants(ctx, *args):
   query = """
     SELECT jsonb_agg(name) AS names FROM assistants;
   """
-  return await database_fetch_one(context.pool, query, *args)
+  return await database_fetch_many(context.pool, query, *args)
 
 
