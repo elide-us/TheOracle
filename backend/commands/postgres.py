@@ -4,40 +4,40 @@ from typing import Dict
 from utils.helpers import StateHelper, stou, utos, maybe_loads_json
 
 # Use to get complex data
-async def database_fetch_many(state: StateHelper, query: str, *args):
-  async with state.pool.acquire() as conn:
+async def database_fetch_many(pool, query: str, *args):
+  async with pool.acquire() as conn:
     result = await conn.fetchval(query, *args)
     return maybe_loads_json(result)
 
 # Use to get one row of data
-async def database_fetch_one(state: StateHelper, query: str, *args):
-  async with state.pool.acquire() as conn:
+async def database_fetch_one(pool, query: str, *args):
+  async with pool.acquire() as conn:
     result = await conn.fetchrow(query, *args)
     return maybe_loads_json(result)
 
 # Use for UPDATE, CREATE, etc.
-async def database_run(state: StateHelper, query: str, *args):
-  async with state.pool.acquire() as conn:
+async def database_run(pool, query: str, *args):
+  async with pool.acquire() as conn:
     await conn.execute(query, *args)
   return None
 
 # Use to get complex data with a user's bearer token guid
-async def database_secure_fetch_many(state: StateHelper, query: str, sub: str, *args):
-  async with state.pool.acquire() as conn:
+async def database_secure_fetch_many(pool, query: str, sub: str, *args):
+  async with pool.acquire() as conn:
     sub_uuid = stou(sub)
     result = await conn.fetchval(query, sub_uuid, *args)
     return maybe_loads_json(result)
 
 # Use to get one row of data with a user's bearer token guid
-async def database_secure_fetch_one(state: StateHelper, query: str, sub: str, *args):
-  async with state.pool.acquire() as conn:
+async def database_secure_fetch_one(pool, query: str, sub: str, *args):
+  async with pool.acquire() as conn:
     sub_uuid = stou(sub)
     result = await conn.fetchrow(query, sub_uuid, *args)
     return maybe_loads_json(result)
 
 # Use for UPDATE, CREATE, etc. with a user's bearer token guid
-async def database_secure_run(state: StateHelper, query: str, sub: str, *args):
-  async with state.pool.acquire() as conn:
+async def database_secure_run(pool, query: str, sub: str, *args):
+  async with pool.acquire() as conn:
     sub_uuid = stou(sub)
     await conn.execute(query, sub_uuid, *args)
   return None
@@ -62,7 +62,7 @@ async def select_prompt_keys(state: StateHelper, selected_keys: Dict[str, str]) 
   """
   keys = list(selected_keys.keys())
   subkeys = list(selected_keys.values())
-  result = await database_fetch_many(state, query, keys, subkeys)
+  result = await database_fetch_many(state.pool, query, keys, subkeys)
   for key, subkey in selected_keys.items():
     if key in result and subkey in result[key]:
       elements[key] = result[key][subkey]
@@ -95,7 +95,7 @@ async def select_category_templates(state: StateHelper):
     SELECT json_object_agg(category, templates) AS result
     FROM template_data;
   """
-  return await database_fetch_many(state, query)
+  return await database_fetch_many(state.pool, query)
 
 # Returns the keys for a selected template
 async def select_template_keys(state: StateHelper, layer):
@@ -109,7 +109,7 @@ async def select_template_keys(state: StateHelper, layer):
       GROUP BY key_Value
     ) AS grouped;
   """
-  return await database_fetch_many(state, query, id)
+  return await database_fetch_many(state.pool, query, id)
 
 ################################################################################
 ## Database Queries for Authentication
@@ -131,7 +131,7 @@ async def select_ms_user(state: StateHelper, microsoft_id):
       ON u.default_provider = p.id
     WHERE u.microsoft_id = $1;
   """
-  result = await database_fetch_one(state, query, microsoft_id)
+  result = await database_fetch_one(state.pool, query, microsoft_id)
   await state.sys_channel.send(f"Found {result["provider_name"]} user for {result["guid"]}: {result["username"]}, {result["email"]}, Credits: {result["credits"]}")
   return result
 
@@ -142,7 +142,7 @@ async def insert_ms_user(state: StateHelper, microsoft_id, email, username):
     INSERT INTO users (guid, microsoft_id, email, username, security, credits)
     VALUES ($1, $2, $3, $4, 1, 50);
   """
-  await database_run(state, query, new_uuid, microsoft_id, email, username)
+  await database_run(state.pool, query, new_uuid, microsoft_id, email, username)
   result = await select_ms_user(state, microsoft_id)
   await state.sys_channel.send(f"Added user for {new_uuid}: {username}, {email}")
   return result
@@ -159,7 +159,7 @@ async def select_user_details(state: StateHelper, sub):
     LEFT JOIN auth_provider ap ON u.default_provider = ap.id
     WHERE u.guid = $1
   """
-  result = await database_secure_fetch_one(state, query, sub)
+  result = await database_secure_fetch_one(state.pool, query, sub)
   return {
     "guid": sub,
     "username": result.get("username", "No user found"),
@@ -174,7 +174,7 @@ async def select_user_security(state: StateHelper, sub):
   query = """
     SELECT security, guid FROM users WHERE guid = $1
   """
-  result = await database_secure_fetch_one(state, query, sub)
+  result = await database_secure_fetch_one(state.pool, query, sub)
   return {
     "guid": sub,
     "security": result["security"]
@@ -196,7 +196,7 @@ async def select_public_routes(state: StateHelper):
       WHERE security < 1 
       ORDER BY sequence) subquery;
   """
-  return await database_fetch_many(state, query)
+  return await database_fetch_many(state.pool, query)
 
 # Returns routes based on security level
 async def select_secure_routes(state: StateHelper, sub):
@@ -216,7 +216,7 @@ async def select_secure_routes(state: StateHelper, sub):
       ORDER BY r.sequence
     ) subquery;
   """
-  return await database_secure_fetch_many(state, query, sub)
+  return await database_secure_fetch_many(state.pool, query, sub)
 
 ################################################################################
 ## Database Queries for Credits
