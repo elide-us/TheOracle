@@ -1,8 +1,8 @@
 import discord
 from discord.ext import commands
 from commands.openai import handle_tts
-from commands.discord import handle_text_generate, summarize
-from utils.helpers import StateHelper, load_json
+from commands.discord import handle_text_generate, summarize, handle_command_assistants
+from utils.helpers import StateHelper
 from services.env import get_discord_token
 from commands.lumaai import generate_video
 
@@ -53,8 +53,9 @@ def setup_bot_routes(bot: commands.Bot):
 
   @bot.command(name="assistants", help="Lists the assistants available for the !chat command.")
   async def command_assistants(ctx, *args):
-    data = await load_json("data_assistants.json")
-    assistants_list = ", ".join(data.keys())
+    query_result = await handle_command_assistants(ctx, *args)
+    names_list = query_result.get("names", [])
+    assistants_list = ", ".join(names_list)
     await ctx.send(f"Available assistants: {assistants_list}")
 
   @bot.command(name="chat", help="!chat <assistant> <your question here> Each assistant is tuned to provide specific expertise.")

@@ -49,6 +49,9 @@ class ContextHelper:
   @property
   def openai(self):
     return self.app.state.openai_client
+  @property
+  def pool(self) -> Any:
+    return self.app.state.theoraclegp_pool
 
 # Shortcut class for various objects commonly used on the app.state object
 class StateHelper:
