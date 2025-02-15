@@ -3,7 +3,8 @@ from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from services.env import get_jwt_secret, get_ms_app_id, get_system_channel, get_output_channel
 from services.clients import init_openai_client, init_database_pool, init_lumaai_client, init_storage_client
-from services.discord import start_discord_bot, setup_bot_routes, init_discord_bot
+from services.discord import start_discord_bot, init_discord_bot
+from routes.bot import setup_bot_routes
 from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
 from utils.helpers import DownloadRegistry
 from commands.discord import SummaryQueue
