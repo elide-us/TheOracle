@@ -27,6 +27,7 @@ def maybe_loads_json(result):
     return json.loads(result)
   return result
 
+# Shortcut class for various objects commonly used on the app.state object, populated from bot context
 class ContextHelper:
   def __init__(self, ctx: commands.Context):
     self._ctx: commands.Context = ctx
@@ -53,7 +54,7 @@ class ContextHelper:
   def pool(self) -> Any:
     return self.app.state.theoraclegp_pool
 
-# Shortcut class for various objects commonly used on the app.state object
+# Shortcut class for various objects commonly used on the app.state object, populated from api request
 class StateHelper:
   def __init__(self, app: Any):
     self._app = app
@@ -139,6 +140,8 @@ class AsyncBufferWriter():
 class SafeDict(dict):
     def __missing__(self, key):
         return ''
+
+
 
 # An object for keeping track of LumaAI API callbacks
 class DownloadRegistry:
