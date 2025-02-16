@@ -1,11 +1,11 @@
-import io, asyncio
+import io, asyncio, discord
 from openai import OpenAIError
 from typing import Dict
 from datetime import datetime, timezone
 from commands.discord import write_buffer_to_discord
 from commands.storage import write_buffer_to_blob
 # from commands.postgres import select_prompt_keys
-from utils.helpers import StateHelper, AsyncBufferWriter, SafeDict, load_json
+from utils.helpers import StateHelper, ContextHelper, AsyncBufferWriter, SafeDict, load_json
 
 ###############################################################################
 ## Basic Helper Functions
@@ -129,16 +129,16 @@ async def generate_image(state: StateHelper, template_key: str, selected_keys: d
 ###############################################################################
 
 # Updated to use new StateHelper from_context
-async def handle_tts(ctx, command_str):
-  state = StateHelper.from_context(ctx)
-  client = state.openai
+async def handle_tts(ctx, *args):
+  context = ContextHelper(ctx)
+  client = context.openai
+  state = context.app.state
   
-  split = command_str.split(" ")
-  prefix, voice = split[0], split[1]
-  text = " ".join(split[2:])
+  prefix, voice = args[0], args[1]
+  text = " ".join(args[2:])
   filename = f"{prefix}_{voice}_{text}.mp3"
 
-  await state.channel.send(f"Starting TTS generation for text: {text}")
+  await ctx.send(f"Starting TTS generation for text: {text}")
 
   try:
     buffer = io.BytesIO()
@@ -149,9 +149,12 @@ async def handle_tts(ctx, command_str):
     ) as response:
       async for chunk in response.iter_bytes():
         buffer.write(chunk)  # Write chunks to the buffer
-      await write_buffer_to_blob(buffer, state, filename)
-      await write_buffer_to_discord(buffer, state, filename)
+      safe_filename = filename.replace(" ", "_")
+      await write_buffer_to_blob(buffer, state, safe_filename)
+      await write_buffer_to_discord(buffer, state, safe_filename)
+      buffer.seek(0)
+      await ctx.send(file=discord.File(fp=buffer, filename=safe_filename))
   except Exception as e:
-    await state.channel.send(f"Error communicating with OpenAI: {str(e)}")
+    await ctx.send(f"Error communicating with OpenAI: {str(e)}")
     return
   

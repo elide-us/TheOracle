@@ -2,7 +2,6 @@ from discord.ext import commands
 from commands.discord import handle_text_generate, summarize, handle_command_assistants
 from commands.lumaai import generate_video
 from commands.openai import handle_tts
-from utils.helpers import StateHelper
 
 def setup_bot_routes(bot: commands.Bot):
   @bot.event
@@ -18,11 +17,8 @@ def setup_bot_routes(bot: commands.Bot):
 
   @bot.command(name="tts", help="!tts <prefix> <voice> <text to generate> Will convert text to speech for provided text.")
   async def command_tts(ctx, *args):
-    state = StateHelper.from_context(ctx)
-    command_str = " ".join(args)
-    response = await handle_tts(state, command_str)
-    if response:
-      await state.channel.send(response)
+    response = await handle_tts(ctx, *args)
+    await ctx.send(response)
 
   # @bot.command(name="hello", help="Provides a greeting message.")
   # async def command_hello(ctx):
@@ -39,9 +35,8 @@ def setup_bot_routes(bot: commands.Bot):
 
   @bot.command(name="assistants", help="Lists the assistants available for the !chat command.")
   async def command_assistants(ctx, *args):
-    query_result = await handle_command_assistants(ctx, *args)
-    assistants_list = ", ".join(query_result)
-    await ctx.send(f"Available assistants: {assistants_list}")
+    response = await handle_command_assistants(ctx, *args)
+    await ctx.send(f"Available assistants: {response}")
 
   @bot.command(name="chat", help="!chat <assistant> <your question here> Each assistant is tuned to provide specific expertise.")
   async def command_chat(ctx, *args):

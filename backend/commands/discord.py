@@ -175,9 +175,9 @@ async def handle_command_assistants(ctx, *args):
   query = """
     SELECT jsonb_agg(name) AS names FROM assistants;
   """
-  result = await database_fetch_many(context.pool, query, *args)
-  context.sys_channel.send(f"Result: {result}")
-  return result
+  query_result = await database_fetch_many(context.pool, query, *args)
+  assistants_list = ", ".join(query_result)
+  return assistants_list
 
 
 
