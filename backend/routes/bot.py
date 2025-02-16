@@ -42,9 +42,7 @@ def setup_bot_routes(bot: commands.Bot):
     await ctx.send(f"command_assistants()")
     query_result = await handle_command_assistants(ctx, *args)
     await ctx.send(f"query_result: {query_result}")
-    names_list = query_result["names"]
-    await ctx.send(f"names_list: {names_list}")
-    assistants_list = ", ".join(names_list)
+    assistants_list = ", ".join(query_result)
     await ctx.send(f"Available assistants: {assistants_list}")
 
   @bot.command(name="chat", help="!chat <assistant> <your question here> Each assistant is tuned to provide specific expertise.")
