@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y ffmpeg
 
 WORKDIR /app
 
-COPY . ./
+COPY backend/ ./
 COPY --from=builder backend/static ./static
 
 RUN ls -al /app
