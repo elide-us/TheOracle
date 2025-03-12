@@ -8,7 +8,7 @@ export default defineConfig(({ mode }) => {
     	plugins: [react()],
    		base: isProduction ? '/static/' : '/',
     	build: {
-      		outDir: 'dist',
+      		outDir: '../backend/static',
       		assetsDir: 'assets',
   		}
 	}

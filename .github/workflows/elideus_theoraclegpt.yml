@@ -1,0 +1,49 @@
+name: Build and deploy container app to Azure Web App - elideus-metal
+
+on:
+  push:
+    branches:
+      - elideus
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: 'ubuntu-latest'
+
+    steps:
+    - name: Stage Source Repository
+      uses: actions/checkout@v2
+
+    - name: Set up Docker Buildx
+      uses: docker/setup-buildx-action@v2
+
+    - name: Log in to registry
+      uses: docker/login-action@v2
+      with:
+        registry: https://elideus.azurecr.io/
+        username: ${{ secrets.AzureAppService_ContainerUsername_923a9c64f7a243219bf38af9c16b4009 }}
+        password: ${{ secrets.AzureAppService_ContainerPassword_a784b5c25cd349e6832729bfc555979c }}
+
+    - name: Build and push container image to registry
+      uses: docker/build-push-action@v3
+      with:
+        push: true
+        tags: elideus.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_923a9c64f7a243219bf38af9c16b4009 }}/elideus-metal:${{ github.sha }}
+        file: ./Dockerfile
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    environment:
+      name: 'production'
+      url: ${{ steps.deploy-to-webapp.outputs.webapp-url }}
+
+    steps:
+    - name: Deploy to Azure Web App
+      id: deploy-to-webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: 'elideus-metal'
+        slot-name: 'production'
+        publish-profile: ${{ secrets.AzureAppService_PublishProfile_9a8c63b03ee34b31b687805e5f088a05 }}
+        images: 'elideus.azurecr.io/${{ secrets.AzureAppService_ContainerUsername_923a9c64f7a243219bf38af9c16b4009 }}/elideus-metal:${{ github.sha }}'
