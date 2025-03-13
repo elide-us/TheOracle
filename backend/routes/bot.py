@@ -24,6 +24,15 @@ def setup_bot_routes(bot: commands.Bot):
   # async def command_hello(ctx):
   #   await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
 
+  @bot.command(name="uwu", help="!uwu will provide colorful context.")
+  async def command_uwu(ctx, *args):
+    text = await summarize(ctx, *args)
+
+    command_str = f"uwu Provide contextual support, enthusiasm, and color for the recent conversations: {text}"
+    e = await handle_text_generate(ctx, command_str, "channel")
+    if e:
+      await ctx.send(f"Exceptiopn: {e}")
+
   @bot.command(name="summarize", help="!summarize <hours> Will collect message history for defined hours (default 1) and provide a summary.")
   async def command_summarize(ctx, *args):
     text = await summarize(ctx, *args)
