@@ -23,10 +23,10 @@ async def handle_bsky(ctx: commands.Context, command: str, message: str):
       # max_tokens = 3800
       # tokenizer = context.tokenizer
 
-      post_text = f"uwu {message}. Here are the most recent posts for context, respond briefly and appropriately: "
+      post_text = f"uwu {message}. Here are the most recent posts for context, respond appropriately: "
       # post_tokens = len(tokenizer.encode(post_text))
       
-      posts = await client.app.bsky.feed.post.list(client.me.did, limit=2)
+      posts = await client.app.bsky.feed.post.list(client.me.did, limit=5)
       for uri, post in posts.records.items():
         # post_tokens += len(tokenizer.encode(post.text))
         post_text += f"# {post.text} "
