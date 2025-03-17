@@ -21,10 +21,6 @@ def setup_bot_routes(bot: commands.Bot):
     response = await handle_tts(ctx, *args)
     await ctx.send(response)
 
-  # @bot.command(name="hello", help="Provides a greeting message.")
-  # async def command_hello(ctx):
-  #   await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
-
   @bot.command(name="uwu", help="!uwu will provide colorful context.")
   async def command_uwu(ctx, *args):
     text = await summarize(ctx, *args)
@@ -62,6 +58,10 @@ def setup_bot_routes(bot: commands.Bot):
     prompt = " ".join(args[2:])
     await generate_video(ctx, frame0, frame1, prompt)
  
+  # @bot.command(name="hello", help="Provides a greeting message.")
+  # async def command_hello(ctx):
+  #   await ctx.send("Greetings from TheOracleGPT, an AI-powered Discord bot by Elideus!")
+
   # @bot.command(name="image")
   # async def image_gen(ctx, *args):
   #   command_str = " ".join(args)
