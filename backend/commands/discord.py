@@ -1,5 +1,5 @@
 import discord, asyncio
-from utils.messaging import send_to_discord, send_to_discord_user
+from utils.messaging import send_to_discord, send_to_discord_user, send_to_bsky
 from utils.helpers import StateHelper, ContextHelper, load_json
 from datetime import datetime, timedelta, timezone
 from commands.postgres import database_fetch_many
@@ -160,6 +160,9 @@ async def handle_text_generate(ctx, command_str, output):
     await send_to_discord_user(ctx.author, response_text)
   elif output == "channel":
     await send_to_discord(ctx.channel, response_text)
+  elif output == "bsky":
+    await send_to_discord(ctx.channel, response_text)
+    await send_to_bsky(ctx, response_text)
   else:
     await context.sys_channel.send("Undefined output")
     return
