@@ -161,6 +161,7 @@ async def handle_text_generate(ctx, command_str, output):
   elif output == "channel":
     await send_to_discord(ctx.channel, response_text)
   elif output == "bsky":
+    await ctx.channel.send("Debug - bsky match")
     await send_to_discord(ctx.channel, response_text)
     await send_to_bsky(ctx, response_text)
   else:
