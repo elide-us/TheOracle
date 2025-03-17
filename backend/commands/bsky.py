@@ -13,7 +13,7 @@ async def handle_bsky(ctx: commands.Context, command: str, message: str):
       await ctx.channel.send(f"{post.uri}, {post.cid}, {profile.display_name}")
 
     case "list":
-      posts = client.app.bsky.feed.post.list(client.me.did, limit=2)
+      posts = await client.app.bsky.feed.post.list(client.me.did, limit=2)
       for uri, post in posts.records.items():
         await ctx.channel.send(f"{uri}, {post.text}")
     case _:
