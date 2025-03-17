@@ -1,4 +1,6 @@
 import asyncio
+from discord.ext import commands
+from atproto import client_utils
 
 # A helper function that chunks and sends text to Discord to avoid flooding the gateway
 async def send_to_discord(channel, text: str, max_message_size: int = 1998, delay: float = 1.0):
@@ -42,3 +44,8 @@ async def send_to_discord_user(user, text: str, max_message_size: int = 1998, de
         await asyncio.sleep(delay)
       
       start = end
+
+async def send_to_bsky(ctx: commands.Context, message: str):
+  client = ctx.bot.app.state.bsky_client
+  text = client_utils.TextBuilder().text(message)
+  await client.send_post(text)
