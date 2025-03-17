@@ -26,14 +26,15 @@ async def handle_bsky(ctx: commands.Context, command: str, message: str):
       post_text = f"uwu {message}. Here are the most recent posts for context, respond briefly and appropriately: "
       # post_tokens = len(tokenizer.encode(post_text))
       
-      posts = await client.app.bsky.feed.post.list(client.me.did, limit=5)
-      for post in posts.records.items():
+      posts = await client.app.bsky.feed.post.list(client.me.did, limit=2)
+      for uri, post in posts.records.items():
         # post_tokens += len(tokenizer.encode(post.text))
         post_text += f"# {post.text} "
 
-      await ctx.channel.send("Sending handle text generate.")
+      await context.sys_channel.send("DEBUG: Sending handle text generate.")
       e = await handle_text_generate(ctx, post_text, "bsky")
+      if e:
+        await context.sys_channel.send(f"Exception: {e}")
 
     case _:
-      return None
-  return None
+      await context.sys_channel.send("DEBUG: case _")
