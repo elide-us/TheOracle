@@ -31,12 +31,9 @@ async def handle_bsky(ctx: commands.Context, command: str, message: str):
         # post_tokens += len(tokenizer.encode(post.text))
         post_text += f"# {post.text} "
 
-      command_str = f"uwu Respond briefly and appropriately to the following messages: {post_text}."
+      command_str = f"uwu {message}. Here are the most recent posts for context, respond briefly and appropriately: {post_text}."
       e = await handle_text_generate(ctx, command_str, "bsky")
 
     case _:
       return None
   return None
-
-
-
