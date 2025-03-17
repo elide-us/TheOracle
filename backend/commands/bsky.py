@@ -14,16 +14,16 @@ async def handle_bsky(ctx: commands.Context, command: str, message: str):
       text = client_utils.TextBuilder().text(message)
       post = await client.send_post(text)
       await client.like(post.uri, post.cid)
-      await ctx.channel.send(f"{post.uri}, {post.cid}, {profile.display_name}")
+      await ctx.channel.send(f"{post.uri}, {profile.display_name}")
     case "list":
       posts = await client.app.bsky.feed.post.list(client.me.did, limit=2)
       for uri, post in posts.records.items():
-        await ctx.channel.send(f"{uri}, {post.text}")
+        await ctx.channel.send(f"{post.text}")
     case "uwu":
       # max_tokens = 3800
       # tokenizer = context.tokenizer
 
-      post_text = ""
+      post_text = f"uwu {message}. Here are the most recent posts for context, respond briefly and appropriately: "
       # post_tokens = len(tokenizer.encode(post_text))
       
       posts = await client.app.bsky.feed.post.list(client.me.did, limit=5)
@@ -31,8 +31,8 @@ async def handle_bsky(ctx: commands.Context, command: str, message: str):
         # post_tokens += len(tokenizer.encode(post.text))
         post_text += f"# {post.text} "
 
-      command_str = f"uwu {message}. Here are the most recent posts for context, respond briefly and appropriately: {post_text}."
-      e = await handle_text_generate(ctx, command_str, "bsky")
+      await ctx.channel.send("Sending handle text generate.")
+      e = await handle_text_generate(ctx, post_text, "bsky")
 
     case _:
       return None
