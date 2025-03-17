@@ -10,3 +10,4 @@ python-dotenv
 asyncpg
 python-jose
 tiktoken
+atproto
