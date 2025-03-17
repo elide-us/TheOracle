@@ -2,6 +2,7 @@ from discord.ext import commands
 from commands.discord import handle_text_generate, summarize, handle_command_assistants
 from commands.lumaai import generate_video
 from commands.openai import handle_tts
+from commands.bsky import handle_bsky
 
 def setup_bot_routes(bot: commands.Bot):
   @bot.event
@@ -60,7 +61,6 @@ def setup_bot_routes(bot: commands.Bot):
     frame1 = args[1]
     prompt = " ".join(args[2:])
     await generate_video(ctx, frame0, frame1, prompt)
-
  
   # @bot.command(name="image")
   # async def image_gen(ctx, *args):
@@ -69,3 +69,9 @@ def setup_bot_routes(bot: commands.Bot):
   #   response = await handle_image(command_str, openai_client)
   #   if response:
   #     await ctx.send(response)
+
+  @bot.command(name="bsky")
+  async def command_bsky(ctx, *args):
+    command = args[0]
+    message = " ".join(args[1:])
+    await handle_bsky(ctx, command, message)

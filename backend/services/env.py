@@ -58,3 +58,9 @@ def get_ms_app_id():
 
 def get_discord_app_id():
   return get_env_var("AUTH_DISCORD_ID")
+
+
+
+
+def get_bsky_password():
+  return get_env_var("BSKY_PASSWORD")

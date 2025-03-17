@@ -2,7 +2,7 @@ import asyncio, tiktoken
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from services.env import get_jwt_secret, get_ms_app_id, get_system_channel, get_output_channel
-from services.clients import init_openai_client, init_database_pool, init_lumaai_client, init_storage_client
+from services.clients import init_openai_client, init_database_pool, init_lumaai_client, init_storage_client, init_bsky_client
 from services.discord import start_discord_bot, init_discord_bot
 from routes.bot import setup_bot_routes
 from services.auth import fetch_ms_jwks_uri, fetch_ms_jwks
@@ -17,6 +17,8 @@ async def lifespan(app: FastAPI):
   bot.app = app
 
   app.state.bot = bot
+
+  app.state.bsky_client, app.state.bsky_profile = await init_bsky_client()
 
   app.state.jwt_secret = get_jwt_secret()
   app.state.jwt_algorithm_rs256 = "RS256"
