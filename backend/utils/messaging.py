@@ -48,9 +48,23 @@ async def send_to_discord_user(user, text: str, max_message_size: int = 1998, de
 
 async def send_to_bsky(ctx: commands.Context, message: str, max_message_size: int = 300, delay: float = 5.0):
   client = ctx.bot.app.state.bsky_client
-
   context = ContextHelper(ctx)
   await context.sys_channel.send("DEBUG: Send to bsky")
+
+  message = message.strip()
+  while message:
+    if len(message) <= max_message_size:
+      chunk, message = message, ""
+    else:
+      split_index = message.rfind(' ', 0, max_message_size)
+      if split_index == -1:  # No spaces found, force cut
+        split_index = max_message_size
+      chunk, message = message[:split_index].strip(), message[split_index:].strip()
+
+    if chunk:
+      text = client_utils.TextBuilder().text(chunk)
+      await client.send_post(text)
+      await asyncio.sleep(delay)
 
   for block in message.split("\n"):
     if not block.strip() or block.strip() == "---":
