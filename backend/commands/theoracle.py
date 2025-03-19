@@ -48,7 +48,7 @@ async def discord_fetch_openai_chat(ctx, schemas: list, role: str, prompt: str, 
   await context.sys_channel.send(f"DEBUG: Sending prompt to OpenAI: {prompt}")
   try:
     completion = await client.chat.completions.create(
-      model="chatgpt-4o-latest",
+      model="gpt-4o-mini",
       max_tokens=tokens,
       tools=schemas,
       messages=[
