@@ -4,7 +4,7 @@ from utils.helpers import ContextHelper
 from commands.discord import handle_text_generate
 from commands.theoracle import talk_to_ceo, talk_to_cfo, talk_to_cto
 from io import BytesIO
-from fastapi import FastAPI
+from fastapi.datastructures import State
 
 async def handle_bsky(ctx: commands.Context, command: str, message: str):
   client = ctx.bot.app.state.bsky_client
@@ -42,6 +42,6 @@ async def handle_bsky(ctx: commands.Context, command: str, message: str):
     case _:
       await context.sys_channel.send("DEBUG: case _")
 
-async def write_buffer_to_bsky(buffer: BytesIO, state: FastAPI.state, filename: str):
+async def write_buffer_to_bsky(buffer: BytesIO, state: State, filename: str):
   
   return None
