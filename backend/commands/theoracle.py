@@ -43,7 +43,7 @@ async def discord_fetch_openai_chat(ctx, schemas: list, role: str, prompt: str, 
   client: AsyncOpenAI = context.openai
   
   # Get channel history from discord
-  context = await fetch_context(ctx, int(1), int(100))
+  prompt_context = await fetch_context(ctx, int(1), int(100))
 
   await context.sys_channel.send(f"DEBUG: Sending prompt to OpenAI: {prompt}")
   try:
@@ -52,7 +52,7 @@ async def discord_fetch_openai_chat(ctx, schemas: list, role: str, prompt: str, 
       max_tokens=tokens,
       tools=schemas,
       messages=[
-        {"role": "user", "content": context},
+        {"role": "user", "content": prompt_context},
         {"role": "system", "content": role},
         {"role": "user", "content": prompt}
       ]
