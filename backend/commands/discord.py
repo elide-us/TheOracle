@@ -61,13 +61,15 @@ async def lookup_access(ctx, hours: int):
     await context.sys_channel.send("No guild...")
     return None
 
-  results = []
+  # results = []
   for channel in guild.text_channels:
-    await ctx.author.send(f"Collecting messages in channel {channel.name}")
     perms = channel.permissions_for(ctx.author)
     if perms.view_channel:
-      result = await context.app.state.openai_queue.add(_summarize, ctx, channel, hours)
-      results.append(result)
+      await context.sys_channel.send(f"Collecting messages in channel {channel.name}")
+
+      ## Ok, so everything below here is shit and needs to be redone, what even does this openai_queue do?
+      # result = await context.app.state.openai_queue.add(_summarize, ctx, channel, hours)
+      # results.append(result)
       # return await _summarize(ctx, channel, hours)
 
 # New entry point for summarize that captures and extracts the "all" argument
