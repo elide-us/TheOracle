@@ -34,8 +34,8 @@ async def fetch_context(ctx: commands.Context, hours: int = 1, limit: int = 100)
     await context.sys_channel.send("No messages found in the given time range.")
     return
   
+  await context.sys_channel.send("DEBUG: Returning full text, size: {total_tokens}")
   full_text = " ".join(messages)
-
   return full_text
 
 async def discord_fetch_openai_chat(ctx, schemas: list, role: str, prompt: str, tokens: int):
