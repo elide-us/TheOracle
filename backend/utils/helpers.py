@@ -1,9 +1,9 @@
 from typing import Optional, Any
-from fastapi import Request
-import asyncio, aiohttp, aiofiles, io, json, uuid
+from fastapi import Request, FastAPI
+import asyncio, aiohttp, aiofiles, io, json, uuid, inspect
 from discord.ext import commands
-from fastapi import FastAPI
-import inspect
+from tiktoken import Encoding
+from openai import AsyncOpenAI
 
 def function_to_schema(func) -> dict:
   type_map = {
@@ -51,7 +51,14 @@ def function_to_schema(func) -> dict:
       },
     },
   }
-    
+
+def get_schemas(tools: list) -> list:
+  schemas = []
+  for tool in tools:
+    schema = function_to_schema(tool)
+    schemas.append(schema)
+  return schemas
+ 
 # A temporary helper function to load local data JSON files
 async def load_json(file_path: str) -> Any:
   try:
@@ -93,10 +100,10 @@ class ContextHelper:
   def out_channel(self) -> Any:
     return self.bot.get_channel(self.bot.out_channel)
   @property
-  def tokenizer(self):
+  def tokenizer(self) -> Encoding:
     return self.app.state.tokenizer
   @property
-  def openai(self):
+  def openai(self) -> AsyncOpenAI:
     return self.app.state.openai_client
   @property
   def pool(self) -> Any:
