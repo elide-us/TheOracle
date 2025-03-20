@@ -6,7 +6,7 @@ from commands.discord import send_to_discord, send_to_bsky
 from datetime import datetime, timezone, timedelta
 from tiktoken import Encoding
 
-async def fetch_context(ctx: commands.Context, hours: int = 1, limit: int = 100):
+async def fetch_context(ctx: commands.Context, hours: int = 24, limit: int = 100):
   context = ContextHelper(ctx)
   channel = ctx.channel
   await context.sys_channel.send("DEBUG: Fetching channel history.")
