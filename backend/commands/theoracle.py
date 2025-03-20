@@ -89,8 +89,9 @@ async def talk_to_ceo(ctx, prompt: str):
   )
   response: ChatCompletionMessage = await discord_fetch_openai_chat(ctx, tool_schemas, system_role, prompt, int(1500))
   response_text = response.content
+  await ctx.channel.send("The CEO says the following:")
   await send_to_discord(ctx.channel, response_text)
-  # await send_to_bsky(ctx, response_text)
+  await send_to_bsky(ctx, response_text)
 
   # response.tool_calls[0].function
   return
@@ -125,8 +126,9 @@ async def talk_to_cfo(ctx, prompt: str):
   )
   response: ChatCompletionMessage = await discord_fetch_openai_chat(ctx, tool_schemas, system_role, prompt, int(500))
   response_text = response.content
+  await ctx.channel.send("The CFO says the following:")
   await send_to_discord(ctx.channel, response_text)
-  # await send_to_bsky(ctx, response_text)
+  await send_to_bsky(ctx, response_text)
 
   # response.tool_calls[0].function
   return
@@ -176,7 +178,7 @@ async def talk_to_cto(ctx, prompt: str):
   response_text = response.content
   await ctx.channel.send("The CTO says the following:")
   await send_to_discord(ctx.channel, response_text)
-  # await send_to_bsky(ctx, response_text)
+  await send_to_bsky(ctx, response_text)
 
   # response.tool_calls[0].function
   return
