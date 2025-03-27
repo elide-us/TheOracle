@@ -6,6 +6,25 @@ from commands.discord import send_to_discord, send_to_bsky
 from datetime import datetime, timezone, timedelta
 from tiktoken import Encoding
 
+
+
+class PromptContext:
+  def __init__(self):
+    self.token_count = 0
+    self.response_count = 0
+    self.history = []
+  async def AddResponse(self, text, tokens):
+    self.history.append(text)
+    self.token_count += tokens
+    self.response_count += 1
+
+    # if token count above watermark
+      # purge old history
+    # if response > 3
+      # purge 
+    
+
+
 async def fetch_context(ctx: commands.Context, hours: int = 24, limit: int = 100):
   context = ContextHelper(ctx)
   channel = ctx.channel
@@ -19,6 +38,7 @@ async def fetch_context(ctx: commands.Context, hours: int = 24, limit: int = 100
   total_tokens = 0
 
   async for msg in channel.history(limit=limit, oldest_first=False):
+    await context.sys_channel.send(f"DEBUG: {msg}")
     msg_text = f"{msg.author.display_name}: {msg.content}"
     msg_tokens = len(tokenizer.encode(msg_text))
 
