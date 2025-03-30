@@ -3,6 +3,7 @@ from commands.discord import handle_text_generate, summarize, handle_command_ass
 from commands.lumaai import generate_video
 from commands.openai import handle_tts
 from commands.bsky import handle_bsky
+from utils.messaging import send_to_bsky
 
 def setup_bot_routes(bot: commands.Bot):
   @bot.event
@@ -50,6 +51,7 @@ def setup_bot_routes(bot: commands.Bot):
     response = await handle_text_generate(ctx, command_str, "channel")
     if response:
       await ctx.send(response)
+      await send_to_bsky(ctx, response)
 
   @bot.command(name="video")
   async def command_video(ctx, *args):
