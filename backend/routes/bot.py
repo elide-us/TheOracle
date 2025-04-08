@@ -50,8 +50,8 @@ def setup_bot_routes(bot: commands.Bot):
     command_str = " ".join(args)
     response = await handle_text_generate(ctx, command_str, "channel")
     if response:
-      await ctx.send(response)
       await send_to_bsky(ctx, response)
+      await ctx.send(response)
 
   @bot.command(name="video")
   async def command_video(ctx, *args):
