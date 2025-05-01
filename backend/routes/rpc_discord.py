@@ -57,7 +57,7 @@ async def queue_summary(req: SummaryRequest, request: Request):
   job = await svc.summary_queue.add(req.channel_id, req.hours)
   return {"status": "queued", "job_id": getattr(job, "id", None)}
 
-#router.get("/summary_status/{job_id}")
+@router.get("/summary_status/{job_id}")
 async def summary_status(job_id: str, request: Request):
   svc = get_discord_svc(request)
   # stub: svc.summary_queue.status(job_id)
