@@ -5,7 +5,7 @@ from commands.postgres import select_category_templates, select_template_keys, s
 from services.auth import handle_ms_auth_login, make_bearer_token, get_bearer_token_payload
 from utils.helpers import StateHelper
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
 @router.get("/routes")
 async def get_routes(request: Request, payload: dict = Depends(get_bearer_token_payload)):
