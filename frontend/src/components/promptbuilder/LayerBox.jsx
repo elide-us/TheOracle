@@ -38,12 +38,18 @@ const LayerBox = ({ parts, data, selections, setSelections }) => {
 									displayEmpty
 									autoWidth
 									value={selections[part.placeholder] || ''}
-									onChange={(e) =>
-										setSelections((prev) => ({
-											...prev,
-											[part.placeholder]: e.target.value,
-										}))
-									  }							
+									onChange={(e) => {
+										const value = e.target.value;
+										setSelections((prev) => {
+											const updated = { ...prev };
+											if (value === "") {
+												delete updated[part.placeholder];
+											} else {
+												updated[part.placeholder] = value;
+											}
+											return updated;
+										});
+									}}							
 								>
 									<MenuItem value="">Select {part.placeholder}</MenuItem>
 									{Object.keys(options).map((key) => (
