@@ -70,6 +70,7 @@ const PromptBuilder = ({ selectedTemplate }) => {
 			});
 
 			if (response.data.imageUrl) {
+				print('Image URL:', response.data.imageUrl); // Debugging line to check the image URL
 				setCurrentImageUrl(response.data.imageUrl);
 				setNotification({
 					open: true,
