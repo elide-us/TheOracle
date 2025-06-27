@@ -136,7 +136,9 @@ async def post_imagen(request: Request, payload: dict = Depends(get_bearer_token
   if credits > charge:
     response = await update_user_credits(state, charge, payload.get("guid"))
     if response["success"]:
-      await state.channel.send(f"User: {response["guid"]} Credits: {response['credits']}")
+      await state.channel.send(
+        f"User: {response['guid']} Credits: {response['credits']}"
+      )
     else:
       await state.channel.send(f"Error: {response['error']}, Remaining credits: {response.get('credits', 0)}")
 
@@ -182,7 +184,7 @@ async def post_lumagen_callback(request: Request):
   generation = await request.json()
   if generation.get("state") == "completed":
     video_url = generation.get("assets", {}).get("video")
-    filename = f"{generation.get("id")}.mp4"
+    filename = f"{generation.get('id')}.mp4"
     await download_generation(video_url, state, filename)
   else:
     await state.out_channel.send("Dreaming...")
