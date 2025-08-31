@@ -96,6 +96,7 @@ def setup_bot_routes(bot: commands.Bot):
     async for msg in ctx.channel.history(limit=None, oldest_first=True):
       if msg.id == ctx.message.id:
         continue
+
       files = []
       for attachment in msg.attachments:
         fp = await attachment.read()
