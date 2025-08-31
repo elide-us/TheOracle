@@ -92,13 +92,11 @@ def setup_bot_routes(bot: commands.Bot):
       await ctx.send(f"Channel '{target_name}' not found.")
       return
 
-    messages = []
+    moved = 0
     async for msg in ctx.channel.history(limit=None, oldest_first=True):
       if msg.id == ctx.message.id:
         continue
-      messages.append(msg)
 
-    for msg in messages:
       files = []
       for attachment in msg.attachments:
         fp = await attachment.read()
@@ -106,6 +104,7 @@ def setup_bot_routes(bot: commands.Bot):
       content = f"{msg.author.display_name}: {msg.content}" if msg.content else f"{msg.author.display_name}:"
       await target.send(content=content, files=files or None)
       await msg.delete()
+      moved += 1
 
-    await target.send(f"Moved {len(messages)} messages from #{ctx.channel.name}.")
+    await target.send(f"Moved {moved} messages from #{ctx.channel.name}.")
     await ctx.message.delete()
