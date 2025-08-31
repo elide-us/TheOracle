@@ -1,3 +1,5 @@
+import io
+import discord
 from discord.ext import commands
 from commands.discord import handle_text_generate, summarize, handle_command_assistants
 from commands.lumaai import generate_video
@@ -77,3 +79,31 @@ def setup_bot_routes(bot: commands.Bot):
     command = args[0]
     message = " ".join(args[1:])
     await handle_bsky(ctx, command, message)
+
+  @bot.command(name="movemsg", help="!movemsg <channel name> Moves all messages in this channel to the specified channel if it exists.")
+  async def command_movemsg(ctx, *args):
+    if not args:
+      await ctx.send("Please specify a target channel.")
+      return
+
+    target_name = args[0]
+    target = discord.utils.get(ctx.guild.text_channels, name=target_name)
+    if not target:
+      await ctx.send(f"Channel '{target_name}' not found.")
+      return
+
+    moved = 0
+    async for msg in ctx.channel.history(limit=None, oldest_first=True):
+      if msg.id == ctx.message.id:
+        continue
+      files = []
+      for attachment in msg.attachments:
+        fp = await attachment.read()
+        files.append(discord.File(io.BytesIO(fp), filename=attachment.filename))
+      content = f"{msg.author.display_name}: {msg.content}" if msg.content else f"{msg.author.display_name}:"
+      await target.send(content=content, files=files or None)
+      await msg.delete()
+      moved += 1
+
+    await target.send(f"Moved {moved} messages from #{ctx.channel.name}.")
+    await ctx.message.delete()
