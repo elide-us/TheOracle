@@ -92,16 +92,19 @@ def setup_bot_routes(bot: commands.Bot):
       await ctx.send(f"Channel '{target_name}' not found.")
       return
 
-    moved = 0
-    async for msg in ctx.channel.history(limit=None, oldest_first=True):
-      if msg.id == ctx.message.id:
-        continue
+    # Collect the entire message history first so deletions don't
+    # interfere with iteration.  This indexes messages from the start
+    # of the channel to ensure every message is moved.
+    messages = [m async for m in ctx.channel.history(limit=None, oldest_first=True)
+                if m.id != ctx.message.id]
 
+    moved = 0
+    for idx, msg in enumerate(messages, start=1):
       files = []
       for attachment in msg.attachments:
         fp = await attachment.read()
         files.append(discord.File(io.BytesIO(fp), filename=attachment.filename))
-      content = f"{msg.author.display_name}: {msg.content}" if msg.content else f"{msg.author.display_name}:"
+      content = f"[{idx}] {msg.author.display_name}: {msg.content}" if msg.content else f"[{idx}] {msg.author.display_name}:"
       await target.send(content=content, files=files or None)
       await msg.delete()
       moved += 1
